@@ -41,3 +41,11 @@
 (load (concat emacs-d "haskell-mode/haskell-site-file"))
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+
+;; --------------------------------------------------------------------------
+;;  Clojure.  See https://github.com/technomancy/clojure-mode.
+;; --------------------------------------------------------------------------
+
+(add-to-list 'load-path (concat emacs-d "clojure-mode"))
+(add-to-list 'auto-mode-alist '("\\.clj\\'" . clojure-mode))
+(autoload 'clojure-mode "clojure-mode" t)
