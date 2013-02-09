@@ -44,8 +44,14 @@
 
 ;; --------------------------------------------------------------------------
 ;;  Clojure.  See https://github.com/technomancy/clojure-mode.
+;;            See https://github.com/kingtim/nrepl.el.
 ;; --------------------------------------------------------------------------
 
 (add-to-list 'load-path (concat emacs-d "clojure-mode"))
 (add-to-list 'auto-mode-alist '("\\.clj\\'" . clojure-mode))
 (autoload 'clojure-mode "clojure-mode" t)
+
+(add-to-list 'load-path (concat emacs-d "nrepl"))
+(add-hook 'clojure-mode-hook (lambda () (require 'nrepl)))
+(add-hook 'nrepl-interaction-hook 'nrepl-turn-on-eldoc-mode)
+(setq nrepl-popup-stacktraces nil)
