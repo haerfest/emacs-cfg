@@ -35,6 +35,15 @@
 (setq emacs-d "~/.emacs.d/")
 
 ;; --------------------------------------------------------------------------
+;;  Rainbow delimiters.  See https://github.com/jlr/rainbow-delimiters.
+;; --------------------------------------------------------------------------
+
+(add-to-list 'load-path (concat emacs-d "rainbow-delimiters"))
+(autoload 'rainbow-delimiters-mode "rainbow-delimiters" t)
+(add-hook 'haskell-mode-hook 'rainbow-delimiters-mode)
+(add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
+
+;; --------------------------------------------------------------------------
 ;;  Haskell.  See https://github.com/haskell/haskell-mode.
 ;; --------------------------------------------------------------------------
 
@@ -43,8 +52,8 @@
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 
 ;; --------------------------------------------------------------------------
-;;  Clojure.  See https://github.com/technomancy/clojure-mode.
-;;            See https://github.com/kingtim/nrepl.el.
+;;  Clojure.  See https://github.com/technomancy/clojure-mode
+;;              + https://github.com/kingtim/nrepl.el.
 ;; --------------------------------------------------------------------------
 
 (add-to-list 'load-path (concat emacs-d "clojure-mode"))
@@ -55,3 +64,4 @@
 (add-hook 'clojure-mode-hook (lambda () (require 'nrepl)))
 (add-hook 'nrepl-interaction-hook 'nrepl-turn-on-eldoc-mode)
 (setq nrepl-popup-stacktraces nil)
+
