@@ -22,7 +22,7 @@
 (global-set-key [M-up]    'windmove-up)
 (global-set-key [M-down]  'windmove-down)
 
-;; Show matching braces.
+;; Show matching parenthesis.
 (show-paren-mode t)
 
 ;; Use spaces for tabs.
@@ -30,3 +30,14 @@
 
 ;; Indent each new line automatically.
 (global-set-key "\r" 'newline-and-indent)
+
+;; This is where my configuration lives.
+(setq emacs-d "~/.emacs.d/")
+
+;; --------------------------------------------------------------------------
+;;  Haskell.  See https://github.com/haskell/haskell-mode.
+;; --------------------------------------------------------------------------
+
+(load (concat emacs-d "haskell-mode/haskell-site-file"))
+(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
