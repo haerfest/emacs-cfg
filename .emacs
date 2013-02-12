@@ -6,7 +6,7 @@
 (setq inhibit-startup-screen 1)
 
 ;; Use this font.
-(set-face-attribute 'default nil :family "Anonymous Pro" :height 160)
+(set-face-attribute 'default nil :family "Monaco" :height 140)
 
 ;; Disable scroll bars and tool bars.
 (custom-set-variables '(scroll-bar-mode nil)
@@ -42,6 +42,7 @@
 (autoload 'rainbow-delimiters-mode "rainbow-delimiters" t)
 (add-hook 'haskell-mode-hook 'rainbow-delimiters-mode)
 (add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
+(add-hook 'lisp-mode-hook    'rainbow-delimiters-mode)
 
 ;; --------------------------------------------------------------------------
 ;;  Haskell.  See https://github.com/haskell/haskell-mode.
