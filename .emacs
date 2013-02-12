@@ -6,7 +6,7 @@
 (setq inhibit-startup-screen 1)
 
 ;; Use this font.
-(set-face-attribute 'default nil :family "Monaco" :height 140)
+(set-face-attribute 'default nil :family "Mensch" :height 160)
 
 ;; Disable scroll bars and tool bars.
 (custom-set-variables '(scroll-bar-mode nil)
