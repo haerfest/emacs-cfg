@@ -6,7 +6,7 @@
 (setq inhibit-startup-screen 1)
 
 ;; Use this font.
-(set-face-attribute 'default nil :family "Mensch" :height 160)
+(set-face-attribute 'default nil :family "Monaco" :height 150)
 
 ;; Disable scroll bars and tool bars.
 (custom-set-variables '(scroll-bar-mode nil)
@@ -30,6 +30,9 @@
 
 ;; Indent each new line automatically.
 (global-set-key "\r" 'newline-and-indent)
+
+;; Do not truncate long lines.
+(setq-default truncate-lines t)
 
 ;; This is where my configuration lives.
 (setq emacs-d "~/.emacs.d/")
