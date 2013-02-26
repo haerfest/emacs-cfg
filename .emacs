@@ -6,15 +6,11 @@
 (setq inhibit-startup-screen 1)
 
 ;; Use this font.
-(set-face-attribute 'default nil :family "Monaco" :height 150)
+(set-face-attribute 'default nil :family "DejaVu Sans Mono" :height 150)
 
 ;; Disable scroll bars and tool bars.
 (custom-set-variables '(scroll-bar-mode nil)
                       '(tool-bar-mode nil))
-
-;; Use the Command key as the Meta key (Mac-only).
-(setq mac-option-modifier  'super)
-(setq mac-command-modifier 'meta)
 
 ;; Window movement.
 (global-set-key [M-left]  'windmove-left)
@@ -36,6 +32,26 @@
 
 ;; This is where my configuration lives.
 (setq emacs-d "~/.emacs.d/")
+
+;; --------------------------------------------------------------------------
+;;  Behaviour specific to Mac OS X.
+;; --------------------------------------------------------------------------
+
+(if (eq system-type 'darwin)
+    (progn
+      ;; Use the Command key as the Meta key.
+      (setq mac-option-modifier  'super)
+      (setq mac-command-modifier 'meta)))
+
+;; --------------------------------------------------------------------------
+;;  Behaviour specific to Linux.
+;; --------------------------------------------------------------------------
+
+(if (eq system-type 'gnu/linux)
+    (progn
+      ;; Allow copy & paste between Emacs and X.
+      (setq x-select-enable-clipboard t)
+      (setq interprogram-paste-function 'x-cut-buffer-or-selection-value)))
 
 ;; --------------------------------------------------------------------------
 ;;  Rainbow delimiters.  See https://github.com/jlr/rainbow-delimiters.
