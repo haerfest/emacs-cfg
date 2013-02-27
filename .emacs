@@ -90,11 +90,13 @@
 ;;                    + https://github.com/mr-om/haskell-dict.
 ;; --------------------------------------------------------------------------
 
-(add-to-list 'load-path (concat emacs-d "auto-complete"))
-(require 'auto-complete-config)
-(ac-config-default)
-(add-to-list 'ac-dictionary-directories (concat emacs-d "auto-complete/dict"))
-(add-to-list 'ac-modes 'haskell-mode)
+(if (> emacs-major-version 22)
+    (progn
+      (add-to-list 'load-path (concat emacs-d "auto-complete"))
+      (require 'auto-complete-config)
+      (ac-config-default)
+      (add-to-list 'ac-dictionary-directories (concat emacs-d "auto-complete/dict"))
+      (add-to-list 'ac-modes 'haskell-mode)))
 
 ;; --------------------------------------------------------------------------
 ;;  Org-mode.
