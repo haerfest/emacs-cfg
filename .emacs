@@ -85,3 +85,13 @@
 (add-hook 'nrepl-interaction-hook 'nrepl-turn-on-eldoc-mode)
 (setq nrepl-popup-stacktraces nil)
 
+;; --------------------------------------------------------------------------
+;;  Auto-complete.  See http://cx4a.org/software/auto-complete
+;;                    + https://github.com/mr-om/haskell-dict.
+;; --------------------------------------------------------------------------
+
+(add-to-list 'load-path (concat emacs-d "auto-complete"))
+(add-to-list 'ac-dictionary-directories (concat emacs-d "auto-complete/dict"))
+(add-to-list 'ac-modes 'haskell-mode)
+(require 'auto-complete-config)
+(ac-config-default)
