@@ -13,10 +13,10 @@
                       '(tool-bar-mode nil))
 
 ;; Window movement.
-(global-set-key [M-left]  'windmove-left)
-(global-set-key [M-right] 'windmove-right)
-(global-set-key [M-up]    'windmove-up)
-(global-set-key [M-down]  'windmove-down)
+(global-set-key [s-left]  'windmove-left)
+(global-set-key [s-right] 'windmove-right)
+(global-set-key [s-up]    'windmove-up)
+(global-set-key [s-down]  'windmove-down)
 
 ;; Show matching parenthesis.
 (show-paren-mode t)
@@ -95,3 +95,11 @@
 (ac-config-default)
 (add-to-list 'ac-dictionary-directories (concat emacs-d "auto-complete/dict"))
 (add-to-list 'ac-modes 'haskell-mode)
+
+;; --------------------------------------------------------------------------
+;;  Org-mode.
+;; --------------------------------------------------------------------------
+
+(define-key global-map "\C-cl" 'org-store-link)
+(define-key global-map "\C-ca" 'org-agenda)
+(setq org-log-done t)
