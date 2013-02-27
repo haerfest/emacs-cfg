@@ -91,7 +91,7 @@
 ;; --------------------------------------------------------------------------
 
 (add-to-list 'load-path (concat emacs-d "auto-complete"))
-(add-to-list 'ac-dictionary-directories (concat emacs-d "auto-complete/dict"))
-(add-to-list 'ac-modes 'haskell-mode)
 (require 'auto-complete-config)
 (ac-config-default)
+(add-to-list 'ac-dictionary-directories (concat emacs-d "auto-complete/dict"))
+(add-to-list 'ac-modes 'haskell-mode)
