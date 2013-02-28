@@ -72,10 +72,8 @@
   (let ((comint-buffer-maximum-size 0))
     (comint-truncate-buffer)))
 
-(defun my-shell-hook ()
-  (local-set-key "\C-cl" 'my-erase-buffer))
-
-(add-hook 'shell-mode-hook 'my-shell-hook)
+(add-hook 'shell-mode-hook (lambda ()
+                             (local-set-key "\C-cl" 'my-erase-buffer)))
 
 ;; --------------------------------------------------------------------------
 ;;  Haskell.  See https://github.com/haskell/haskell-mode.
