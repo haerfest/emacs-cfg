@@ -18,6 +18,9 @@
 (global-set-key [s-up]    'windmove-up)
 (global-set-key [s-down]  'windmove-down)
 
+;; Show the column number.
+(column-number-mode t)
+
 ;; Show matching parenthesis.
 (show-paren-mode t)
 
