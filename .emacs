@@ -6,7 +6,7 @@
 (setq inhibit-startup-screen 1)
 
 ;; Use this font.
-(set-face-attribute 'default nil :family "DejaVu Sans Mono" :height 150)
+(set-face-attribute 'default nil :family "Anonymous Pro" :height 150)
 
 ;; Disable scroll bars and tool bars.
 (custom-set-variables '(scroll-bar-mode nil)
@@ -24,8 +24,9 @@
 ;; Show matching parenthesis.
 (show-paren-mode t)
 
-;; Use spaces for tabs.
+;; Use two spaces for tabs.
 (setq-default indent-tabs-mode nil)
+(setq-default tab-width 2)
 
 ;; Indent each new line automatically.
 (global-set-key "\r" 'newline-and-indent)
@@ -55,6 +56,20 @@
       ;; Allow copy & paste between Emacs and X.
       (setq x-select-enable-clipboard t)
       (setq interprogram-paste-function 'x-cut-buffer-or-selection-value)))
+
+
+;; --------------------------------------------------------------------------
+;;  C.
+;; --------------------------------------------------------------------------
+
+(setq-default c-default-style "linux"
+              c-basic-offset 2)
+
+(defun create-tags (dir-name)
+  "Create tags file."
+  (interactive "DDirectory: ")
+  (shell-command
+   (format "cd %s ; find . -name '*.[chCH]' -print | etags -" (directory-file-name dir-name))))
 
 ;; --------------------------------------------------------------------------
 ;;  Rainbow delimiters.  See https://github.com/jlr/rainbow-delimiters.
