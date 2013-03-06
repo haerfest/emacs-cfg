@@ -29,8 +29,10 @@
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 2)
 
-;; Indent each new line automatically.
-(global-set-key "\r" 'newline-and-indent)
+;; Enable on-the-fly indentation.
+(if (> emacs-major-version 23)
+  (electric-indent-mode t)
+  (global-set-key "\r" 'newline-and-indent))
 
 ;; Do not truncate long lines.
 (setq-default truncate-lines t)
@@ -42,30 +44,25 @@
 ;;  Behaviour specific to Mac OS X.
 ;; --------------------------------------------------------------------------
 
-(if (eq system-type 'darwin)
-    (progn
-      ;; Use the Command key as the Meta key.
-      (setq mac-option-modifier  'super)
-      (setq mac-command-modifier 'meta)))
+(when (eq system-type 'darwin)
+  ;; Use the Command key as the Meta key.
+  (setq mac-option-modifier  'super)
+  (setq mac-command-modifier 'meta))
 
 ;; --------------------------------------------------------------------------
 ;;  Behaviour specific to Linux.
 ;; --------------------------------------------------------------------------
 
-(if (eq system-type 'gnu/linux)
-    (progn
-      ;; Allow copy & paste between Emacs and X.
-      (setq x-select-enable-clipboard t)
-      (setq interprogram-paste-function 'x-cut-buffer-or-selection-value)))
-
+(when (eq system-type 'gnu/linux)
+  ;; Allow copy & paste between Emacs and X.
+  (setq x-select-enable-clipboard t)
+  (setq interprogram-paste-function 'x-cut-buffer-or-selection-value))
 
 ;; --------------------------------------------------------------------------
-;;  C.
+;;  Handy functions.
 ;; --------------------------------------------------------------------------
 
-(setq-default c-default-style "linux"
-              c-basic-offset 2)
-
+;; Generates a TAGS file for code navigation.
 (defun create-tags (dir-name)
   "Create tags file."
   (interactive "DDirectory: ")
@@ -73,32 +70,55 @@
    (format "cd %s ; find . -name '*.[chCH]' -print | etags -" (directory-file-name dir-name))))
 
 ;; --------------------------------------------------------------------------
+;;  C-mode.  Built-in.
+;; --------------------------------------------------------------------------
+
+(setq-default c-default-style "linux"
+              c-basic-offset 2)
+
+;; --------------------------------------------------------------------------
+;;  Shell mode.  Built-in.
+;; --------------------------------------------------------------------------
+
+;; Press C-c l in a shell to clear the buffer.
+(add-hook 'shell-mode-hook
+          (lambda ()
+            (local-set-key "\C-cl"
+                           (lambda ()
+                             (interactive)
+                             (let ((comint-buffer-maximum-size 0))
+                               (comint-truncate-buffer))))))
+
+;; --------------------------------------------------------------------------
+;;  Org-mode.  Built-in.
+;; --------------------------------------------------------------------------
+
+(define-key global-map "\C-cl" 'org-store-link)
+(define-key global-map "\C-ca" 'org-agenda)
+
+(setq org-log-done t)
+
+;; Org-mode does not play nice with electric-indent-mode.
+(add-hook 'org-mode-hook (lambda () (when electric-indent-mode
+                                      (electric-indent-mode -1))))
+
+;; --------------------------------------------------------------------------
 ;;  Rainbow delimiters.  See https://github.com/jlr/rainbow-delimiters.
 ;; --------------------------------------------------------------------------
 
 (add-to-list 'load-path (concat emacs-d "rainbow-delimiters"))
 (autoload 'rainbow-delimiters-mode "rainbow-delimiters" t)
+
 (add-hook 'haskell-mode-hook 'rainbow-delimiters-mode)
 (add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
 (add-hook 'lisp-mode-hook    'rainbow-delimiters-mode)
-
-;; --------------------------------------------------------------------------
-;;  Handy functions.
-;; --------------------------------------------------------------------------
-
-(defun my-erase-buffer ()
-  (interactive)
-  (let ((comint-buffer-maximum-size 0))
-    (comint-truncate-buffer)))
-
-(add-hook 'shell-mode-hook (lambda ()
-                             (local-set-key "\C-cl" 'my-erase-buffer)))
 
 ;; --------------------------------------------------------------------------
 ;;  Haskell.  See https://github.com/haskell/haskell-mode.
 ;; --------------------------------------------------------------------------
 
 (load (concat emacs-d "haskell-mode/haskell-site-file"))
+
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 
@@ -114,6 +134,7 @@
 (add-to-list 'load-path (concat emacs-d "nrepl"))
 (add-hook 'clojure-mode-hook (lambda () (require 'nrepl)))
 (add-hook 'nrepl-interaction-hook 'nrepl-turn-on-eldoc-mode)
+
 (setq nrepl-popup-stacktraces nil)
 
 ;; --------------------------------------------------------------------------
@@ -121,18 +142,10 @@
 ;;                    + https://github.com/mr-om/haskell-dict.
 ;; --------------------------------------------------------------------------
 
-(if (> emacs-major-version 22)
-    (progn
-      (add-to-list 'load-path (concat emacs-d "auto-complete"))
-      (require 'auto-complete-config)
-      (ac-config-default)
-      (add-to-list 'ac-dictionary-directories (concat emacs-d "auto-complete/dict"))
-      (add-to-list 'ac-modes 'haskell-mode)))
-
-;; --------------------------------------------------------------------------
-;;  Org-mode.
-;; --------------------------------------------------------------------------
-
-(define-key global-map "\C-cl" 'org-store-link)
-(define-key global-map "\C-ca" 'org-agenda)
-(setq org-log-done t)
+;; Does not play nice with Emacs 22.
+(when (> emacs-major-version 22)
+  (add-to-list 'load-path (concat emacs-d "auto-complete"))
+  (require 'auto-complete-config)
+  (ac-config-default)
+  (add-to-list 'ac-dictionary-directories (concat emacs-d "auto-complete/dict"))
+  (add-to-list 'ac-modes 'haskell-mode))
