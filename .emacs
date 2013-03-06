@@ -8,9 +8,10 @@
 ;; Use this font.
 (set-face-attribute 'default nil :family "Anonymous Pro" :height 150)
 
-;; Disable scroll bars and tool bars.
+;; Disable all kinds of GUI elements.
 (custom-set-variables '(scroll-bar-mode nil)
-                      '(tool-bar-mode nil))
+                      '(tool-bar-mode nil)
+                      '(menu-bar-mode nil))
 
 ;; Window movement.
 (global-set-key [s-left]  'windmove-left)
