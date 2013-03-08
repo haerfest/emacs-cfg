@@ -149,3 +149,15 @@
   (ac-config-default)
   (add-to-list 'ac-dictionary-directories (concat emacs-d "auto-complete/dict"))
   (add-to-list 'ac-modes 'haskell-mode))
+
+;; --------------------------------------------------------------------------
+;;  PlantUML-mode.  See http://zhangweize.wordpress.com/2010/09/20/update-plantuml-mode/
+;;                    + https://github.com/skuro/plantuml-mode
+;;                    + https://gist.github.com/rpl/547521.
+;; --------------------------------------------------------------------------
+
+(add-to-list 'load-path (concat emacs-d "plantuml-mode"))
+(add-to-list 'auto-mode-alist '("\\.plu\\'" . plantuml-mode))
+(autoload 'plantuml-mode "plantuml-mode" t)
+
+(add-hook 'plantuml-mode-hook (lambda () (load "plantuml_helpers")))
