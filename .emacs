@@ -6,7 +6,7 @@
 (setq inhibit-startup-screen 1)
 
 ;; Use this font.
-(set-face-attribute 'default nil :family "Anonymous Pro" :height 150)
+(set-face-attribute 'default nil :family "Anonymous Pro" :height 160)
 
 ;; Disable all kinds of GUI elements.
 (custom-set-variables '(scroll-bar-mode nil)
@@ -136,6 +136,15 @@
 (add-hook 'nrepl-interaction-hook 'nrepl-turn-on-eldoc-mode)
 
 (setq nrepl-popup-stacktraces nil)
+
+;; --------------------------------------------------------------------------
+;;  JS2-mode.  See https://github.com/mooz/js2-mode.
+;; --------------------------------------------------------------------------
+
+(when (> emacs-major-version 23)
+  (add-to-list 'load-path (concat emacs-d "js2-mode"))
+  (autoload 'js2-mode "js2-mode" nil t)
+  (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode)))
 
 ;; --------------------------------------------------------------------------
 ;;  Auto-complete.  See http://cx4a.org/software/auto-complete
