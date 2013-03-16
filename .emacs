@@ -144,7 +144,8 @@
 (when (> emacs-major-version 23)
   (add-to-list 'load-path (concat emacs-d "js2-mode"))
   (autoload 'js2-mode "js2-mode" nil t)
-  (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode)))
+  (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+  (setq-default js2-basic-offset 4))
 
 ;; --------------------------------------------------------------------------
 ;;  Auto-complete.  See http://cx4a.org/software/auto-complete
