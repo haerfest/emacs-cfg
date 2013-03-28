@@ -103,7 +103,7 @@
                                       (electric-indent-mode -1))))
 
 ;; --------------------------------------------------------------------------
-;;  Rainbow delimiters.  See https://github.com/jlr/rainbow-delimiters.
+;;  Rainbow delimiters.  See https://github.com/jlr/rainbow-delimiters/.
 ;; --------------------------------------------------------------------------
 
 (add-to-list 'load-path (concat emacs-d "rainbow-delimiters"))
@@ -114,7 +114,7 @@
 (add-hook 'lisp-mode-hook    'rainbow-delimiters-mode)
 
 ;; --------------------------------------------------------------------------
-;;  Haskell.  See https://github.com/haskell/haskell-mode.
+;;  Haskell.  See https://github.com/haskell/haskell-mode/.
 ;; --------------------------------------------------------------------------
 
 (load (concat emacs-d "haskell-mode/haskell-site-file"))
@@ -123,7 +123,7 @@
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 
 ;; --------------------------------------------------------------------------
-;;  Clojure.  See https://github.com/technomancy/clojure-mode
+;;  Clojure.  See https://github.com/technomancy/clojure-mode/
 ;;              + https://github.com/kingtim/nrepl.el.
 ;; --------------------------------------------------------------------------
 
@@ -138,7 +138,7 @@
 (setq nrepl-popup-stacktraces nil)
 
 ;; --------------------------------------------------------------------------
-;;  JS2-mode.  See https://github.com/mooz/js2-mode.
+;;  JS2-mode.  See https://github.com/mooz/js2-mode/.
 ;; --------------------------------------------------------------------------
 
 (when (> emacs-major-version 23)
@@ -148,8 +148,8 @@
   (setq-default js2-basic-offset 4))
 
 ;; --------------------------------------------------------------------------
-;;  Auto-complete.  See http://cx4a.org/software/auto-complete
-;;                    + https://github.com/mr-om/haskell-dict.
+;;  Auto-complete.  See http://cx4a.org/software/auto-complete/
+;;                    + https://github.com/mr-om/haskell-dict/.
 ;; --------------------------------------------------------------------------
 
 ;; Does not play nice with Emacs 22.
@@ -159,3 +159,12 @@
   (ac-config-default)
   (add-to-list 'ac-dictionary-directories (concat emacs-d "auto-complete/dict"))
   (add-to-list 'ac-modes 'haskell-mode))
+
+;; --------------------------------------------------------------------------
+;; Filesystem navigation.  See http://code.google.com/p/emacs-nav/.
+;; --------------------------------------------------------------------------
+
+(add-to-list 'load-path (concat emacs-d "nav"))
+(require 'nav)
+(nav-disable-overeager-window-splitting)
+(global-set-key [f8] 'nav-toggle)
