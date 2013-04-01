@@ -29,6 +29,16 @@
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 2)
 
+;; Highlight ('face') certain things:
+;; - tabs ('tabs')
+;; - empty lines at beginning/end of buffer ('empty')
+;; - trailing whitespace ('trailing')
+;; - lines with columns beyond 80 ('lines-tail')
+(require 'whitespace)
+(setq whitespace-line-column 80)
+(setq whitespace-style '(tabs empty tabs lines-tail trailing))
+(global-whitespace-mode t)
+
 ;; Enable on-the-fly indentation.
 (if (> emacs-major-version 23)
   (electric-indent-mode t)
