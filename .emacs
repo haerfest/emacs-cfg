@@ -30,6 +30,16 @@
 (setq-default tab-width 2)
 
 ;; Enable on-the-fly indentation.
+;; - tabs ('tabs')
+;; - empty lines at beginning/end of buffer ('empty')
+;; - trailing whitespace ('trailing')
+;; - lines with columns beyond 80 ('lines-tail')
+(require 'whitespace)
+(setq whitespace-line-column 80)
+(setq whitespace-style '(tabs empty tabs lines-tail trailing))
+(global-whitespace-mode t)
+
+;; Enable on-the-fly indentation.
 (if (> emacs-major-version 23)
   (electric-indent-mode t)
   (global-set-key "\r" 'newline-and-indent))
@@ -136,6 +146,16 @@
 (add-hook 'nrepl-interaction-hook 'nrepl-turn-on-eldoc-mode)
 
 (setq nrepl-popup-stacktraces nil)
+
+;; --------------------------------------------------------------------------
+;;  JS2-mode.  See https://github.com/mooz/js2-mode/.
+;; --------------------------------------------------------------------------
+
+(when (> emacs-major-version 23)
+  (add-to-list 'load-path (concat emacs-d "js2-mode"))
+  (autoload 'js2-mode "js2-mode" nil t)
+  (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+  (setq-default js2-basic-offset 4))
 
 ;; --------------------------------------------------------------------------
 ;;  Auto-complete.  See http://cx4a.org/software/auto-complete
