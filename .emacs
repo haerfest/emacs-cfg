@@ -149,3 +149,22 @@
   (ac-config-default)
   (add-to-list 'ac-dictionary-directories (concat emacs-d "auto-complete/dict"))
   (add-to-list 'ac-modes 'haskell-mode))
+
+;; --------------------------------------------------------------------------
+;;  Things I use at work.
+;; --------------------------------------------------------------------------
+
+(global-set-key (kbd "<f7>")
+                '(lambda ()
+                   (interactive)
+                   (let* ((mount-point (expand-file-name "~/Mount/w"))
+                          (w-path (buffer-substring (mark) (point)))
+                          (unc-path (replace-regexp-in-string "\\\\" "/"
+                                                              (replace-regexp-in-string "^W:"
+                                                                                        mount-point
+                                                                                        w-path
+                                                                                        t)))
+                          (command (concat "gimp " unc-path " &")))
+                     (unless (file-exists-p (concat mount-point "/00000"))
+                       (shell-command "mountw"))
+                     (shell-command command))))
