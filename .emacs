@@ -171,6 +171,22 @@
   (add-to-list 'ac-modes 'haskell-mode))
 
 ;; --------------------------------------------------------------------------
+;;  Filesystem navigation.  See http://code.google.com/p/emacs-nav/.
+;; --------------------------------------------------------------------------
+
+(add-to-list 'load-path (concat emacs-d "nav"))
+(require 'nav)
+(nav-disable-overeager-window-splitting)
+(global-set-key [f8] 'nav-toggle)
+
+;; --------------------------------------------------------------------------
+;;  Minimap.  See http://www.emacswiki.org/emacs/MiniMap.
+;; --------------------------------------------------------------------------
+
+(add-to-list 'load-path (concat emacs-d "minimap"))
+(require 'minimap)
+
+;; --------------------------------------------------------------------------
 ;;  Things I use at work.
 ;; --------------------------------------------------------------------------
 
