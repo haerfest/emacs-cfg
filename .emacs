@@ -6,12 +6,12 @@
 (setq inhibit-startup-screen 1)
 
 ;; Use this font.
-(set-face-attribute 'default nil :family "Anonymous Pro" :height 150)
+(set-face-attribute 'default nil :family "GohuFont" :height 140)
 
-;; Disable all kinds of GUI elements.
-(custom-set-variables '(scroll-bar-mode nil)
-                      '(tool-bar-mode nil)
-                      '(menu-bar-mode nil))
+ ;; Disable certain user interface elements.
+(custom-set-variables
+  '(scroll-bar-mode nil)
+  '(tool-bar-mode nil))
 
 ;; Window movement.
 (global-set-key [s-left]  'windmove-left)
@@ -47,8 +47,15 @@
 ;; Do not truncate long lines.
 (setq-default truncate-lines t)
 
+;; Accept y/n for yes/no.
+(defalias 'yes-or-no-p 'y-or-n-p)
+
 ;; This is where my configuration lives.
 (setq emacs-d "~/.emacs.d/")
+
+;; Undo when pressing ^z, suspend with the super key.
+(global-set-key [(control z)] 'undo)
+(global-set-key [(super control z)] 'suspend-frame)
 
 ;; --------------------------------------------------------------------------
 ;;  Behaviour specific to Mac OS X.
@@ -187,20 +194,20 @@
 (require 'minimap)
 
 ;; --------------------------------------------------------------------------
-;;  Things I use at work.
+;;  Slime.  See http://common-lisp.net/project/slime/.
 ;; --------------------------------------------------------------------------
 
-(global-set-key (kbd "<f7>")
-                '(lambda ()
-                   (interactive)
-                   (let* ((mount-point (expand-file-name "~/Mount/w"))
-                          (w-path (buffer-substring (mark) (point)))
-                          (unc-path (replace-regexp-in-string "\\\\" "/"
-                                                              (replace-regexp-in-string "^W:"
-                                                                                        mount-point
-                                                                                        w-path
-                                                                                        t)))
-                          (command (concat "gimp " unc-path " &")))
-                     (unless (file-exists-p (concat mount-point "/00000"))
-                       (shell-command "mountw"))
-                     (shell-command command))))
+(add-to-list 'load-path (concat emacs-d "slime"))
+(setq inferior-lisp-program "/usr/local/bin/clisp")
+(require 'slime)
+(slime-setup '(slime-fancy))
+
+;; --------------------------------------------------------------------------
+;;  Paredit.  See http://www.emacswiki.org/emacs/ParEdit.
+;; --------------------------------------------------------------------------
+
+(add-to-list 'load-path (concat emacs-d "paredit"))
+(autoload 'enable-paredit-mode "paredit"
+  "Turn on pseudo-structural editing of Lisp code."
+  t)
+(add-hook 'lisp-mode-hook 'enable-paredit-mode)
