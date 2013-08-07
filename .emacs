@@ -158,11 +158,12 @@
 ;;  JS2-mode.  See https://github.com/mooz/js2-mode/.
 ;; --------------------------------------------------------------------------
 
-(when (> emacs-major-version 23)
-  (add-to-list 'load-path (concat emacs-d "js2-mode"))
-  (autoload 'js2-mode "js2-mode" nil t)
-  (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-  (setq-default js2-basic-offset 4))
+(add-to-list 'load-path (concat emacs-d (if (> emacs-major-version 23)
+                                          "js2-mode"
+                                          "js2-mode-emacs23")))
+(autoload 'js2-mode "js2-mode" nil t)
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+(setq-default js2-basic-offset 4)
 
 ;; --------------------------------------------------------------------------
 ;;  Auto-complete.  See http://cx4a.org/software/auto-complete
@@ -175,7 +176,9 @@
   (require 'auto-complete-config)
   (ac-config-default)
   (add-to-list 'ac-dictionary-directories (concat emacs-d "auto-complete/dict"))
-  (add-to-list 'ac-modes 'haskell-mode))
+  (add-to-list 'ac-modes 'haskell-mode)
+  (add-hook 'js2-mode-hook (lambda ()
+                             (setq ac-ignores '("//")))))
 
 ;; --------------------------------------------------------------------------
 ;;  Filesystem navigation.  See http://code.google.com/p/emacs-nav/.
