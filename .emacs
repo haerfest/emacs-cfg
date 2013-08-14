@@ -6,7 +6,7 @@
 (setq inhibit-startup-screen 1)
 
 ;; Use this font.
-(set-face-attribute 'default nil :family "GohuFont" :height 140)
+(set-face-attribute 'default nil :family "Menlo" :height 160)
 
  ;; Disable certain user interface elements.
 (custom-set-variables
@@ -214,3 +214,8 @@
   "Turn on pseudo-structural editing of Lisp code."
   t)
 (add-hook 'lisp-mode-hook 'enable-paredit-mode)
+
+;; --------------------------------------------------------------------------
+;;  Common Lisp.
+;; --------------------------------------------------------------------------
+(setq inferior-lisp-program "/usr/local/bin/sbcl")
