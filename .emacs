@@ -6,7 +6,7 @@
 (setq inhibit-startup-screen 1)
 
 ;; Use this font.
-(set-face-attribute 'default nil :family "Menlo" :height 160)
+(set-face-attribute 'default nil :family "Anonymous Pro" :height 160)
 
  ;; Disable certain user interface elements.
 (custom-set-variables
@@ -166,21 +166,6 @@
 (setq-default js2-basic-offset 4)
 
 ;; --------------------------------------------------------------------------
-;;  Auto-complete.  See http://cx4a.org/software/auto-complete
-;;                    + https://github.com/mr-om/haskell-dict.
-;; --------------------------------------------------------------------------
-
-;; Does not play nice with Emacs 22.
-(when (> emacs-major-version 22)
-  (add-to-list 'load-path (concat emacs-d "auto-complete"))
-  (require 'auto-complete-config)
-  (ac-config-default)
-  (add-to-list 'ac-dictionary-directories (concat emacs-d "auto-complete/dict"))
-  (add-to-list 'ac-modes 'haskell-mode)
-  (add-hook 'js2-mode-hook (lambda ()
-                             (setq ac-ignores '("//")))))
-
-;; --------------------------------------------------------------------------
 ;;  Filesystem navigation.  See http://code.google.com/p/emacs-nav/.
 ;; --------------------------------------------------------------------------
 
@@ -206,6 +191,35 @@
 (slime-setup '(slime-fancy))
 
 ;; --------------------------------------------------------------------------
+;;  Auto-complete.  See http://cx4a.org/software/auto-complete
+;;                    + https://github.com/mr-om/haskell-dict.
+;; --------------------------------------------------------------------------
+
+;; Does not play nice with Emacs 22.
+(when (> emacs-major-version 22)
+  (add-to-list 'load-path (concat emacs-d "auto-complete"))
+  (require 'auto-complete-config)
+  (ac-config-default)
+  (add-to-list 'ac-dictionary-directories (concat emacs-d "auto-complete/dict"))
+  (add-to-list 'ac-modes 'haskell-mode)
+  (add-to-list 'ac-modes 'lisp-mode)
+  (add-hook 'js2-mode-hook (lambda ()
+                             (setq ac-ignores '("//")))))
+
+;; --------------------------------------------------------------------------
+;;  AC-slime.  See https://github.com/purcell/ac-slime.
+;; --------------------------------------------------------------------------
+
+;; No need if auto-complete is not available.
+(when (> emacs-major-version 22)
+  (add-to-list 'load-path (concat emacs-d "ac-slime"))
+  (require 'ac-slime)
+  (add-hook 'slime-mode-hook 'set-up-slime-ac)
+  (add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
+  (eval-after-load "auto-complete"
+    '(add-to-list 'ac-modes 'slime-repl-mode)))
+
+;; --------------------------------------------------------------------------
 ;;  Paredit.  See http://www.emacswiki.org/emacs/ParEdit.
 ;; --------------------------------------------------------------------------
 
@@ -218,4 +232,4 @@
 ;; --------------------------------------------------------------------------
 ;;  Common Lisp.
 ;; --------------------------------------------------------------------------
-(setq inferior-lisp-program "/usr/local/bin/sbcl")
+(setq inferior-lisp-program "/usr/local/bin/clisp")
