@@ -50,12 +50,15 @@
 ;; Accept y/n for yes/no.
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-;; This is where my configuration lives.
-(setq emacs-d "~/.emacs.d/")
-
 ;; Undo when pressing ^z, suspend with the super key.
 (global-set-key [(control z)] 'undo)
 (global-set-key [(super control z)] 'suspend-frame)
+
+;; Use CLisp as my Lisp.
+(setq inferior-lisp-program "/usr/local/bin/clisp")
+
+;; This is where my configuration lives.
+(setq emacs-d "~/.emacs.d/")
 
 ;; --------------------------------------------------------------------------
 ;;  Behaviour specific to Mac OS X.
@@ -85,6 +88,14 @@
   (interactive "DDirectory: ")
   (shell-command
    (format "cd %s ; find . -name '*.[chCH]' -print | etags -" (directory-file-name dir-name))))
+
+;; --------------------------------------------------------------------------
+;;  Interactively Do Things (IDO).  Built-in.
+;; --------------------------------------------------------------------------
+
+(require 'ido)
+(ido-mode t)
+(setq ido-enable-flex-matching t)
 
 ;; --------------------------------------------------------------------------
 ;;  C-mode.  Built-in.
@@ -228,8 +239,3 @@
   "Turn on pseudo-structural editing of Lisp code."
   t)
 (add-hook 'lisp-mode-hook 'enable-paredit-mode)
-
-;; --------------------------------------------------------------------------
-;;  Common Lisp.
-;; --------------------------------------------------------------------------
-(setq inferior-lisp-program "/usr/local/bin/clisp")
