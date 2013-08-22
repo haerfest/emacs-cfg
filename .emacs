@@ -44,6 +44,10 @@
 (global-set-key [(control z)] 'undo)
 (global-set-key [(super control z)] 'suspend-frame)
 
+;; Skip .svn directories when doing a grep-find.
+(setq grep-find-command
+      "find . -type f '!' -wholename '*/.svn/*' -print0 | xargs -0 -e grep -nH -e ")
+
 ;; This is where my configuration lives.
 (setq emacs-d "~/.emacs.d/")
 
@@ -185,7 +189,10 @@
 ;; -----------------------------------------------------------------------------
 
 (add-to-list 'load-path (concat emacs-d "slime"))
-(setq inferior-lisp-program "/usr/local/bin/clisp")
+(setq inferior-lisp-program
+      (cond
+       ((eq system-type 'gnu/linux) "/usr/bin/clisp")
+       ((eq system-type 'darwin)   "/usr/local/bin/clisp")))
 (require 'slime)
 (slime-setup '(slime-fancy))
 
