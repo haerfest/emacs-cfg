@@ -213,19 +213,6 @@
                              (setq ac-ignores '("//")))))
 
 ;; -----------------------------------------------------------------------------
-;;  AC-slime.  See https://github.com/purcell/ac-slime.
-;; -----------------------------------------------------------------------------
-
-;; No need if auto-complete is not available.
-(when (> emacs-major-version 22)
-  (add-to-list 'load-path (concat emacs-d "ac-slime"))
-  (require 'ac-slime)
-  (add-hook 'slime-mode-hook 'set-up-slime-ac)
-  (add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
-  (eval-after-load "auto-complete"
-    '(add-to-list 'ac-modes 'slime-repl-mode)))
-
-;; -----------------------------------------------------------------------------
 ;;  Paredit.  See http://www.emacswiki.org/emacs/ParEdit.
 ;; -----------------------------------------------------------------------------
 
