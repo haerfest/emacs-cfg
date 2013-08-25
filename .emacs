@@ -8,10 +8,20 @@
 ;; Use this font.
 (set-face-attribute 'default nil :family "Anonymous Pro" :height 160)
 
- ;; Disable certain user interface elements.
 (custom-set-variables
-  '(scroll-bar-mode nil)
-  '(tool-bar-mode nil))
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(ansi-color-names-vector
+   ["#242424" "#e5786d" "#95e454" "#cae682" "#8ac6f2" "#333366" "#ccaa8f" "#f6f3e8"])
+ 
+ ;; All themes are deemed safe.
+ '(custom-safe-themes t)
+
+ ;; Disable certain user interface elements.
+ '(scroll-bar-mode nil)
+ '(tool-bar-mode nil))
 
 ;; Window movement.
 (global-set-key [s-left]  'windmove-left)
@@ -37,6 +47,9 @@
 ;; Do not truncate long lines.
 (setq-default truncate-lines t)
 
+;; If two dired windows are open, suggest copy to the other window.
+(setq dired-dwim-target t)
+
 ;; Accept y/n for yes/no.
 (defalias 'yes-or-no-p 'y-or-n-p)
 
@@ -50,6 +63,9 @@
 
 ;; This is where my configuration lives.
 (setq emacs-d "~/.emacs.d/")
+
+;; This where the themes live.
+(add-to-list 'custom-theme-load-path (concat emacs-d "themes"))
 
 ;; -----------------------------------------------------------------------------
 ;;  Behaviour specific to Mac OS X.
@@ -221,3 +237,14 @@
   "Turn on pseudo-structural editing of Lisp code."
   t)
 (add-hook 'lisp-mode-hook 'enable-paredit-mode)
+
+;; -----------------------------------------------------------------------------
+;;  Ugly automatically added block.
+;; -----------------------------------------------------------------------------
+
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
