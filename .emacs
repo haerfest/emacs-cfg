@@ -6,7 +6,7 @@
 (setq inhibit-startup-screen 1)
 
 ;; Use this font.
-(set-face-attribute 'default nil :family "Anonymous Pro" :height 160)
+(set-face-attribute 'default nil :family "Anonymous Pro" :height 180)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -59,7 +59,8 @@
 
 ;; Skip .svn directories when doing a grep-find.
 (setq grep-find-command
-      "find . -type f '!' -wholename '*/.svn/*' -print0 | xargs -0 -e grep -nH -e ")
+      (concat "find . -type f '!' -wholename '*/.svn/*' -print0 | "
+              "xargs -0 -e grep -nH -e "))
 
 ;; This is where my configuration lives.
 (setq emacs-d "~/.emacs.d/")
@@ -133,10 +134,12 @@
 
 (setq org-log-done t)
 
-;; Org-mode does not play nice with electric-indent-mode.
-(add-hook 'org-mode-hook (lambda ()
-                           (when electric-indent-mode
-                             (electric-indent-mode -1))))
+;; Org-mode does not play nice with electric-indent-mode:
+;; http://foldl.me/2012/disabling-electric-indent-mode/
+(add-hook 'org-mode-hook
+          (lambda ()
+            (set (make-local-variable 'electric-indent-functions)
+                 (list (lambda (arg) 'no-indent)))))
 
 ;; -----------------------------------------------------------------------------
 ;;  Rainbow delimiters.  See https://github.com/jlr/rainbow-delimiters.
