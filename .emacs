@@ -121,3 +121,17 @@
 (add-hook 'org-mode-hook (lambda ()
                            (when electric-indent-mode
                              (electric-indent-mode -1))))
+
+;; ----------------------------------------------------------------------------
+;;  Packages.  Built-in in 24, require'd in 23.
+;; ----------------------------------------------------------------------------
+
+(when (= emacs-major-version 23)
+  (require 'package)
+  (package-initialize))
+
+(when (>= emacs-major-version 23)
+  (setq package-archives
+        '(("elpa"      . "http://elpa.gnu.org/packages/")
+          ("marmalade" . "http://marmalade-repo.org/packages/")
+          ("melpa"     . "http://melpa.milkbox.net/packages/"))))
