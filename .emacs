@@ -113,7 +113,7 @@
               c-basic-offset 2)
 
 ;; -----------------------------------------------------------------------------
-;;  Shell mode.  Built-in.
+;;  shell mode.  Built-in.
 ;; -----------------------------------------------------------------------------
 
 ;; Press C-c l in a shell to clear the buffer.
@@ -126,7 +126,7 @@
                                (comint-truncate-buffer))))))
 
 ;; -----------------------------------------------------------------------------
-;;  Org-mode.  Built-in.
+;;  org-mode.  Built-in.
 ;; -----------------------------------------------------------------------------
 
 (define-key global-map "\C-cl" 'org-store-link)
@@ -142,7 +142,7 @@
                  (list (lambda (arg) 'no-indent)))))
 
 ;; -----------------------------------------------------------------------------
-;;  Rainbow delimiters.  See https://github.com/jlr/rainbow-delimiters.
+;;  rainbow delimiters.  See https://github.com/jlr/rainbow-delimiters.
 ;; -----------------------------------------------------------------------------
 
 (add-to-list 'load-path (concat emacs-d "rainbow-delimiters"))
@@ -153,7 +153,7 @@
 (add-hook 'lisp-mode-hook    'rainbow-delimiters-mode)
 
 ;; -----------------------------------------------------------------------------
-;;  Haskell.  See https://github.com/haskell/haskell-mode.
+;;  haskell.  See https://github.com/haskell/haskell-mode.
 ;; -----------------------------------------------------------------------------
 
 (load (concat emacs-d "haskell-mode/haskell-site-file"))
@@ -162,7 +162,7 @@
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 
 ;; -----------------------------------------------------------------------------
-;;  Clojure.  See https://github.com/technomancy/clojure-mode
+;;  clojure.  See https://github.com/technomancy/clojure-mode
 ;;              + https://github.com/kingtim/nrepl.el.
 ;; -----------------------------------------------------------------------------
 
@@ -177,7 +177,7 @@
 (setq nrepl-popup-stacktraces nil)
 
 ;; -----------------------------------------------------------------------------
-;;  JS2-mode.  See https://github.com/mooz/js2-mode/.
+;;  js2-mode.  See https://github.com/mooz/js2-mode/.
 ;; -----------------------------------------------------------------------------
 
 (add-to-list 'load-path (concat emacs-d (if (> emacs-major-version 23)
@@ -188,7 +188,7 @@
 (setq-default js2-basic-offset 4)
 
 ;; -----------------------------------------------------------------------------
-;;  Filesystem navigation.  See http://code.google.com/p/emacs-nav/.
+;;  nav.  See http://code.google.com/p/emacs-nav/.
 ;; -----------------------------------------------------------------------------
 
 (add-to-list 'load-path (concat emacs-d "nav"))
@@ -197,14 +197,7 @@
 (global-set-key [f8] 'nav-toggle)
 
 ;; -----------------------------------------------------------------------------
-;;  Minimap.  See http://www.emacswiki.org/emacs/MiniMap.
-;; -----------------------------------------------------------------------------
-
-(add-to-list 'load-path (concat emacs-d "minimap"))
-(require 'minimap)
-
-;; -----------------------------------------------------------------------------
-;;  Slime.  See http://common-lisp.net/project/slime/.
+;;  slime.  See http://common-lisp.net/project/slime/.
 ;; -----------------------------------------------------------------------------
 
 (add-to-list 'load-path (concat emacs-d "slime"))
@@ -216,7 +209,7 @@
 (slime-setup '(slime-fancy))
 
 ;; -----------------------------------------------------------------------------
-;;  Auto-complete.  See http://cx4a.org/software/auto-complete
+;;  auto-complete.  See http://cx4a.org/software/auto-complete
 ;;                    + https://github.com/mr-om/haskell-dict.
 ;; -----------------------------------------------------------------------------
 
@@ -232,7 +225,19 @@
                              (setq ac-ignores '("//")))))
 
 ;; -----------------------------------------------------------------------------
-;;  Paredit.  See http://www.emacswiki.org/emacs/ParEdit.
+;;  ac-slime.  See https://github.com/purcell/ac-slime.
+;; -----------------------------------------------------------------------------
+
+(add-to-list 'load-path (concat emacs-d "ac-slime"))
+(require 'ac-slime)
+
+(add-hook 'slime-mode-hook 'set-up-slime-ac)
+;; (add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
+;; (eval-after-load "auto-complete"
+;;   '(add-to-list 'ac-modes 'slime-repl-mode))
+
+;; -----------------------------------------------------------------------------
+;;  paredit.  See http://www.emacswiki.org/emacs/ParEdit.
 ;; -----------------------------------------------------------------------------
 
 (add-to-list 'load-path (concat emacs-d "paredit"))
