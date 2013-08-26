@@ -1,12 +1,12 @@
 ;; -----------------------------------------------------------------------------
-;;  Behaviour.
+;;  general behaviour
 ;; -----------------------------------------------------------------------------
 
-;; Don't want to see the startup screen.
+;; don't want to see the startup screen
 (setq inhibit-startup-screen 1)
 
-;; Use this font.
-(set-face-attribute 'default nil :family "Anonymous Pro" :height 180)
+;; use this font
+(set-face-attribute 'default nil :family "Anonymous Pro" :height 160)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -16,60 +16,60 @@
  '(ansi-color-names-vector
    ["#242424" "#e5786d" "#95e454" "#cae682" "#8ac6f2" "#333366" "#ccaa8f" "#f6f3e8"])
  
- ;; All themes are deemed safe.
+ ;; all themes are deemed safe
  '(custom-safe-themes t)
 
- ;; Disable certain user interface elements.
+ ;; disable certain user interface elements
  '(scroll-bar-mode nil)
  '(tool-bar-mode nil))
 
-;; Window movement.
+;; window movement
 (global-set-key [s-left]  'windmove-left)
 (global-set-key [s-right] 'windmove-right)
 (global-set-key [s-up]    'windmove-up)
 (global-set-key [s-down]  'windmove-down)
 
-;; Show the column number.
+;; show the column number
 (column-number-mode t)
 
-;; Show matching parenthesis.
+;; show matching parenthesis
 (show-paren-mode t)
 
-;; Use two spaces for tabs.
+;; use two spaces for tabs
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 2)
 
-;; Enable on-the-fly indentation.
+;; enable on-the-fly indentation
 (if (> emacs-major-version 23)
   (electric-indent-mode t)
   (global-set-key "\r" 'newline-and-indent))
 
-;; Do not truncate long lines.
+;; do not truncate long lines
 (setq-default truncate-lines t)
 
-;; If two dired windows are open, suggest copy to the other window.
+;; if two dired windows are open, suggest copy to the other window
 (setq dired-dwim-target t)
 
-;; Accept y/n for yes/no.
+;; accept y/n for yes/no
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-;; Undo when pressing ^z, suspend with the super key.
+;; undo when pressing ^z, suspend with the super key
 (global-set-key [(control z)] 'undo)
 (global-set-key [(super control z)] 'suspend-frame)
 
-;; Skip .svn directories when doing a grep-find.
+;; skip .svn directories when doing a grep-find
 (setq grep-find-command
       (concat "find . -type f '!' -wholename '*/.svn/*' -print0 | "
               "xargs -0 -e grep -nH -e "))
 
-;; This is where my configuration lives.
+;; this is where my configuration lives
 (setq emacs-d "~/.emacs.d/")
 
-;; This where the themes live.
+;; this where the themes live
 (add-to-list 'custom-theme-load-path (concat emacs-d "themes"))
 
 ;; -----------------------------------------------------------------------------
-;;  Behaviour specific to Mac OS X.
+;;  behaviour specific to Mac OS X
 ;; -----------------------------------------------------------------------------
 
 (when (eq system-type 'darwin)
@@ -78,16 +78,16 @@
   (setq mac-command-modifier 'meta))
 
 ;; -----------------------------------------------------------------------------
-;;  Behaviour specific to Linux.
+;;  behaviour specific to Linux
 ;; -----------------------------------------------------------------------------
 
 (when (eq system-type 'gnu/linux)
-  ;; Allow copy & paste between Emacs and X.
+  ;; allow copy & paste between Emacs and X
   (setq x-select-enable-clipboard t)
   (setq interprogram-paste-function 'x-cut-buffer-or-selection-value))
 
 ;; -----------------------------------------------------------------------------
-;;  Handy functions.
+;;  handy functions
 ;; -----------------------------------------------------------------------------
 
 (defun create-tags (dir-name)
@@ -98,7 +98,7 @@
            (directory-file-name dir-name))))
 
 ;; -----------------------------------------------------------------------------
-;;  Interactively Do Things (IDO).  Built-in.
+;;  ido                                                               built-in
 ;; -----------------------------------------------------------------------------
 
 (require 'ido)
@@ -106,17 +106,17 @@
 (setq ido-enable-flex-matching t)
 
 ;; -----------------------------------------------------------------------------
-;;  C-mode.  Built-in.
+;;  c-mode                                                            built-in
 ;; -----------------------------------------------------------------------------
 
 (setq-default c-default-style "linux"
               c-basic-offset 2)
 
 ;; -----------------------------------------------------------------------------
-;;  shell mode.  Built-in.
+;;  shell mode                                                        built in
 ;; -----------------------------------------------------------------------------
 
-;; Press C-c l in a shell to clear the buffer.
+;; press C-c l in a shell to clear the buffer
 (add-hook 'shell-mode-hook
           (lambda ()
             (local-set-key "\C-cl"
@@ -126,7 +126,7 @@
                                (comint-truncate-buffer))))))
 
 ;; -----------------------------------------------------------------------------
-;;  org-mode.  Built-in.
+;;  org-mode                                                          built-in
 ;; -----------------------------------------------------------------------------
 
 (define-key global-map "\C-cl" 'org-store-link)
@@ -134,7 +134,7 @@
 
 (setq org-log-done t)
 
-;; Org-mode does not play nice with electric-indent-mode:
+;; org-mode does not play nice with electric-indent-mode:
 ;; http://foldl.me/2012/disabling-electric-indent-mode/
 (add-hook 'org-mode-hook
           (lambda ()
@@ -142,7 +142,7 @@
                  (list (lambda (arg) 'no-indent)))))
 
 ;; -----------------------------------------------------------------------------
-;;  rainbow delimiters.  See https://github.com/jlr/rainbow-delimiters.
+;;  rainbow delimiters              https://github.com/jlr/rainbow-delimiters/
 ;; -----------------------------------------------------------------------------
 
 (add-to-list 'load-path (concat emacs-d "rainbow-delimiters"))
@@ -153,7 +153,7 @@
 (add-hook 'lisp-mode-hook    'rainbow-delimiters-mode)
 
 ;; -----------------------------------------------------------------------------
-;;  haskell.  See https://github.com/haskell/haskell-mode.
+;;  haskell                           https://github.com/haskell/haskell-mode/
 ;; -----------------------------------------------------------------------------
 
 (load (concat emacs-d "haskell-mode/haskell-site-file"))
@@ -162,8 +162,8 @@
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 
 ;; -----------------------------------------------------------------------------
-;;  clojure.  See https://github.com/technomancy/clojure-mode
-;;              + https://github.com/kingtim/nrepl.el.
+;;  clojure                       https://github.com/technomancy/clojure-mode/
+;;                                https://github.com/kingtim/nrepl.el
 ;; -----------------------------------------------------------------------------
 
 (add-to-list 'load-path (concat emacs-d "clojure-mode"))
@@ -177,7 +177,7 @@
 (setq nrepl-popup-stacktraces nil)
 
 ;; -----------------------------------------------------------------------------
-;;  js2-mode.  See https://github.com/mooz/js2-mode/.
+;;  js2-mode                                https://github.com/mooz/js2-mode/
 ;; -----------------------------------------------------------------------------
 
 (add-to-list 'load-path (concat emacs-d (if (> emacs-major-version 23)
@@ -188,32 +188,23 @@
 (setq-default js2-basic-offset 4)
 
 ;; -----------------------------------------------------------------------------
-;;  nav.  See http://code.google.com/p/emacs-nav/.
-;; -----------------------------------------------------------------------------
-
-(add-to-list 'load-path (concat emacs-d "nav"))
-(require 'nav)
-(nav-disable-overeager-window-splitting)
-(global-set-key [f8] 'nav-toggle)
-
-;; -----------------------------------------------------------------------------
-;;  slime.  See http://common-lisp.net/project/slime/.
+;;  slime                                http://common-lisp.net/project/slime/
 ;; -----------------------------------------------------------------------------
 
 (add-to-list 'load-path (concat emacs-d "slime"))
 (setq inferior-lisp-program
       (cond
        ((eq system-type 'gnu/linux) "/usr/bin/clisp")
-       ((eq system-type 'darwin)   "/usr/local/bin/clisp")))
+       ((eq system-type 'darwin)    "/usr/local/bin/sbcl")))
 (require 'slime)
 (slime-setup '(slime-fancy))
 
 ;; -----------------------------------------------------------------------------
-;;  auto-complete.  See http://cx4a.org/software/auto-complete
-;;                    + https://github.com/mr-om/haskell-dict.
+;;  auto-complete                      http://cx4a.org/software/auto-complete/
+;;                                     https://github.com/mr-om/haskell-dict/
 ;; -----------------------------------------------------------------------------
 
-;; Does not play nice with Emacs 22.
+;; does not play nice with Emacs 22
 (when (> emacs-major-version 22)
   (add-to-list 'load-path (concat emacs-d "auto-complete"))
   (require 'auto-complete-config)
@@ -221,23 +212,18 @@
   (add-to-list 'ac-dictionary-directories (concat emacs-d "auto-complete/dict"))
   (add-to-list 'ac-modes 'haskell-mode)
   (add-to-list 'ac-modes 'lisp-mode)
-  (add-hook 'js2-mode-hook (lambda ()
-                             (setq ac-ignores '("//")))))
+  (add-hook 'js2-mode-hook (lambda () (setq ac-ignores '("//")))))
 
 ;; -----------------------------------------------------------------------------
-;;  ac-slime.  See https://github.com/purcell/ac-slime.
+;;  ac-slime                              https://github.com/purcell/ac-slime/
 ;; -----------------------------------------------------------------------------
 
 (add-to-list 'load-path (concat emacs-d "ac-slime"))
 (require 'ac-slime)
-
 (add-hook 'slime-mode-hook 'set-up-slime-ac)
-;; (add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
-;; (eval-after-load "auto-complete"
-;;   '(add-to-list 'ac-modes 'slime-repl-mode))
 
 ;; -----------------------------------------------------------------------------
-;;  paredit.  See http://www.emacswiki.org/emacs/ParEdit.
+;;  paredit                            http://www.emacswiki.org/emacs/ParEdit/
 ;; -----------------------------------------------------------------------------
 
 (add-to-list 'load-path (concat emacs-d "paredit"))
@@ -247,7 +233,7 @@
 (add-hook 'lisp-mode-hook 'enable-paredit-mode)
 
 ;; -----------------------------------------------------------------------------
-;;  Ugly automatically added block.
+;;  ugly automatically added section
 ;; -----------------------------------------------------------------------------
 
 (custom-set-faces
