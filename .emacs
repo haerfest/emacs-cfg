@@ -6,7 +6,9 @@
 (setq inhibit-startup-screen 1)
 
 ;; use this font
-(set-face-attribute 'default nil :family "Anonymous Pro" :height 160)
+(set-face-attribute 'default nil
+                    :family "Anonymous Pro"
+                    :height (if (eq system-type 'darwin) 160 140))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -40,7 +42,7 @@
 (setq-default tab-width 2)
 
 ;; enable on-the-fly indentation
-(if (> emacs-major-version 23)
+(if (>= emacs-major-version 24)
   (electric-indent-mode t)
   (global-set-key "\r" 'newline-and-indent))
 
@@ -66,7 +68,8 @@
 (setq emacs-d "~/.emacs.d/")
 
 ;; this where the themes live
-(add-to-list 'custom-theme-load-path (concat emacs-d "themes"))
+(when (>= emacs-major-version 24)
+  (add-to-list 'custom-theme-load-path (concat emacs-d "themes")))
 
 ;; -----------------------------------------------------------------------------
 ;;  behaviour specific to Mac OS X
@@ -180,12 +183,13 @@
 ;;  js2-mode                                https://github.com/mooz/js2-mode/
 ;; -----------------------------------------------------------------------------
 
-(add-to-list 'load-path (concat emacs-d (if (> emacs-major-version 23)
-                                          "js2-mode"
-                                          "js2-mode-emacs23")))
-(autoload 'js2-mode "js2-mode" nil t)
-(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-(setq-default js2-basic-offset 4)
+(when (>= emacs-major-version 23)
+  (add-to-list 'load-path (concat emacs-d (if (>= emacs-major-version 24)
+                                              "js2-mode"
+                                            "js2-mode-emacs23")))
+  (autoload 'js2-mode "js2-mode" nil t)
+  (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+  (setq-default js2-basic-offset 4))
 
 ;; -----------------------------------------------------------------------------
 ;;  slime                                http://common-lisp.net/project/slime/
