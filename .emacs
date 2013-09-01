@@ -7,7 +7,7 @@
 
 ;; use this font
 (set-face-attribute 'default nil
-                    :family "Anonymous Pro"
+                    :family "Source Code Pro"
                     :height (if (eq system-type 'darwin) 160 140))
 
 (custom-set-variables
@@ -119,10 +119,10 @@
 ;;  shell mode                                                        built in
 ;; -----------------------------------------------------------------------------
 
-;; press C-c l in a shell to clear the buffer
+;; press C-c M-o (as in Slime) in a shell to clear the buffer
 (add-hook 'shell-mode-hook
           (lambda ()
-            (local-set-key "\C-cl"
+            (local-set-key "\C-c\M-o"
                            (lambda ()
                              (interactive)
                              (let ((comint-buffer-maximum-size 0))
