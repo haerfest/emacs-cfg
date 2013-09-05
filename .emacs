@@ -77,8 +77,8 @@
 
   ;; use this font
   (set-face-attribute 'default nil
-                      :family "Source Code Pro"
-                      :height 160))
+                      :family "Bitstream Vera Sans Mono"
+                      :height 150))
 
 ;; -----------------------------------------------------------------------------
 ;;  behaviour specific to Linux
@@ -87,8 +87,8 @@
 (when (eq system-type 'gnu/linux)
   ;; use this font
   (set-face-attribute 'default nil
-                      :family "Source Code Pro"
-                      :height 140)
+                      :family "Bitstream Vera Sans Mono"
+                      :height 150)
 
   ;; allow copy & paste between Emacs and X
   (setq x-select-enable-clipboard t)
