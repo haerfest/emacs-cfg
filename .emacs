@@ -5,11 +5,6 @@
 ;; don't want to see the startup screen
 (setq inhibit-startup-screen 1)
 
-;; use this font
-(set-face-attribute 'default nil
-                    :family "Source Code Pro"
-                    :height (if (eq system-type 'darwin) 160 140))
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -76,15 +71,34 @@
 ;; -----------------------------------------------------------------------------
 
 (when (eq system-type 'darwin)
-  ;; Use the Command key as the Meta key.
+  ;; use the Command key as the Meta key
   (setq mac-option-modifier  'super)
-  (setq mac-command-modifier 'meta))
+  (setq mac-command-modifier 'meta)
+
+  ;; use this font
+  (set-face-attribute 'default nil
+                      :family "Source Code Pro"
+                      :height 160))
 
 ;; -----------------------------------------------------------------------------
 ;;  behaviour specific to Linux
 ;; -----------------------------------------------------------------------------
 
 (when (eq system-type 'gnu/linux)
+  ;; use this font
+  (set-face-attribute 'default nil
+                      :family "Source Code Pro"
+                      :height 140)
+
+  ;; allow copy & paste between Emacs and X
+  (setq x-select-enable-clipboard t)
+  (setq interprogram-paste-function 'x-cut-buffer-or-selection-value))
+
+;; -----------------------------------------------------------------------------
+;;  behaviour specific to FreeBSD
+;; -----------------------------------------------------------------------------
+
+(when (eq system-type 'berkeley-unix)
   ;; allow copy & paste between Emacs and X
   (setq x-select-enable-clipboard t)
   (setq interprogram-paste-function 'x-cut-buffer-or-selection-value))
@@ -198,8 +212,9 @@
 (add-to-list 'load-path (concat emacs-d "slime"))
 (setq inferior-lisp-program
       (cond
-       ((eq system-type 'gnu/linux) "/usr/bin/clisp")
-       ((eq system-type 'darwin)    "/usr/local/bin/sbcl")))
+       ((eq system-type 'darwin)        "/usr/local/bin/sbcl")
+       ((eq system-type 'berkeley-unix) "/usr/local/bin/sbcl")
+       ((eq system-type 'gnu/linux)     "/usr/bin/sbcl")))
 (require 'slime)
 (slime-setup '(slime-fancy))
 
