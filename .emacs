@@ -237,9 +237,10 @@
 ;;  ac-slime                              https://github.com/purcell/ac-slime/
 ;; -----------------------------------------------------------------------------
 
-(add-to-list 'load-path (concat emacs-d "ac-slime"))
-(require 'ac-slime)
-(add-hook 'slime-mode-hook 'set-up-slime-ac)
+(when (require 'auto-complete nil 'noerror)
+  (add-to-list 'load-path (concat emacs-d "ac-slime"))
+  (require 'ac-slime)
+  (add-hook 'slime-mode-hook 'set-up-slime-ac))
 
 ;; -----------------------------------------------------------------------------
 ;;  paredit                            http://www.emacswiki.org/emacs/ParEdit/
