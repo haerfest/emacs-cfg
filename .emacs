@@ -243,6 +243,20 @@
   (add-hook 'slime-mode-hook 'set-up-slime-ac))
 
 ;; -----------------------------------------------------------------------------
+;;  geiser                                       http://www.nongnu.org/geiser/
+;; -----------------------------------------------------------------------------
+
+(setq geiser-active-implementations '(racket))
+(setq geiser-racket-binary
+      (cond
+       ((eq system-type 'darwin)
+        "/Applications/Racket v5.3.6/bin/racket")
+       ((eq system-type 'berkeley-unix) nil)
+       ((eq system-type 'gnu/linux)     nil)))
+
+(load-file (concat emacs-d "geiser/elisp/geiser.el"))
+
+;; -----------------------------------------------------------------------------
 ;;  paredit                            http://www.emacswiki.org/emacs/ParEdit/
 ;; -----------------------------------------------------------------------------
 
@@ -251,6 +265,7 @@
   "Turn on pseudo-structural editing of Lisp code."
   t)
 (add-hook 'lisp-mode-hook 'enable-paredit-mode)
+(add-hook 'scheme-mode-hook 'enable-paredit-mode)
 
 ;; -----------------------------------------------------------------------------
 ;;  ugly automatically added section
