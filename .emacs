@@ -54,10 +54,16 @@
 (global-set-key [(control z)] 'undo)
 (global-set-key [(super control z)] 'suspend-frame)
 
+;; highlight lines that are too wide
+(require 'whitespace)
+(setq whitespace-line-column 80)
+(setq whitespace-style '(face empty tabs lines))
+(global-whitespace-mode t)
+
 ;; skip .svn directories when doing a grep-find
 (setq grep-find-command
       (concat "find . -type f '!' -wholename '*/.svn/*' -print0 | "
-              "xargs -0 -e grep -nH -e "))
+              "xargs -0 grep -nH -e "))
 
 ;; this is where my configuration lives
 (setq emacs-d "~/.emacs.d/")
@@ -178,6 +184,21 @@
 
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+
+(setq haskell-program-name
+      (cond
+       ((eq system-type 'darwin)        "/usr/local/bin/ghci")
+       ((eq system-type 'berkeley-unix) "")
+       ((eq system-type 'gnu/linux)     "")))
+
+;; press C-c M-o (as in Slime) to clear the buffer
+(add-hook 'haskell-mode-hook
+          (lambda ()
+            (local-set-key "\C-c\M-o"
+                           (lambda ()
+                             (interactive)
+                             (let ((comint-buffer-maximum-size 0))
+                               (comint-truncate-buffer))))))
 
 ;; -----------------------------------------------------------------------------
 ;;  clojure                       https://github.com/technomancy/clojure-mode/
