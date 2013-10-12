@@ -252,8 +252,7 @@
       (cond
        ((eq system-type 'darwin)        "/usr/local/bin/racket")
        ((eq system-type 'berkeley-unix) nil)
-       ((eq system-type 'gnu/linux)     nil)))
-
+       ((eq system-type 'gnu/linux)     "/usr/bin/racket")))
 (load-file (concat emacs-d "geiser/elisp/geiser.el"))
 
 ;; -----------------------------------------------------------------------------
