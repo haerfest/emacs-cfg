@@ -165,7 +165,6 @@
 (add-to-list 'load-path (concat emacs-d "rainbow-delimiters"))
 (autoload 'rainbow-delimiters-mode "rainbow-delimiters" t)
 
-(add-hook 'haskell-mode-hook 'rainbow-delimiters-mode)
 (add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
 (add-hook 'lisp-mode-hook    'rainbow-delimiters-mode)
 
@@ -173,7 +172,9 @@
 ;;  haskell                           https://github.com/haskell/haskell-mode/
 ;; -----------------------------------------------------------------------------
 
-(load (concat emacs-d "haskell-mode/haskell-site-file"))
+(add-to-list 'load-path (concat emacs-d "haskell-mode/"))
+(require 'haskell-mode-autoloads)
+(add-to-list 'Info-default-directory-list (concat emacs-d "haskell-mode/"))
 
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
@@ -249,8 +250,7 @@
 (setq geiser-active-implementations '(racket))
 (setq geiser-racket-binary
       (cond
-       ((eq system-type 'darwin)
-        "/Applications/Racket v5.3.6/bin/racket")
+       ((eq system-type 'darwin)        "/usr/local/bin/racket")
        ((eq system-type 'berkeley-unix) nil)
        ((eq system-type 'gnu/linux)     nil)))
 
