@@ -84,11 +84,12 @@
 ;;  behaviour specific to Linux
 ;; -----------------------------------------------------------------------------
 
-(when (eq system-type 'gnu/linux)
+(when (and (eq system-type 'gnu/linux)
+           (display-graphic-p))
   ;; use this font
   (set-face-attribute 'default nil
                       :family "Bitstream Vera Sans Mono"
-                      :height 150)
+                      :height 140)
 
   ;; allow copy & paste between Emacs and X
   (setq x-select-enable-clipboard t)
@@ -98,7 +99,8 @@
 ;;  behaviour specific to FreeBSD
 ;; -----------------------------------------------------------------------------
 
-(when (eq system-type 'berkeley-unix)
+(when (and (eq system-type 'berkeley-unix)
+           (display-graphic-p))
   ;; allow copy & paste between Emacs and X
   (setq x-select-enable-clipboard t)
   (setq interprogram-paste-function 'x-cut-buffer-or-selection-value))
