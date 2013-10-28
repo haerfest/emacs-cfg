@@ -54,12 +54,6 @@
 (global-set-key [(control z)] 'undo)
 (global-set-key [(super control z)] 'suspend-frame)
 
-;; highlight lines that are too wide
-(require 'whitespace)
-(setq whitespace-line-column 80)
-(setq whitespace-style '(face empty tabs lines))
-(global-whitespace-mode t)
-
 ;; skip .svn directories when doing a grep-find
 (setq grep-find-command
       (concat "find . -type f '!' -wholename '*/.svn/*' -print0 | "
@@ -83,8 +77,8 @@
 
   ;; use this font
   (set-face-attribute 'default nil
-                      :family "Bitstream Vera Sans Mono"
-                      :height 150))
+                      :family "Anonymous Pro"
+                      :height 180))
 
 ;; -----------------------------------------------------------------------------
 ;;  behaviour specific to Linux
@@ -94,8 +88,8 @@
            (display-graphic-p))
   ;; use this font
   (set-face-attribute 'default nil
-                      :family "Bitstream Vera Sans Mono"
-                      :height 140)
+                      :family "Anonymous Pro"
+                      :height 160)
 
   ;; allow copy & paste between Emacs and X
   (setq x-select-enable-clipboard t)
@@ -167,6 +161,20 @@
                  (list (lambda (arg) 'no-indent)))))
 
 ;; -----------------------------------------------------------------------------
+;;  fill-column indicator   http://www.emacswiki.org/emacs/FillColumnIndicator/
+;; -----------------------------------------------------------------------------
+
+(add-to-list 'load-path (concat emacs-d "fci"))
+(add-hook 'after-change-major-mode-hook 'fci-mode)
+
+(setq fci-rule-column 80)
+(setq fci-rule-use-dashes t)
+(setq fci-dash-pattern 0.25)
+(setq fci-rule-color "light blue")
+
+(require 'fill-column-indicator)
+
+;; -----------------------------------------------------------------------------
 ;;  rainbow delimiters              https://github.com/jlr/rainbow-delimiters/
 ;; -----------------------------------------------------------------------------
 
@@ -191,7 +199,7 @@
       (cond
        ((eq system-type 'darwin)        "/usr/local/bin/ghci")
        ((eq system-type 'berkeley-unix) "")
-       ((eq system-type 'gnu/linux)     "")))
+       ((eq system-type 'gnu/linux)     "/usr/bin/ghci")))
 
 ;; press C-c M-o (as in Slime) to clear the buffer
 (add-hook 'haskell-mode-hook
