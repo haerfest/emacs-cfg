@@ -116,6 +116,12 @@
    (format "cd %s ; find . -name '*.[chCH]' -print | etags -"
            (directory-file-name dir-name))))
 
+(defun erase-interactive-buffer ()
+  "Erases an interactive buffer (shell, REPL) but leaves the prompt alone."
+  (interactive)
+  (let ((comint-buffer-maximum-size 0))
+    (comint-truncate-buffer)))
+
 ;; -----------------------------------------------------------------------------
 ;;  ido                                                               built-in
 ;; -----------------------------------------------------------------------------
@@ -138,11 +144,7 @@
 ;; press C-c M-o (as in Slime) in a shell to clear the buffer
 (add-hook 'shell-mode-hook
           (lambda ()
-            (local-set-key "\C-c\M-o"
-                           (lambda ()
-                             (interactive)
-                             (let ((comint-buffer-maximum-size 0))
-                               (comint-truncate-buffer))))))
+            (local-set-key "\C-c\M-o" #'erase-interactive-buffer)))
 
 ;; -----------------------------------------------------------------------------
 ;;  org-mode                                                          built-in
@@ -202,13 +204,9 @@
        ((eq system-type 'gnu/linux)     "/usr/bin/ghci")))
 
 ;; press C-c M-o (as in Slime) to clear the buffer
-(add-hook 'haskell-mode-hook
+(add-hook 'inferior-haskell-mode-hook
           (lambda ()
-            (local-set-key "\C-c\M-o"
-                           (lambda ()
-                             (interactive)
-                             (let ((comint-buffer-maximum-size 0))
-                               (comint-truncate-buffer))))))
+            (local-set-key "\C-c\M-o" #'erase-interactive-buffer)))
 
 ;; -----------------------------------------------------------------------------
 ;;  clojure                       https://github.com/technomancy/clojure-mode/
