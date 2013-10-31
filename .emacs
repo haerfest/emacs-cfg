@@ -163,20 +163,6 @@
                  (list (lambda (arg) 'no-indent)))))
 
 ;; -----------------------------------------------------------------------------
-;;  fill-column indicator   http://www.emacswiki.org/emacs/FillColumnIndicator/
-;; -----------------------------------------------------------------------------
-
-(add-to-list 'load-path (concat emacs-d "fci"))
-(add-hook 'after-change-major-mode-hook 'fci-mode)
-
-(setq fci-rule-column 80)
-(setq fci-rule-use-dashes t)
-(setq fci-dash-pattern 0.25)
-(setq fci-rule-color "light blue")
-
-(require 'fill-column-indicator)
-
-;; -----------------------------------------------------------------------------
 ;;  rainbow delimiters              https://github.com/jlr/rainbow-delimiters/
 ;; -----------------------------------------------------------------------------
 
