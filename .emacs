@@ -77,8 +77,8 @@
 
   ;; use this font
   (set-face-attribute 'default nil
-                      :family "Anonymous Pro"
-                      :height 180))
+                      :family "Monaco"
+                      :height 140))
 
 ;; -----------------------------------------------------------------------------
 ;;  behaviour specific to Linux
@@ -257,29 +257,6 @@
   (add-to-list 'load-path (concat emacs-d "ac-slime"))
   (require 'ac-slime)
   (add-hook 'slime-mode-hook 'set-up-slime-ac))
-
-;; -----------------------------------------------------------------------------
-;;  geiser                                       http://www.nongnu.org/geiser/
-;; -----------------------------------------------------------------------------
-
-(setq geiser-active-implementations '(racket))
-(setq geiser-racket-binary
-      (cond
-       ((eq system-type 'darwin)        "/usr/local/bin/racket")
-       ((eq system-type 'berkeley-unix) nil)
-       ((eq system-type 'gnu/linux)     "/usr/bin/racket")))
-(load-file (concat emacs-d "geiser/elisp/geiser.el"))
-
-;; -----------------------------------------------------------------------------
-;;  paredit                            http://www.emacswiki.org/emacs/ParEdit/
-;; -----------------------------------------------------------------------------
-
-(add-to-list 'load-path (concat emacs-d "paredit"))
-(autoload 'enable-paredit-mode "paredit"
-  "Turn on pseudo-structural editing of Lisp code."
-  t)
-(add-hook 'lisp-mode-hook 'enable-paredit-mode)
-(add-hook 'scheme-mode-hook 'enable-paredit-mode)
 
 ;; -----------------------------------------------------------------------------
 ;;  ugly automatically added section
