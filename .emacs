@@ -228,7 +228,7 @@
 (add-to-list 'load-path (concat emacs-d "slime"))
 (setq inferior-lisp-program
       (cond
-       ((eq system-type 'darwin)        "/usr/local/bin/sbcl")
+       ((eq system-type 'darwin)        "/opt/local/bin/sbcl")
        ((eq system-type 'berkeley-unix) "/usr/local/bin/sbcl")
        ((eq system-type 'gnu/linux)     "/usr/bin/sbcl")))
 (require 'slime)
