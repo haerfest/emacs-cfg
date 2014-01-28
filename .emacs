@@ -89,7 +89,7 @@
   ;; use this font
   (set-face-attribute 'default nil
                       :family "DejaVu Sans Mono"
-                      :height 130)
+                      :height 100)
 
   ;; allow copy & paste between Emacs and X
   (setq x-select-enable-clipboard t)
