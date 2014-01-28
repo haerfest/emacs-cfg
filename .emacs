@@ -77,8 +77,8 @@
 
   ;; use this font
   (set-face-attribute 'default nil
-                      :family "Monaco"
-                      :height 140))
+                      :family "DejaVu Sans Mono"
+                      :height 130))
 
 ;; -----------------------------------------------------------------------------
 ;;  behaviour specific to Linux
@@ -88,19 +88,9 @@
            (display-graphic-p))
   ;; use this font
   (set-face-attribute 'default nil
-                      :family "Anonymous Pro"
-                      :height 150)
+                      :family "DejaVu Sans Mono"
+                      :height 130)
 
-  ;; allow copy & paste between Emacs and X
-  (setq x-select-enable-clipboard t)
-  (setq interprogram-paste-function 'x-cut-buffer-or-selection-value))
-
-;; -----------------------------------------------------------------------------
-;;  behaviour specific to FreeBSD
-;; -----------------------------------------------------------------------------
-
-(when (and (eq system-type 'berkeley-unix)
-           (display-graphic-p))
   ;; allow copy & paste between Emacs and X
   (setq x-select-enable-clipboard t)
   (setq interprogram-paste-function 'x-cut-buffer-or-selection-value))
@@ -185,8 +175,7 @@
 
 (setq haskell-program-name
       (cond
-       ((eq system-type 'darwin)        "/usr/local/bin/ghci")
-       ((eq system-type 'berkeley-unix) "")
+       ((eq system-type 'darwin)        "/opt/local/bin/ghci")
        ((eq system-type 'gnu/linux)     "/usr/bin/ghci")))
 
 ;; press C-c M-o (as in Slime) to clear the buffer
@@ -229,7 +218,6 @@
 (setq inferior-lisp-program
       (cond
        ((eq system-type 'darwin)        "/opt/local/bin/sbcl")
-       ((eq system-type 'berkeley-unix) "/usr/local/bin/sbcl")
        ((eq system-type 'gnu/linux)     "/usr/bin/sbcl")))
 (require 'slime)
 (slime-setup '(slime-fancy))
