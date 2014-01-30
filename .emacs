@@ -89,11 +89,15 @@
   ;; use this font
   (set-face-attribute 'default nil
                       :family "DejaVu Sans Mono"
-                      :height 100)
+                      :height 130)
 
   ;; allow copy & paste between Emacs and X
   (setq x-select-enable-clipboard t)
-  (setq interprogram-paste-function 'x-cut-buffer-or-selection-value))
+  (setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
+
+  ;; load this theme
+  (when (>= emacs-major-version 24)
+    (load-theme 'adwaita t)))
 
 ;; -----------------------------------------------------------------------------
 ;;  handy functions
