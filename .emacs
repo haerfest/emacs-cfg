@@ -21,10 +21,10 @@
  '(tool-bar-mode nil))
 
 ;; window movement
-(global-set-key [s-left]  'windmove-left)
-(global-set-key [s-right] 'windmove-right)
-(global-set-key [s-up]    'windmove-up)
-(global-set-key [s-down]  'windmove-down)
+(global-set-key (kbd "C-x <left>")  'windmove-left)
+(global-set-key (kbd "C-x <right>") 'windmove-right)
+(global-set-key (kbd "C-x <up>")    'windmove-up)
+(global-set-key (kbd "C-x <down>")  'windmove-down)
 
 ;; show the column number
 (column-number-mode t)
@@ -62,9 +62,10 @@
 ;; this is where my configuration lives
 (setq emacs-d "~/.emacs.d/")
 
-;; this where the themes live
+;; load this theme
 (when (>= emacs-major-version 24)
-  (add-to-list 'custom-theme-load-path (concat emacs-d "themes")))
+  (add-to-list 'custom-theme-load-path (concat emacs-d "themes"))
+  (load-theme 'leuven t))
 
 ;; -----------------------------------------------------------------------------
 ;;  behaviour specific to Mac OS X
@@ -89,15 +90,15 @@
   ;; use this font
   (set-face-attribute 'default nil
                       :family "DejaVu Sans Mono"
-                      :height 130)
+                      :height 110)
 
   ;; allow copy & paste between Emacs and X
   (setq x-select-enable-clipboard t)
   (setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
 
-  ;; load this theme
-  (when (>= emacs-major-version 24)
-    (load-theme 'adwaita t)))
+  ;; shortcuts for quickly viewing images on the W-drive
+  (global-set-key (kbd "<f4>") 'show-next-image-from-w)
+  (global-set-key (kbd "<f5>") 'show-image-from-w))
 
 ;; -----------------------------------------------------------------------------
 ;;  handy functions
@@ -115,6 +116,37 @@
   (interactive)
   (let ((comint-buffer-maximum-size 0))
     (comint-truncate-buffer)))
+
+(defun show-next-image-from-w ()
+  "Locates the next W-drive image specifier in the current buffer and opens it with eom (Eye of Mate)."
+  (interactive)
+  (if (re-search-forward "[wW]:\\\\[[:digit:]]\\{5\\}\\\\Images\\\\[[:digit:]]\\{4\\}\\\\[[:digit:]]\\{5\\}_[[:digit:]]\\{6\\}\.[[:alnum:]]+" nil t)
+      (let* ((name-org (match-string 0))
+             (name-new (format "/run/user/1000/gvfs/smb-share\:server\=mdnlfsc02.domain2.local\,share\=alprdata/%s"
+                               (replace-regexp-in-string "\\\\" "/" (substring name-org 3)))))
+        (if (file-exists-p name-new)
+            (progn
+              (shell-command-to-string (format "eom %s > /dev/null 2>&1 &" name-new))
+              (message "Showing %s" name-org))
+          (message "Could not find %s; did you forget to mount the W-drive?" name-org)))
+    (message "No W-drive image filename found to the right of point")))
+
+(defun show-image-from-w ()
+  "Locates a single W-drive image specifier in the current buffer and opens it with eom (Eye of Mate)."
+  (interactive)
+  (let* ((current-line (thing-at-point 'line))
+         (image-regexp "[wW]:\\\\[[:digit:]]\\{5\\}\\\\Images\\\\[[:digit:]]\\{4\\}\\\\[[:digit:]]\\{5\\}_[[:digit:]]\\{6\\}\.[[:alnum:]]+")
+         (start        (string-match image-regexp current-line)))
+    (if start
+        (let* ((name-org (substring current-line start (match-end 0)))
+               (name-new (format "/run/user/1000/gvfs/smb-share\:server\=mdnlfsc02.domain2.local\,share\=alprdata/%s"
+                                 (replace-regexp-in-string "\\\\" "/" (substring name-org 3)))))
+          (if (file-exists-p name-new)
+              (progn
+                (shell-command-to-string (format "eom %s > /dev/null 2>&1 &" name-new))
+                (message "Showing %s" name-org))
+            (message "Could not find %s; did you forget to mount the W-drive?" name-org)))
+      (message "No W-drive image filename found to the right of point"))))
 
 ;; -----------------------------------------------------------------------------
 ;;  ido                                                               built-in
