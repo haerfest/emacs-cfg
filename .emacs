@@ -79,7 +79,12 @@
   ;; use this font
   (set-face-attribute 'default nil
                       :family "DejaVu Sans Mono"
-                      :height 130))
+                      :height 130)
+
+  ;; search for external programs here
+  (setq exec-path
+        (append exec-path `("/opt/local/bin"
+                            ,(substitute-in-file-name "$HOME/Git/toy-programs/go/bin")))))
 
 ;; -----------------------------------------------------------------------------
 ;;  behaviour specific to Linux
@@ -98,7 +103,11 @@
 
   ;; shortcuts for quickly viewing images on the W-drive
   (global-set-key (kbd "<f4>") 'show-next-image-from-w)
-  (global-set-key (kbd "<f5>") 'show-image-from-w))
+  (global-set-key (kbd "<f5>") 'show-image-from-w)
+
+  ;; search for external programs here
+  (setq exec-path
+        (append exec-path (substitute-in-file-name "$HOME/Git/toy-programs/go/bin"))))
 
 ;; -----------------------------------------------------------------------------
 ;;  handy functions
@@ -252,6 +261,8 @@
 
 (add-to-list 'load-path (concat emacs-d "go-mode"))
 (require 'go-mode-load)
+(add-hook 'go-mode-hook (lambda ()
+                          (local-set-key (kbd "M-.") 'godef-jump)))
 
 ;; -----------------------------------------------------------------------------
 ;;  slime                                http://common-lisp.net/project/slime/
