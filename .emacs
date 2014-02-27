@@ -256,13 +256,18 @@
   (setq-default js2-basic-offset 4))
 
 ;; -----------------------------------------------------------------------------
-;;   go-mode                            https://github.com/dominikh/go-mode.el
+;;   go-mode / godef / gocode           https://github.com/dominikh/go-mode.el
 ;; -----------------------------------------------------------------------------
 
 (add-to-list 'load-path (concat emacs-d "go-mode"))
 (require 'go-mode-load)
+
 (add-hook 'go-mode-hook (lambda ()
                           (local-set-key (kbd "M-.") 'godef-jump)))
+
+(add-to-list 'load-path (concat emacs-d "gocode"))
+(require 'go-autocomplete)
+(require 'auto-complete-config)
 
 ;; -----------------------------------------------------------------------------
 ;;  slime                                http://common-lisp.net/project/slime/
