@@ -241,10 +241,17 @@
 (when (>= emacs-major-version 23)
   (add-to-list 'load-path (concat emacs-d (if (>= emacs-major-version 24)
                                               "js2-mode"
-                                            "js2-mode-emacs23")))
+                                              "js2-mode-emacs23")))
   (autoload 'js2-mode "js2-mode" nil t)
   (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
   (setq-default js2-basic-offset 4))
+
+;; -----------------------------------------------------------------------------
+;;   go-mode                            https://github.com/dominikh/go-mode.el
+;; -----------------------------------------------------------------------------
+
+(add-to-list 'load-path (concat emacs-d "go-mode"))
+(require 'go-mode-load)
 
 ;; -----------------------------------------------------------------------------
 ;;  slime                                http://common-lisp.net/project/slime/
