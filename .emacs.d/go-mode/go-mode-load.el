@@ -3,8 +3,10 @@
 ;;; Code:
 
 
-;;;### (autoloads nil "go-mode" "go-mode.el" (21261 9237 0 0))
-;;; Generated autoloads from go-mode.el
+;;;### (autoloads (go-download-play godoc gofmt-before-save go-mode)
+;;;;;;  "go-mode" "../../../../.emacs.d/go-mode/go-mode.el" (21264
+;;;;;;  15216 750551 983000))
+;;; Generated autoloads from ../../../../.emacs.d/go-mode/go-mode.el
 
 (autoload 'go-mode "go-mode" "\
 Major mode for editing Go source text.

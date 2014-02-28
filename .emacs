@@ -90,16 +90,17 @@
 ;;  behaviour specific to Linux
 ;; -----------------------------------------------------------------------------
 
-(when (and (eq system-type 'gnu/linux)
-           (display-graphic-p))
-  ;; use this font
-  (set-face-attribute 'default nil
-                      :family "DejaVu Sans Mono"
-                      :height 110)
+(when (eq system-type 'gnu/linux)
 
-  ;; allow copy & paste between Emacs and X
-  (setq x-select-enable-clipboard t)
-  (setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
+  (when (display-graphic-p)
+    ;; use this font
+    (set-face-attribute 'default nil
+                        :family "DejaVu Sans Mono"
+                        :height 110)
+
+    ;; allow copy & paste between Emacs and X
+    (setq x-select-enable-clipboard t)
+    (setq interprogram-paste-function 'x-cut-buffer-or-selection-value))
 
   ;; shortcuts for quickly viewing images on the W-drive
   (global-set-key (kbd "<f4>") 'show-next-image-from-w)
@@ -107,7 +108,7 @@
 
   ;; search for external programs here
   (setq exec-path
-        (append exec-path (substitute-in-file-name "$HOME/Git/toy-programs/go/bin"))))
+        (append exec-path (list (substitute-in-file-name "$HOME/Git/toy-programs/go/bin")))))
 
 ;; -----------------------------------------------------------------------------
 ;;  handy functions
@@ -256,20 +257,6 @@
   (setq-default js2-basic-offset 4))
 
 ;; -----------------------------------------------------------------------------
-;;   go-mode / godef / gocode           https://github.com/dominikh/go-mode.el
-;; -----------------------------------------------------------------------------
-
-(add-to-list 'load-path (concat emacs-d "go-mode"))
-(require 'go-mode-load)
-
-(add-hook 'go-mode-hook (lambda ()
-                          (local-set-key (kbd "M-.") 'godef-jump)))
-
-(add-to-list 'load-path (concat emacs-d "gocode"))
-(require 'go-autocomplete)
-(require 'auto-complete-config)
-
-;; -----------------------------------------------------------------------------
 ;;  slime                                http://common-lisp.net/project/slime/
 ;; -----------------------------------------------------------------------------
 
@@ -304,6 +291,20 @@
   (add-to-list 'load-path (concat emacs-d "ac-slime"))
   (require 'ac-slime)
   (add-hook 'slime-mode-hook 'set-up-slime-ac))
+
+;; -----------------------------------------------------------------------------
+;;   go-mode / godef / gocode           https://github.com/dominikh/go-mode.el
+;; -----------------------------------------------------------------------------
+
+(add-to-list 'load-path (concat emacs-d "go-mode"))
+(require 'go-mode-load)
+
+(add-hook 'go-mode-hook (lambda ()
+                          (local-set-key (kbd "M-.") 'godef-jump)))
+
+(add-to-list 'load-path (concat emacs-d "gocode"))
+(require 'go-autocomplete)
+(require 'auto-complete-config)
 
 ;; -----------------------------------------------------------------------------
 ;;  ugly automatically added section
