@@ -172,6 +172,9 @@
 
 (setq-default c-default-style "linux"
               c-basic-offset 2)
+(add-hook 'c-mode-common-hook
+          (lambda ()
+            (c-set-offset 'case-label '+)))
 
 ;; -----------------------------------------------------------------------------
 ;;  shell mode                                                        built in
@@ -197,6 +200,13 @@
           (lambda ()
             (set (make-local-variable 'electric-indent-functions)
                  (list (lambda (arg) 'no-indent)))))
+
+;; -----------------------------------------------------------------------------
+;;  graphviz-dot-mode                 http://users.skynet.be/ppareit/projects/
+;;                                    graphviz-dot-mode/graphviz-dot-mode.html
+;; -----------------------------------------------------------------------------
+
+(load-file (concat emacs-d "graphviz-dot-mode/graphviz-dot-mode.el"))
 
 ;; -----------------------------------------------------------------------------
 ;;  rainbow delimiters              https://github.com/jlr/rainbow-delimiters/
@@ -293,7 +303,7 @@
   (add-hook 'slime-mode-hook 'set-up-slime-ac))
 
 ;; -----------------------------------------------------------------------------
-;;   go-mode / godef / gocode           https://github.com/dominikh/go-mode.el
+;;  go-mode / godef / gocod             https://github.com/dominikh/go-mode.el
 ;; -----------------------------------------------------------------------------
 
 (add-to-list 'load-path (concat emacs-d "go-mode"))
@@ -305,6 +315,13 @@
 (add-to-list 'load-path (concat emacs-d "gocode"))
 (require 'go-autocomplete)
 (require 'auto-complete-config)
+
+;; -----------------------------------------------------------------------------
+;;  rust-mode        https://github.com/mozilla/rust/tree/master/src/etc/emacs
+;; -----------------------------------------------------------------------------
+
+(add-to-list 'load-path (concat emacs-d "rust-mode"))
+(require 'rust-mode)
 
 ;; -----------------------------------------------------------------------------
 ;;  ugly automatically added section
