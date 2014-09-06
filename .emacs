@@ -206,7 +206,7 @@
 ;;                                    graphviz-dot-mode/graphviz-dot-mode.html
 ;; -----------------------------------------------------------------------------
 
-(load-file (concat emacs-d "graphviz-dot-mode/graphviz-dot-mode.el"))
+;(load-file (concat emacs-d "graphviz-dot-mode/graphviz-dot-mode.el"))
 
 ;; -----------------------------------------------------------------------------
 ;;  rainbow delimiters              https://github.com/jlr/rainbow-delimiters/
@@ -322,6 +322,15 @@
 
 (add-to-list 'load-path (concat emacs-d "rust-mode"))
 (require 'rust-mode)
+
+;; -----------------------------------------------------------------------------
+;;  erlang-mode  http://www.erlang.org/doc/apps/tools/erlang_mode_chapter.html
+;; -----------------------------------------------------------------------------
+
+(add-to-list 'load-path (concat emacs-d "erlang-mode"))
+(setq erlang-root-dir "/opt/local/lib/erlang")
+(add-to-list 'exec-path "/opt/local/lib/erlang/bin")
+(require 'erlang-start)
 
 ;; -----------------------------------------------------------------------------
 ;;  ugly automatically added section
