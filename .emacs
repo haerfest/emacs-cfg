@@ -65,7 +65,7 @@
 ;; load this theme
 (when (>= emacs-major-version 24)
   (add-to-list 'custom-theme-load-path (concat emacs-d "themes"))
-  (load-theme 'cyberpunk t))
+  (load-theme 'charcoal-black t))
 
 ;; -----------------------------------------------------------------------------
 ;;  behaviour specific to Mac OS X
