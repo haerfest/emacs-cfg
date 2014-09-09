@@ -10,14 +10,11 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ansi-color-names-vector
-   ["#242424" "#e5786d" "#95e454" "#cae682" "#8ac6f2" "#333366" "#ccaa8f" "#f6f3e8"])
- 
- ;; all themes are deemed safe
+ '(ansi-color-names-vector ["#242424" "#e5786d" "#95e454" "#cae682" "#8ac6f2" "#333366" "#ccaa8f" "#f6f3e8"])
+ '(column-number-mode t)
  '(custom-safe-themes t)
-
- ;; disable certain user interface elements
  '(scroll-bar-mode nil)
+ '(show-paren-mode t)
  '(tool-bar-mode nil))
 
 ;; window movement
@@ -95,7 +92,7 @@
   (when (display-graphic-p)
     ;; use this font
     (set-face-attribute 'default nil
-                        :family "DejaVu Sans Mono"
+                        :family "M+ 1mn"
                         :height 110)
 
     ;; allow copy & paste between Emacs and X
@@ -336,9 +333,3 @@
 ;;  ugly automatically added section
 ;; -----------------------------------------------------------------------------
 
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
