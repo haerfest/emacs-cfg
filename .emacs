@@ -93,7 +93,7 @@
     ;; use this font
     (set-face-attribute 'default nil
                         :family "M+ 1mn"
-                        :height 110)
+                        :height 120)
 
     ;; allow copy & paste between Emacs and X
     (setq x-select-enable-clipboard t)
