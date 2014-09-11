@@ -75,8 +75,8 @@
 
   ;; use this font
   (set-face-attribute 'default nil
-                      :family "DejaVu Sans Mono"
-                      :height 130)
+                      :family "M+ 1mn"
+                      :height 120)
 
   ;; search for external programs here
   (setq exec-path
