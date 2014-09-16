@@ -76,7 +76,7 @@
   ;; use this font
   (set-face-attribute 'default nil
                       :family "M+ 1mn"
-                      :height 120)
+                      :height 160)
 
   ;; search for external programs here
   (setq exec-path
