@@ -108,6 +108,16 @@
         (append exec-path (list (substitute-in-file-name "$HOME/Git/toy-programs/go/bin")))))
 
 ;; -----------------------------------------------------------------------------
+;;  behaviour specific to Windows
+;; -----------------------------------------------------------------------------
+
+(when (eq system-type 'windows-nt)
+  ;; use this font
+  (set-face-attribute 'default nil
+                      :family "Consolas"
+                      :height 110))
+
+;; -----------------------------------------------------------------------------
 ;;  handy functions
 ;; -----------------------------------------------------------------------------
 
