@@ -48,13 +48,8 @@
       (concat "find . -type f '!' -wholename '*/.svn/*' -print0 | "
               "xargs -0 grep -nH -e "))
 
-;; this is where my configuration lives
-(setq emacs-d "~/.emacs.d/")
-
-;; load this theme
-;; (when (>= emacs-major-version 24)
-;;   (add-to-list 'custom-theme-load-path (concat emacs-d "themes"))
-;;   (load-theme 'charcoal-black t))
+;; treat all themes as safe
+(setq custom-safe-themes t)
 
 (cond 
  ;; ----------------------------------------------------------------------------
@@ -69,6 +64,7 @@
   (set-face-attribute 'default nil
                       :family "Andale Mono"
                       :height 130))
+
  ;; ----------------------------------------------------------------------------
  ;;  Linux
  ;; ----------------------------------------------------------------------------
@@ -143,8 +139,9 @@
 (setq who/packages '(ac-slime
                      auto-complete
                      erlang
+                     monokai-theme
                      neotree
-                     spacegray-theme))
+                     tangotango-theme))
 
 ;; define the filter function if not there
 (unless (fboundp 'filter)
@@ -171,17 +168,4 @@
     (dolist (pkg packages)
       (when (y-or-n-p (format "Install package %s?" pkg))
         (package-install pkg)))))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   (quote
-    ("53e29ea3d0251198924328fd943d6ead860e9f47af8d22f0b764d11168455a8e" default))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+
