@@ -67,8 +67,8 @@
 
   ;; use this font
   (set-face-attribute 'default nil
-                      :family "M+ 1mn"
-                      :height 160))
+                      :family "Andale Mono"
+                      :height 130))
  ;; ----------------------------------------------------------------------------
  ;;  Linux
  ;; ----------------------------------------------------------------------------
@@ -140,11 +140,20 @@
              '("melpa" . "http://melpa.org/packages/") t)
 
 ;; default packages to have installed
-(defvar who/packages '(ac-slime
-                       auto-complete
-                       erlang
-                       neotree)
-  "Default packages")
+(setq who/packages '(ac-slime
+                     auto-complete
+                     erlang
+                     neotree
+                     spacegray-theme))
+
+;; define the filter function if not there
+(unless (fboundp 'filter)
+  (defun filter (pred-p items)
+    (let (filtered)
+      (dolist (item items)
+        (when (funcall pred-p item)
+          (setq filtered (cons item filtered))))
+      (reverse filtered))))
 
 ;; returns which packages are missing
 (defun who/missing-packages ()
@@ -162,3 +171,17 @@
     (dolist (pkg packages)
       (when (y-or-n-p (format "Install package %s?" pkg))
         (package-install pkg)))))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   (quote
+    ("53e29ea3d0251198924328fd943d6ead860e9f47af8d22f0b764d11168455a8e" default))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
