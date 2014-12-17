@@ -5,17 +5,9 @@
 ;; don't want to see the startup screen
 (setq inhibit-startup-screen 1)
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(ansi-color-names-vector ["#242424" "#e5786d" "#95e454" "#cae682" "#8ac6f2" "#333366" "#ccaa8f" "#f6f3e8"])
- '(column-number-mode t)
- '(custom-safe-themes t)
- '(scroll-bar-mode nil)
- '(show-paren-mode t)
- '(tool-bar-mode nil))
+;; don't want any fancy GUI widgets
+(scroll-bar-mode -1)
+(tool-bar-mode -1)
 
 ;; window movement
 (global-set-key (kbd "C-x <left>")  'windmove-left)
@@ -60,15 +52,15 @@
 (setq emacs-d "~/.emacs.d/")
 
 ;; load this theme
-(when (>= emacs-major-version 24)
-  (add-to-list 'custom-theme-load-path (concat emacs-d "themes"))
-  (load-theme 'charcoal-black t))
+;; (when (>= emacs-major-version 24)
+;;   (add-to-list 'custom-theme-load-path (concat emacs-d "themes"))
+;;   (load-theme 'charcoal-black t))
 
-;; -----------------------------------------------------------------------------
-;;  behaviour specific to Mac OS X
-;; -----------------------------------------------------------------------------
-
-(when (eq system-type 'darwin)
+(cond 
+ ;; ----------------------------------------------------------------------------
+ ;;  Mac OS X
+ ;; ----------------------------------------------------------------------------
+ ((eq system-type 'darwin) 
   ;; use the Command key as the Meta key
   (setq mac-option-modifier  'super)
   (setq mac-command-modifier 'meta)
@@ -76,19 +68,11 @@
   ;; use this font
   (set-face-attribute 'default nil
                       :family "M+ 1mn"
-                      :height 160)
-
-  ;; search for external programs here
-  (setq exec-path
-        (append exec-path `("/opt/local/bin"
-                            ,(substitute-in-file-name "$HOME/Git/toy-programs/go/bin")))))
-
-;; -----------------------------------------------------------------------------
-;;  behaviour specific to Linux
-;; -----------------------------------------------------------------------------
-
-(when (eq system-type 'gnu/linux)
-
+                      :height 160))
+ ;; ----------------------------------------------------------------------------
+ ;;  Linux
+ ;; ----------------------------------------------------------------------------
+ ((eq system-type 'gnu/linux)
   (when (display-graphic-p)
     ;; use this font
     (set-face-attribute 'default nil
@@ -97,73 +81,26 @@
 
     ;; allow copy & paste between Emacs and X
     (setq x-select-enable-clipboard t)
-    (setq interprogram-paste-function 'x-cut-buffer-or-selection-value))
+    (setq interprogram-paste-function 'x-cut-buffer-or-selection-value)))
 
-  ;; shortcuts for quickly viewing images on the W-drive
-  (global-set-key (kbd "<f4>") 'show-next-image-from-w)
-  (global-set-key (kbd "<f5>") 'show-image-from-w)
-
-  ;; search for external programs here
-  (setq exec-path
-        (append exec-path (list (substitute-in-file-name "$HOME/Git/toy-programs/go/bin")))))
-
-;; -----------------------------------------------------------------------------
-;;  behaviour specific to Windows
-;; -----------------------------------------------------------------------------
-
-(when (eq system-type 'windows-nt)
+ ;; ----------------------------------------------------------------------
+ ;;  Windows
+ ;; ----------------------------------------------------------------------
+ ((eq system-type 'windows-nt)
   ;; use this font
   (set-face-attribute 'default nil
                       :family "Consolas"
-                      :height 110))
+                      :height 110)))
 
 ;; -----------------------------------------------------------------------------
 ;;  handy functions
 ;; -----------------------------------------------------------------------------
-
-(defun create-tags (dir-name)
-  "Generates a TAGS file for code navigation."
-  (interactive "DDirectory: ")
-  (shell-command
-   (format "cd %s ; find . -name '*.[chCH]' -print | etags -"
-           (directory-file-name dir-name))))
 
 (defun erase-interactive-buffer ()
   "Erases an interactive buffer (shell, REPL) but leaves the prompt alone."
   (interactive)
   (let ((comint-buffer-maximum-size 0))
     (comint-truncate-buffer)))
-
-(defun show-next-image-from-w ()
-  "Locates the next W-drive image specifier in the current buffer and opens it with eom (Eye of Mate)."
-  (interactive)
-  (if (re-search-forward "[wW]:\\\\[[:digit:]]\\{5\\}\\\\Images\\\\[[:digit:]]\\{4\\}\\\\[[:digit:]]\\{5\\}_[[:digit:]]\\{6\\}\.[[:alnum:]]+" nil t)
-      (let* ((name-org (match-string 0))
-             (name-new (format "/run/user/1000/gvfs/smb-share\:server\=mdnlfsc02.domain2.local\,share\=alprdata/%s"
-                               (replace-regexp-in-string "\\\\" "/" (substring name-org 3)))))
-        (if (file-exists-p name-new)
-            (progn
-              (shell-command-to-string (format "eom %s > /dev/null 2>&1 &" name-new))
-              (message "Showing %s" name-org))
-          (message "Could not find %s; did you forget to mount the W-drive?" name-org)))
-    (message "No W-drive image filename found to the right of point")))
-
-(defun show-image-from-w ()
-  "Locates a single W-drive image specifier in the current buffer and opens it with eom (Eye of Mate)."
-  (interactive)
-  (let* ((current-line (thing-at-point 'line))
-         (image-regexp "[wW]:\\\\[[:digit:]]\\{5\\}\\\\Images\\\\[[:digit:]]\\{4\\}\\\\[[:digit:]]\\{5\\}_[[:digit:]]\\{6\\}\.[[:alnum:]]+")
-         (start        (string-match image-regexp current-line)))
-    (if start
-        (let* ((name-org (substring current-line start (match-end 0)))
-               (name-new (format "/run/user/1000/gvfs/smb-share\:server\=mdnlfsc02.domain2.local\,share\=alprdata/%s"
-                                 (replace-regexp-in-string "\\\\" "/" (substring name-org 3)))))
-          (if (file-exists-p name-new)
-              (progn
-                (shell-command-to-string (format "eom %s > /dev/null 2>&1 &" name-new))
-                (message "Showing %s" name-org))
-            (message "Could not find %s; did you forget to mount the W-drive?" name-org)))
-      (message "No W-drive image filename found to the right of point"))))
 
 ;; -----------------------------------------------------------------------------
 ;;  ido                                                               built-in
@@ -193,153 +130,35 @@
             (local-set-key "\C-c\M-o" #'erase-interactive-buffer)))
 
 ;; -----------------------------------------------------------------------------
-;;  org-mode                                                          built-in
+;;  MELPA packages
 ;; -----------------------------------------------------------------------------
 
-(define-key global-map "\C-cl" 'org-store-link)
-(define-key global-map "\C-ca" 'org-agenda)
+;; credits to http://www.aaronbedra.com/emacs.d/
+(require 'package)
+(package-initialize)
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.org/packages/") t)
 
-(setq org-log-done t)
+;; default packages to have installed
+(defvar who/packages '(ac-slime
+                       auto-complete
+                       erlang
+                       neotree)
+  "Default packages")
 
-;; org-mode does not play nice with electric-indent-mode:
-;; http://foldl.me/2012/disabling-electric-indent-mode/
-(add-hook 'org-mode-hook
-          (lambda ()
-            (set (make-local-variable 'electric-indent-functions)
-                 (list (lambda (arg) 'no-indent)))))
+;; returns which packages are missing
+(defun who/missing-packages ()
+  (filter (lambda (pkg)
+            (not (package-installed-p pkg)))
+          who/packages))
 
-;; -----------------------------------------------------------------------------
-;;  graphviz-dot-mode                 http://users.skynet.be/ppareit/projects/
-;;                                    graphviz-dot-mode/graphviz-dot-mode.html
-;; -----------------------------------------------------------------------------
-
-;(load-file (concat emacs-d "graphviz-dot-mode/graphviz-dot-mode.el"))
-
-;; -----------------------------------------------------------------------------
-;;  rainbow delimiters              https://github.com/jlr/rainbow-delimiters/
-;; -----------------------------------------------------------------------------
-
-(add-to-list 'load-path (concat emacs-d "rainbow-delimiters"))
-(autoload 'rainbow-delimiters-mode "rainbow-delimiters" t)
-
-(add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
-(add-hook 'lisp-mode-hook    'rainbow-delimiters-mode)
-
-;; -----------------------------------------------------------------------------
-;;  haskell                           https://github.com/haskell/haskell-mode/
-;; -----------------------------------------------------------------------------
-
-(add-to-list 'load-path (concat emacs-d "haskell-mode/"))
-(require 'haskell-mode-autoloads)
-(add-to-list 'Info-default-directory-list (concat emacs-d "haskell-mode/"))
-
-(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
-(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
-
-(setq haskell-program-name
-      (cond
-       ((eq system-type 'darwin)        "/opt/local/bin/ghci")
-       ((eq system-type 'gnu/linux)     "/usr/bin/ghci")))
-
-;; press C-c M-o (as in Slime) to clear the buffer
-(add-hook 'inferior-haskell-mode-hook
-          (lambda ()
-            (local-set-key "\C-c\M-o" #'erase-interactive-buffer)))
-
-;; -----------------------------------------------------------------------------
-;;  clojure                       https://github.com/technomancy/clojure-mode/
-;;                                https://github.com/kingtim/nrepl.el
-;; -----------------------------------------------------------------------------
-
-(add-to-list 'load-path (concat emacs-d "clojure-mode"))
-(add-to-list 'auto-mode-alist '("\\.clj\\'" . clojure-mode))
-(autoload 'clojure-mode "clojure-mode" t)
-
-(add-to-list 'load-path (concat emacs-d "nrepl"))
-(add-hook 'clojure-mode-hook (lambda () (require 'nrepl)))
-(add-hook 'nrepl-interaction-hook 'nrepl-turn-on-eldoc-mode)
-
-(setq nrepl-popup-stacktraces nil)
-
-;; -----------------------------------------------------------------------------
-;;  js2-mode                                https://github.com/mooz/js2-mode/
-;; -----------------------------------------------------------------------------
-
-(when (>= emacs-major-version 23)
-  (add-to-list 'load-path (concat emacs-d (if (>= emacs-major-version 24)
-                                              "js2-mode"
-                                              "js2-mode-emacs23")))
-  (autoload 'js2-mode "js2-mode" nil t)
-  (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-  (setq-default js2-basic-offset 4))
-
-;; -----------------------------------------------------------------------------
-;;  slime                                http://common-lisp.net/project/slime/
-;; -----------------------------------------------------------------------------
-
-(add-to-list 'load-path (concat emacs-d "slime"))
-(setq inferior-lisp-program
-      (cond
-       ((eq system-type 'darwin)        "/opt/local/bin/sbcl")
-       ((eq system-type 'gnu/linux)     "/usr/bin/sbcl")))
-(require 'slime)
-(slime-setup '(slime-fancy))
-
-;; -----------------------------------------------------------------------------
-;;  auto-complete                      http://cx4a.org/software/auto-complete/
-;;                                     https://github.com/mr-om/haskell-dict/
-;; -----------------------------------------------------------------------------
-
-;; does not play nice with Emacs 22
-(when (> emacs-major-version 22)
-  (add-to-list 'load-path (concat emacs-d "auto-complete"))
-  (require 'auto-complete-config)
-  (ac-config-default)
-  (add-to-list 'ac-dictionary-directories (concat emacs-d "auto-complete/dict"))
-  (add-to-list 'ac-modes 'haskell-mode)
-  (add-to-list 'ac-modes 'lisp-mode)
-  (add-hook 'js2-mode-hook (lambda () (setq ac-ignores '("//")))))
-
-;; -----------------------------------------------------------------------------
-;;  ac-slime                              https://github.com/purcell/ac-slime/
-;; -----------------------------------------------------------------------------
-
-(when (require 'auto-complete nil 'noerror)
-  (add-to-list 'load-path (concat emacs-d "ac-slime"))
-  (require 'ac-slime)
-  (add-hook 'slime-mode-hook 'set-up-slime-ac))
-
-;; -----------------------------------------------------------------------------
-;;  go-mode / godef / gocod             https://github.com/dominikh/go-mode.el
-;; -----------------------------------------------------------------------------
-
-(add-to-list 'load-path (concat emacs-d "go-mode"))
-(require 'go-mode-load)
-
-(add-hook 'go-mode-hook (lambda ()
-                          (local-set-key (kbd "M-.") 'godef-jump)))
-
-(add-to-list 'load-path (concat emacs-d "gocode"))
-(require 'go-autocomplete)
-(require 'auto-complete-config)
-
-;; -----------------------------------------------------------------------------
-;;  rust-mode        https://github.com/mozilla/rust/tree/master/src/etc/emacs
-;; -----------------------------------------------------------------------------
-
-(add-to-list 'load-path (concat emacs-d "rust-mode"))
-(require 'rust-mode)
-
-;; -----------------------------------------------------------------------------
-;;  erlang-mode  http://www.erlang.org/doc/apps/tools/erlang_mode_chapter.html
-;; -----------------------------------------------------------------------------
-
-(add-to-list 'load-path (concat emacs-d "erlang-mode"))
-(setq erlang-root-dir "/opt/local/lib/erlang")
-(add-to-list 'exec-path "/opt/local/lib/erlang/bin")
-(require 'erlang-start)
-
-;; -----------------------------------------------------------------------------
-;;  ugly automatically added section
-;; -----------------------------------------------------------------------------
-
+;; make sure all packages are installed
+(let* ((packages (who/missing-packages))
+       (missing  (length packages))
+       (prompt   (format "%d packages are missing; go over them to install?" missing)))
+  (when (and packages
+             (y-or-n-p-with-timeout prompt 30 nil))
+    (package-refresh-contents)
+    (dolist (pkg packages)
+      (when (y-or-n-p (format "Install package %s?" pkg))
+        (package-install pkg)))))
