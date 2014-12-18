@@ -51,42 +51,46 @@
 ;; treat all themes as safe
 (setq custom-safe-themes t)
 
-(cond 
- ;; ----------------------------------------------------------------------------
- ;;  Mac OS X
- ;; ----------------------------------------------------------------------------
- ((eq system-type 'darwin) 
+;; use this theme
+(load-theme 'monokai)
+
+;; -----------------------------------------------------------------------------
+;;  Mac OS X
+;; -----------------------------------------------------------------------------
+(when (eq system-type 'darwin) 
+  ;; use this font
+  (set-face-attribute 'default nil
+                      :family "Source Code Pro for Powerline"
+                      :weight 'extra-light
+                      :height 130)
+
   ;; use the Command key as the Meta key
   (setq mac-option-modifier  'super)
-  (setq mac-command-modifier 'meta)
+  (setq mac-command-modifier 'meta))
 
+;; -----------------------------------------------------------------------------
+;;  Linux
+;; -----------------------------------------------------------------------------
+(when (and (eq system-type 'gnu/linux) (display-graphic-p))
   ;; use this font
   (set-face-attribute 'default nil
-                      :family "Andale Mono"
-                      :height 130))
+                      :family "Source Code Pro for Powerline"
+                      :weight 'extra-light
+                      :height 120)
+  
+  ;; allow copy & paste between Emacs and X
+  (setq x-select-enable-clipboard t)
+  (setq interprogram-paste-function 'x-cut-buffer-or-selection-value))
 
- ;; ----------------------------------------------------------------------------
- ;;  Linux
- ;; ----------------------------------------------------------------------------
- ((eq system-type 'gnu/linux)
-  (when (display-graphic-p)
-    ;; use this font
-    (set-face-attribute 'default nil
-                        :family "M+ 1mn"
-                        :height 120)
-
-    ;; allow copy & paste between Emacs and X
-    (setq x-select-enable-clipboard t)
-    (setq interprogram-paste-function 'x-cut-buffer-or-selection-value)))
-
- ;; ----------------------------------------------------------------------
- ;;  Windows
- ;; ----------------------------------------------------------------------
- ((eq system-type 'windows-nt)
+;; -----------------------------------------------------------------------------
+;;  Windows
+;; -----------------------------------------------------------------------------
+(when (eq system-type 'windows-nt)
   ;; use this font
   (set-face-attribute 'default nil
-                      :family "Consolas"
-                      :height 110)))
+                      :family "Source Code Pro for Powerline"
+                      :weight 'extra-light
+                      :height 110))
 
 ;; -----------------------------------------------------------------------------
 ;;  handy functions
@@ -169,3 +173,14 @@
       (when (y-or-n-p (format "Install package %s?" pkg))
         (package-install pkg)))))
 
+;; -----------------------------------------------------------------------------
+;;  Erlang mode
+;; -----------------------------------------------------------------------------
+
+(let ((erlang-root (cond
+                    ((eq system-type 'darwin)     "/opt/local/lib/erlang")
+                    ((eq system-type 'windows-nt) nil)
+                    ((eq system-type 'gnu/linux)  nil))))
+  (setq erlang-root-dir erlang-root)
+  (setq exec-path (cons (concat (file-name-as-directory erlang-root) "bin")
+                        exec-path)))
