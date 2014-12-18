@@ -51,13 +51,15 @@
 ;; treat all themes as safe
 (setq custom-safe-themes t)
 
-;; use this theme
-(load-theme 'monokai)
+;; figure out which OS we're running on
+(defvar is-mac     (eq system-type 'darwin)     "t if OS is Mac OS X")
+(defvar is-windows (eq system-type 'windows-nt) "t if OS is Windows")
+(defvar is-linux   (eq system-type 'gnu/linux)  "t if OS is Linux")
 
 ;; -----------------------------------------------------------------------------
 ;;  Mac OS X
 ;; -----------------------------------------------------------------------------
-(when (eq system-type 'darwin) 
+(when is-mac
   ;; use this font
   (set-face-attribute 'default nil
                       :family "Source Code Pro for Powerline"
@@ -71,7 +73,7 @@
 ;; -----------------------------------------------------------------------------
 ;;  Linux
 ;; -----------------------------------------------------------------------------
-(when (and (eq system-type 'gnu/linux) (display-graphic-p))
+(when (and is-linux (display-graphic-p))
   ;; use this font
   (set-face-attribute 'default nil
                       :family "Source Code Pro for Powerline"
@@ -85,7 +87,7 @@
 ;; -----------------------------------------------------------------------------
 ;;  Windows
 ;; -----------------------------------------------------------------------------
-(when (eq system-type 'windows-nt)
+(when is-windows
   ;; use this font
   (set-face-attribute 'default nil
                       :family "Source Code Pro for Powerline"
@@ -103,7 +105,7 @@
     (comint-truncate-buffer)))
 
 ;; -----------------------------------------------------------------------------
-;;  ido                                                               built-in
+;;  ido                                                                built-in
 ;; -----------------------------------------------------------------------------
 
 (require 'ido)
@@ -111,7 +113,7 @@
 (setq ido-enable-flex-matching t)
 
 ;; -----------------------------------------------------------------------------
-;;  c-mode                                                            built-in
+;;  c-mode                                                             built-in
 ;; -----------------------------------------------------------------------------
 
 (setq-default c-default-style "linux"
@@ -121,7 +123,7 @@
             (c-set-offset 'case-label '+)))
 
 ;; -----------------------------------------------------------------------------
-;;  shell mode                                                        built in
+;;  shell mode                                                         built in
 ;; -----------------------------------------------------------------------------
 
 ;; press C-c M-o (as in Slime) in a shell to clear the buffer
@@ -140,12 +142,12 @@
              '("melpa" . "http://melpa.org/packages/") t)
 
 ;; default packages to have installed
-(setq who/packages '(ac-slime
-                     auto-complete
-                     erlang
-                     monokai-theme
-                     neotree
-                     tangotango-theme))
+(defvar who/packages '(ac-slime
+                       auto-complete
+                       erlang
+                       monokai-theme
+                       neotree
+                       tangotango-theme))
 
 ;; define the filter function if not there
 (unless (fboundp 'filter)
@@ -163,24 +165,44 @@
           who/packages))
 
 ;; make sure all packages are installed
-(let* ((packages (who/missing-packages))
-       (missing  (length packages))
-       (prompt   (format "%d packages are missing; go over them to install?" missing)))
-  (when (and packages
-             (y-or-n-p-with-timeout prompt 30 nil))
-    (package-refresh-contents)
-    (dolist (pkg packages)
-      (when (y-or-n-p (format "Install package %s?" pkg))
-        (package-install pkg)))))
+(defun who/install-missing-packages ()
+  (let* ((packages (who/missing-packages))
+         (missing  (length packages))
+         (prompt   (format "%d packages are missing; go over them to install?" missing)))
+    (when (and packages
+               (y-or-n-p-with-timeout prompt 30 nil))
+      (package-refresh-contents)
+      (dolist (pkg packages)
+        (when (y-or-n-p (format "Install package %s?" pkg))
+          (package-install pkg))))))
+
+(who/install-missing-packages)
+
+;; force loading of packages now, so we can use them from here on in .emacs
+(setq package-enable-at-startup nil)
+(package-initialize)
 
 ;; -----------------------------------------------------------------------------
-;;  Erlang mode
+;;  monokai-theme                                                         MELPA
+;; -----------------------------------------------------------------------------
+
+(load-theme 'monokai)
+
+;; -----------------------------------------------------------------------------
+;;  auto-complete mode                                                    MELPA
+;; -----------------------------------------------------------------------------
+
+(global-auto-complete-mode)
+
+;; -----------------------------------------------------------------------------
+;;  erlang mode                                                           MELPA
 ;; -----------------------------------------------------------------------------
 
 (let ((erlang-root (cond
-                    ((eq system-type 'darwin)     "/opt/local/lib/erlang")
-                    ((eq system-type 'windows-nt) nil)
-                    ((eq system-type 'gnu/linux)  nil))))
+                    (is-mac     "/opt/local/lib/erlang")
+                    (is-windows nil)
+                    (is-linux   nil))))
   (setq erlang-root-dir erlang-root)
   (setq exec-path (cons (concat (file-name-as-directory erlang-root) "bin")
                         exec-path)))
+
