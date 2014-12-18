@@ -48,6 +48,12 @@
       (concat "find . -type f '!' -wholename '*/.svn/*' -print0 | "
               "xargs -0 grep -nH -e "))
 
+;; highlight the current line
+(global-hl-line-mode 1)
+
+;; show line numbers
+(global-linum-mode)
+
 ;; treat all themes as safe
 (setq custom-safe-themes t)
 
@@ -64,7 +70,7 @@
   (set-face-attribute 'default nil
                       :family "Source Code Pro for Powerline"
                       :weight 'extra-light
-                      :height 130)
+                      :height 140)
 
   ;; use the Command key as the Meta key
   (setq mac-option-modifier  'super)
@@ -139,15 +145,16 @@
 (require 'package)
 (package-initialize)
 (add-to-list 'package-archives
+             '("marmalade" . "http://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives
              '("melpa" . "http://melpa.org/packages/") t)
 
 ;; default packages to have installed
 (defvar who/packages '(ac-slime
                        auto-complete
                        erlang
-                       monokai-theme
                        neotree
-                       tangotango-theme))
+                       seti-theme))
 
 ;; define the filter function if not there
 (unless (fboundp 'filter)
@@ -183,10 +190,10 @@
 (package-initialize)
 
 ;; -----------------------------------------------------------------------------
-;;  monokai-theme                                                         MELPA
+;;  theme                                                                 MELPA
 ;; -----------------------------------------------------------------------------
 
-(load-theme 'monokai)
+(load-theme 'seti)
 
 ;; -----------------------------------------------------------------------------
 ;;  auto-complete mode                                                    MELPA
