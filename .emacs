@@ -173,7 +173,7 @@
          (missing  (length packages))
          (prompt   (format "%d missing packages: %s. Install?"
                            missing packages)))
-    ;; if any packages are missing, ask the user whether to isntall
+    ;; if any packages are missing, ask the user whether to install
     (when (and packages
                (y-or-n-p-with-timeout prompt 30 nil))
       ;; yes, go ahead
@@ -189,10 +189,10 @@
                   (let ((prompt (format "Install package %s? (y, n, N, or a) "
                                         pkg)))
                     (pcase (read-char-choice prompt '(?y ?n ?N ?a))
-                      (?y t)                          ; => t
-                      (?a (setq install-all t))       ; => t
+                      (?y t)                           ; => t
+                      (?a (setq install-all t))        ; => t
                       (?N (not (setq install-none t))) ; => nil
-                      (?n nil))))                     ; => nil
+                      (?n nil))))                      ; => nil
           (package-install pkg))))))
 
 (who/install-missing-packages)
