@@ -132,7 +132,7 @@
             (local-set-key "\C-c\M-o" #'erase-interactive-buffer)))
 
 ;; -----------------------------------------------------------------------------
-;;  MELPA packages
+;;  packages
 ;; -----------------------------------------------------------------------------
 
 ;; credits to http://www.aaronbedra.com/emacs.d/
@@ -147,6 +147,7 @@
 (defvar who/packages '(ac-slime
                        auto-complete
                        erlang
+                       multiple-cursors
                        seti-theme))
 
 ;; define the filter function if not there
@@ -183,19 +184,19 @@
 (package-initialize)
 
 ;; -----------------------------------------------------------------------------
-;;  theme                                                                 MELPA
+;;  theme                                                               package
 ;; -----------------------------------------------------------------------------
 
 (load-theme 'seti)
 
 ;; -----------------------------------------------------------------------------
-;;  auto-complete mode                                                    MELPA
+;;  auto-complete mode                                                  package
 ;; -----------------------------------------------------------------------------
 
 (global-auto-complete-mode)
 
 ;; -----------------------------------------------------------------------------
-;;  erlang mode                                                           MELPA
+;;  erlang mode                                                         package
 ;; -----------------------------------------------------------------------------
 
 ;; set the path to the Erlang installation
@@ -213,3 +214,12 @@
 (add-hook 'erlang-shell-mode-hook
           (lambda ()
             (local-set-key "\C-c\M-o" #'erase-interactive-buffer)))
+
+;; -----------------------------------------------------------------------------
+;;  multiple-cursor                                                     package
+;; -----------------------------------------------------------------------------
+
+(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+(global-set-key (kbd "C->")         'mc/mark-next-like-this)
+(global-set-key (kbd "C-<")         'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c C-<")     'mc/mark-all-like-this)
