@@ -48,24 +48,18 @@
       (concat "find . -type f '!' -wholename '*/.svn/*' -print0 | "
               "xargs -0 grep -nH -e "))
 
-;; highlight the current line
-(global-hl-line-mode 1)
-
-;; show line numbers
-(global-linum-mode)
-
 ;; treat all themes as safe
 (setq custom-safe-themes t)
 
 ;; figure out which OS we're running on
-(defvar is-mac     (eq system-type 'darwin)     "t if OS is Mac OS X")
-(defvar is-windows (eq system-type 'windows-nt) "t if OS is Windows")
-(defvar is-linux   (eq system-type 'gnu/linux)  "t if OS is Linux")
+(defvar on-mac     (eq system-type 'darwin)     "t if OS is Mac OS X")
+(defvar on-windows (eq system-type 'windows-nt) "t if OS is Windows")
+(defvar on-linux   (eq system-type 'gnu/linux)  "t if OS is Linux")
 
 ;; -----------------------------------------------------------------------------
 ;;  Mac OS X
 ;; -----------------------------------------------------------------------------
-(when is-mac
+(when on-mac
   ;; use this font
   (set-face-attribute 'default nil
                       :family "Source Code Pro for Powerline"
@@ -79,7 +73,7 @@
 ;; -----------------------------------------------------------------------------
 ;;  Linux
 ;; -----------------------------------------------------------------------------
-(when (and is-linux (display-graphic-p))
+(when (and on-linux (display-graphic-p))
   ;; use this font
   (set-face-attribute 'default nil
                       :family "Source Code Pro for Powerline"
@@ -93,12 +87,12 @@
 ;; -----------------------------------------------------------------------------
 ;;  Windows
 ;; -----------------------------------------------------------------------------
-(when is-windows
+(when on-windows
   ;; use this font
   (set-face-attribute 'default nil
-                      :family "Source Code Pro for Powerline"
+                      :font   "Sauce Code Powerline"
                       :weight 'extra-light
-                      :height 110))
+                      :height  110))
 
 ;; -----------------------------------------------------------------------------
 ;;  handy functions
@@ -153,7 +147,6 @@
 (defvar who/packages '(ac-slime
                        auto-complete
                        erlang
-                       neotree
                        seti-theme))
 
 ;; define the filter function if not there
@@ -205,11 +198,18 @@
 ;;  erlang mode                                                           MELPA
 ;; -----------------------------------------------------------------------------
 
-(let ((erlang-root (cond
-                    (is-mac     "/opt/local/lib/erlang")
-                    (is-windows nil)
-                    (is-linux   nil))))
-  (setq erlang-root-dir erlang-root)
-  (setq exec-path (cons (concat (file-name-as-directory erlang-root) "bin")
-                        exec-path)))
+;; set the path to the Erlang installation
+(setq erlang-root-dir (cond
+                       (on-mac     "/opt/local/lib/erlang")
+                       (on-windows "C:/Program Files/erl6.3")
+                       (on-linux   "")))
 
+;; make sure Emacs can find the Erlang executables
+(setq exec-path
+      (cons (concat (file-name-as-directory erlang-root-dir) "bin")
+            exec-path))
+
+;; press C-c M-o (as in Slime) in a shell to clear the buffer
+(add-hook 'erlang-shell-mode-hook
+          (lambda ()
+            (local-set-key "\C-c\M-o" #'erase-interactive-buffer)))
