@@ -161,20 +161,38 @@
 
 ;; returns which packages are missing
 (defun who/missing-packages ()
+  "Returns a list of missing packages."
   (filter (lambda (pkg)
             (not (package-installed-p pkg)))
           who/packages))
 
 ;; make sure all packages are installed
 (defun who/install-missing-packages ()
+  "Installs missing packages."
   (let* ((packages (who/missing-packages))
          (missing  (length packages))
-         (prompt   (format "%d packages are missing; go over them to install?" missing)))
+         (prompt   (format "%d missing packages: %s. Install?"
+                           missing packages)))
+    ;; if any packages are missing, ask the user whether to isntall
     (when (and packages
                (y-or-n-p-with-timeout prompt 30 nil))
+      ;; yes, go ahead
       (package-refresh-contents)
-      (dolist (pkg packages)
-        (when (y-or-n-p (format "Install package %s?" pkg))
+      (setq install-all nil
+            install-none nil)
+      ;; loop over each package and install if desired
+      (while (and packages (not install-none))
+        (setq pkg (car packages)
+              packages (cdr packages))
+        ;; install when 'install-all is set, or the user confirms
+        (when (or install-all
+                  (let ((prompt (format "Install package %s? (y, n, N, or a) "
+                                        pkg)))
+                    (pcase (read-char-choice prompt '(?y ?n ?N ?a))
+                      (?y t)                          ; => t
+                      (?a (setq install-all t))       ; => t
+                      (?N (not (setq install-none t))) ; => nil
+                      (?n nil))))                     ; => nil
           (package-install pkg))))))
 
 (who/install-missing-packages)
@@ -187,39 +205,43 @@
 ;;  theme                                                               package
 ;; -----------------------------------------------------------------------------
 
-(load-theme 'seti)
+(when (package-installed-p 'seti-theme)
+  (load-theme 'seti))
 
 ;; -----------------------------------------------------------------------------
 ;;  auto-complete mode                                                  package
 ;; -----------------------------------------------------------------------------
 
-(global-auto-complete-mode)
+(when (package-installed-p 'global-auto-complete-mode)
+  (global-auto-complete-mode))
 
 ;; -----------------------------------------------------------------------------
-;;  erlang mode                                                         package
+;;  erlang                                                              package
 ;; -----------------------------------------------------------------------------
 
-;; set the path to the Erlang installation
-(setq erlang-root-dir (cond
-                       (on-mac     "/opt/local/lib/erlang")
-                       (on-windows "C:/Program Files/erl6.3")
-                       (on-linux   "")))
+(when (package-installed-p 'erlang)
+  ;; set the path to the Erlang installation
+  (setq erlang-root-dir (cond
+                         (on-mac     "/opt/local/lib/erlang")
+                         (on-windows "C:/Program Files/erl6.3")
+                         (on-linux   "")))
 
-;; make sure Emacs can find the Erlang executables
-(setq exec-path
-      (cons (concat (file-name-as-directory erlang-root-dir) "bin")
-            exec-path))
+  ;; make sure Emacs can find the Erlang executables
+  (setq exec-path
+        (cons (concat (file-name-as-directory erlang-root-dir) "bin")
+              exec-path))
 
-;; press C-c M-o (as in Slime) in a shell to clear the buffer
-(add-hook 'erlang-shell-mode-hook
-          (lambda ()
-            (local-set-key "\C-c\M-o" #'erase-interactive-buffer)))
+  ;; press C-c M-o (as in Slime) in a shell to clear the buffer
+  (add-hook 'erlang-shell-mode-hook
+            (lambda ()
+              (local-set-key "\C-c\M-o" #'erase-interactive-buffer))))
 
 ;; -----------------------------------------------------------------------------
-;;  multiple-cursor                                                     package
+;;  multiple-cursors                                                    package
 ;; -----------------------------------------------------------------------------
 
-(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
-(global-set-key (kbd "C->")         'mc/mark-next-like-this)
-(global-set-key (kbd "C-<")         'mc/mark-previous-like-this)
-(global-set-key (kbd "C-c C-<")     'mc/mark-all-like-this)
+(when (package-installed-p 'multiple-cursors)
+  (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+  (global-set-key (kbd "C->")         'mc/mark-next-like-this)
+  (global-set-key (kbd "C-<")         'mc/mark-previous-like-this)
+  (global-set-key (kbd "C-c C-<")     'mc/mark-all-like-this))
