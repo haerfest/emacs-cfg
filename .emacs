@@ -139,16 +139,19 @@
 (require 'package)
 (package-initialize)
 (add-to-list 'package-archives
-             '("marmalade" . "http://marmalade-repo.org/packages/"))
+             '("melpa" . "http://melpa.org/packages/"))
 (add-to-list 'package-archives
-             '("melpa" . "http://melpa.org/packages/") t)
+             '("marmalade" . "http://marmalade-repo.org/packages/"))
+
 
 ;; default packages to have installed
 (defvar who/packages '(ac-slime
                        auto-complete
                        erlang
                        multiple-cursors
-                       seti-theme))
+                       seti-theme
+                       solarized-theme
+                       zenburn-theme))
 
 ;; define the filter function if not there
 (unless (fboundp 'filter)
@@ -205,15 +208,18 @@
 ;;  theme                                                               package
 ;; -----------------------------------------------------------------------------
 
-(when (package-installed-p 'seti-theme)
-  (load-theme 'seti))
+(when (package-installed-p 'zenburn-theme)
+  (load-theme 'zenburn))
 
 ;; -----------------------------------------------------------------------------
-;;  auto-complete mode                                                  package
+;;  auto-complete                                                       package
 ;; -----------------------------------------------------------------------------
 
-(when (package-installed-p 'global-auto-complete-mode)
-  (global-auto-complete-mode))
+(when (package-installed-p 'auto-complete)
+  (global-auto-complete-mode t)
+
+  (when (package-installed-p 'erlang)
+    (add-to-list 'ac-modes 'erlang-mode)))
 
 ;; -----------------------------------------------------------------------------
 ;;  erlang                                                              package
