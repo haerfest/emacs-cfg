@@ -36,7 +36,7 @@
   (electric-indent-mode t)
   (global-set-key "\r" 'newline-and-indent))
 
-;; do not truncate long lines
+;; truncate long lines (i.e. don't wrap)
 (setq-default truncate-lines t)
 
 ;; if two dired windows are open, suggest copy to the other window
@@ -138,6 +138,13 @@
             (local-set-key "\C-c\M-o" #'erase-interactive-buffer)))
 
 ;; -----------------------------------------------------------------------------
+;;  ispell                                                             built-in
+;; -----------------------------------------------------------------------------
+
+(when on-mac
+  (setq ispell-program-name "/opt/local/bin/aspell"))
+
+;; -----------------------------------------------------------------------------
 ;;  packages
 ;; -----------------------------------------------------------------------------
 
@@ -154,8 +161,9 @@
 (defvar who/packages '(ac-slime
                        auto-complete
                        erlang
+                       haskell-mode
                        multiple-cursors
-                       seti-theme
+                       slime
                        solarized-theme
                        zenburn-theme))
 
@@ -214,8 +222,16 @@
 ;;  theme                                                               package
 ;; -----------------------------------------------------------------------------
 
-(when (package-installed-p 'zenburn-theme)
-  (load-theme 'zenburn))
+(when (package-installed-p 'monokai-theme)
+  (load-theme 'monokai))
+
+;; -----------------------------------------------------------------------------
+;;  slime                                                               package
+;; -----------------------------------------------------------------------------
+
+(when (package-installed-p 'slime)
+  (setq slime-lisp-implementations
+        '((sbcl ("/opt/local/bin/sbcl") :coding-system utf-8-unix))))
 
 ;; -----------------------------------------------------------------------------
 ;;  auto-complete                                                       package
@@ -257,3 +273,10 @@
   (global-set-key (kbd "C->")         'mc/mark-next-like-this)
   (global-set-key (kbd "C-<")         'mc/mark-previous-like-this)
   (global-set-key (kbd "C-c C-<")     'mc/mark-all-like-this))
+
+;; -----------------------------------------------------------------------------
+;;  haskell-mode                                                        package
+;; -----------------------------------------------------------------------------
+
+(when (package-installed-p 'haskell-mode)
+  (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation))
