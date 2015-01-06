@@ -98,7 +98,10 @@
   (set-face-attribute 'default nil
                       :font   "Anonymous Pro"
                       :weight 'extra-light
-                      :height  140))
+                      :height  140)
+
+  ;; open links with Windows' default browser
+  (setq browse-url-browser-function 'browse-url-default-windows-browser))
 
 ;; -----------------------------------------------------------------------------
 ;;  handy functions
@@ -162,6 +165,7 @@
                        auto-complete
                        erlang
                        haskell-mode
+                       monokai-theme
                        multiple-cursors
                        slime
                        solarized-theme
