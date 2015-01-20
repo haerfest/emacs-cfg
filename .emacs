@@ -156,6 +156,7 @@
                        auto-complete
                        erlang
                        haskell-mode
+                       lua-mode
                        multiple-cursors
                        slime
                        solarized-theme
