@@ -3,11 +3,17 @@
 ;; -----------------------------------------------------------------------------
 
 ;; don't want to see the startup screen
-(setq inhibit-startup-screen 1)
+(setq inhibit-startup-screen t)
 
 ;; don't want any fancy GUI widgets
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
+
+;; don't want backup files
+(setq make-backup-files nil)
+
+;; don't want auto-save files
+(auto-save-mode -1)
 
 ;; window movement
 (global-set-key (kbd "C-x <left>")  'windmove-left)
@@ -62,7 +68,7 @@
 (when on-mac
   ;; use this font
   (set-face-attribute 'default nil
-                      :family "Source Code Pro for Powerline"
+                      :family "Anonymous Pro"
                       :weight 'extra-light
                       :height 140)
 
@@ -76,7 +82,7 @@
 (when (and on-linux (display-graphic-p))
   ;; use this font
   (set-face-attribute 'default nil
-                      :family "Source Code Pro for Powerline"
+                      :family "Anonymous Pro"
                       :weight 'extra-light
                       :height 120)
   
@@ -90,9 +96,12 @@
 (when on-windows
   ;; use this font
   (set-face-attribute 'default nil
-                      :font   "Sauce Code Powerline"
+                      :font   "Anonymous Pro"
                       :weight 'extra-light
-                      :height  110))
+                      :height  140)
+
+  ;; open links with Windows' default browser
+  (setq browse-url-browser-function 'browse-url-default-windows-browser))
 
 ;; -----------------------------------------------------------------------------
 ;;  handy functions
@@ -157,6 +166,7 @@
                        erlang
                        haskell-mode
                        lua-mode
+                       monokai-theme
                        multiple-cursors
                        slime
                        solarized-theme
