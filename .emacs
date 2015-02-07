@@ -68,7 +68,7 @@
 (when on-mac
   ;; use this font
   (set-face-attribute 'default nil
-                      :family "Anonymous Pro"
+                      :family "Andale Mono"
                       :weight 'extra-light
                       :height 140)
 
