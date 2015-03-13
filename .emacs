@@ -15,6 +15,9 @@
 ;; don't want auto-save files
 (auto-save-mode -1)
 
+;; save all files with Unix line endings
+(setq-default buffer-file-coding-system 'utf-8-unix)
+
 ;; window movement
 (global-set-key (kbd "C-x <left>")  'windmove-left)
 (global-set-key (kbd "C-x <right>") 'windmove-right)
@@ -170,6 +173,7 @@ put before CHAR"
 ;; default packages to have installed
 (defvar who/packages '(ac-slime
                        auto-complete
+                       dockerfile-mode
                        erlang
                        haskell-mode
                        lua-mode
