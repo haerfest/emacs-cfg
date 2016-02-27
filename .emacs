@@ -173,15 +173,9 @@ put before CHAR"
 ;; default packages to have installed
 (defvar who/packages '(ac-slime
                        auto-complete
-                       dockerfile-mode
-                       erlang
-                       haskell-mode
-                       lua-mode
-                       monokai-theme
+                       markdown-mode
                        multiple-cursors
-                       slime
-                       solarized-theme
-                       zenburn-theme))
+                       slime))
 
 ;; define the filter function if not there
 (unless (fboundp 'filter)
@@ -296,3 +290,17 @@ put before CHAR"
 
 (when (package-installed-p 'haskell-mode)
   (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (slime multiple-cursors markdown-mode auto-complete ac-slime))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
