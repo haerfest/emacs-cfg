@@ -171,11 +171,14 @@ put before CHAR"
 
 
 ;; default packages to have installed
-(defvar who/packages '(ac-slime
+(defvar who/packages '(
+                       ac-slime
                        auto-complete
+                       fsharp-mode
                        markdown-mode
                        multiple-cursors
-                       slime))
+                       slime
+                       ))
 
 ;; define the filter function if not there
 (unless (fboundp 'filter)
@@ -290,6 +293,16 @@ put before CHAR"
 
 (when (package-installed-p 'haskell-mode)
   (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation))
+
+;; -----------------------------------------------------------------------------
+;;  fsharp-mode                                                         package
+;; -----------------------------------------------------------------------------
+
+(when (package-installed-p 'fsharp-mode)
+  (setq inferior-fsharp-program "/usr/local/bin/fsharpi --readline-")
+  (setq fsharp-compiler "/usr/local/bin/fsharpc")
+  (setq exec-path (append exec-path '("/usr/local/bin"))))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -297,7 +310,7 @@ put before CHAR"
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (slime multiple-cursors markdown-mode auto-complete ac-slime))))
+    (multiple-cursors markdown-mode fsharp-mode ac-slime))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
