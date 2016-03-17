@@ -124,6 +124,14 @@ put before CHAR"
   (if (< 0 arg) (forward-char -1)))
 
 ;; -----------------------------------------------------------------------------
+;;  whitespace                                                         built-in
+;; -----------------------------------------------------------------------------
+
+(require 'whitespace)
+(setq whitespace-style '(face tabs trailing lines-tail space-before-tab newline
+                         indentation empty space-after-tab tab-mark))
+
+;; -----------------------------------------------------------------------------
 ;;  ido                                                                built-in
 ;; -----------------------------------------------------------------------------
 
@@ -302,18 +310,3 @@ put before CHAR"
   (setq inferior-fsharp-program "/usr/local/bin/fsharpi --readline-")
   (setq fsharp-compiler "/usr/local/bin/fsharpc")
   (setq exec-path (append exec-path '("/usr/local/bin"))))
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   (quote
-    (multiple-cursors markdown-mode fsharp-mode ac-slime))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
