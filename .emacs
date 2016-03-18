@@ -193,6 +193,7 @@ put before CHAR"
                        fsharp-mode
                        multiple-cursors
                        slime
+                       tuareg
                        ))
 
 ;; define the filter function if not there
@@ -324,3 +325,20 @@ put before CHAR"
   (setq inferior-fsharp-program "/usr/local/bin/fsharpi --readline-")
   (setq fsharp-compiler "/usr/local/bin/fsharpc")
   (setq exec-path (append exec-path '("/usr/local/bin"))))
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(ansi-color-names-vector
+   ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#e090d7" "#8cc4ff" "#eeeeec"])
+ '(package-selected-packages
+   (quote
+    (tuareg color-theme go-mode color-theme-sanityinc-solarized multiple-cursors markdown-mode fsharp-mode ac-slime))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
