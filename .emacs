@@ -123,13 +123,20 @@ put before CHAR"
   (insert char)
   (if (< 0 arg) (forward-char -1)))
 
+(defun euro (&optional arg)
+  "Inserts a euro symbol."
+  (interactive "p")
+  (kmacro-exec-ring-item
+   (quote ([24 56 return 35 120 50 48 65 67 return] 0 "%d")) arg))
+
 ;; -----------------------------------------------------------------------------
 ;;  whitespace                                                         built-in
 ;; -----------------------------------------------------------------------------
 
 (require 'whitespace)
-(setq whitespace-style '(face tabs trailing lines-tail space-before-tab newline
-                         indentation empty space-after-tab tab-mark))
+(setq whitespace-style '(face trailing lines-tail space-before-tab newline empty
+                              space-after-tab))
+(global-whitespace-mode)
 
 ;; -----------------------------------------------------------------------------
 ;;  ido                                                                built-in
@@ -182,8 +189,8 @@ put before CHAR"
 (defvar who/packages '(
                        ac-slime
                        auto-complete
+                       color-theme-sanityinc-solarized
                        fsharp-mode
-                       markdown-mode
                        multiple-cursors
                        slime
                        ))
@@ -243,8 +250,8 @@ put before CHAR"
 ;;  theme                                                               package
 ;; -----------------------------------------------------------------------------
 
-(when (package-installed-p 'monokai-theme)
-  (load-theme 'monokai))
+(when (package-installed-p 'color-theme-sanityinc-solarized)
+  (load-theme 'sanityinc-solarized-dark))
 
 ;; -----------------------------------------------------------------------------
 ;;  slime                                                               package
@@ -301,7 +308,6 @@ put before CHAR"
 
 (when (package-installed-p 'markdown-mode)
   (setq markdown-command "/usr/local/bin/markdown"))
-
 
 ;; -----------------------------------------------------------------------------
 ;;  haskell-mode                                                        package
