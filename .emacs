@@ -5,6 +5,9 @@
 ;; don't want to see the startup screen
 (setq inhibit-startup-screen t)
 
+;; don't want any bell sounds
+(setq ring-bell-function 'ignore)
+
 ;; don't want any fancy GUI widgets
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
@@ -36,7 +39,7 @@
 
 ;; enable on-the-fly indentation
 (if (>= emacs-major-version 24)
-  (electric-indent-mode t)
+    (electric-indent-mode t)
   (global-set-key "\r" 'newline-and-indent))
 
 ;; truncate long lines (i.e. don't wrap)
@@ -71,9 +74,9 @@
 (when on-mac
   ;; use this font
   (set-face-attribute 'default nil
-                      :family "Source Code Pro"
-                      :weight 'extra-light
-                      :height 160)
+                      :family "Menlo"
+                      :weight 'normal
+                      :height 140)
 
   ;; use the Command key as the Meta key
   (setq mac-option-modifier  'super)
@@ -88,7 +91,7 @@
                       :family "Anonymous Pro"
                       :weight 'extra-light
                       :height 120)
-  
+
   ;; allow copy & paste between Emacs and X
   (setq x-select-enable-clipboard t)
   (setq interprogram-paste-function 'x-cut-buffer-or-selection-value))
@@ -187,13 +190,9 @@ put before CHAR"
 
 ;; default packages to have installed
 (defvar who/packages '(
-                       ac-slime
                        auto-complete
-                       color-theme-sanityinc-solarized
-                       fsharp-mode
+                       exec-path-from-shell
                        multiple-cursors
-                       slime
-                       tuareg
                        ))
 
 ;; define the filter function if not there
@@ -246,13 +245,6 @@ put before CHAR"
 ;; force loading of packages now, so we can use them from here on in .emacs
 (setq package-enable-at-startup nil)
 (package-initialize)
-
-;; -----------------------------------------------------------------------------
-;;  theme                                                               package
-;; -----------------------------------------------------------------------------
-
-(when (package-installed-p 'color-theme-sanityinc-solarized)
-  (load-theme 'sanityinc-solarized-dark))
 
 ;; -----------------------------------------------------------------------------
 ;;  slime                                                               package
@@ -325,3 +317,11 @@ put before CHAR"
   (setq inferior-fsharp-program "/usr/local/bin/fsharpi --readline-")
   (setq fsharp-compiler "/usr/local/bin/fsharpc")
   (setq exec-path (append exec-path '("/usr/local/bin"))))
+
+;; -----------------------------------------------------------------------------
+;;  exec-path-from-shell                                                package
+;; -----------------------------------------------------------------------------
+
+(when (package-installed-p 'exec-path-from-shell)
+  (exec-path-from-shell-copy-env "PS1")
+  (exec-path-from-shell-initialize))
