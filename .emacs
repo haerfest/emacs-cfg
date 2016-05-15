@@ -9,8 +9,9 @@
 (setq ring-bell-function 'ignore)
 
 ;; don't want any fancy GUI widgets
-(scroll-bar-mode -1)
-(tool-bar-mode -1)
+(when (> emacs-major-version 22)
+  (scroll-bar-mode -1)
+  (tool-bar-mode -1))
 
 ;; don't want backup files
 (setq make-backup-files nil)
@@ -183,16 +184,26 @@ put before CHAR"
 (require 'package)
 (package-initialize)
 (add-to-list 'package-archives
-             '("melpa" . "https://melpa.org/packages/"))
+             '("melpa" . "https://stable.melpa.org/packages/"))
 (add-to-list 'package-archives
              '("marmalade" . "http://marmalade-repo.org/packages/"))
-
+(add-to-list 'package-archives
+             '("elpy" . "http://jorgenschaefer.github.io/packages/"))
 
 ;; default packages to have installed
 (defvar who/packages '(
-                       auto-complete
+                       company
                        exec-path-from-shell
                        multiple-cursors
+
+                       ;; for clojure development
+                       better-defaults
+                       cider
+                       clojure-mode
+                       projectile
+
+                       ;; for python development
+                       elpy
                        ))
 
 ;; define the filter function if not there
@@ -325,3 +336,17 @@ put before CHAR"
 (when (package-installed-p 'exec-path-from-shell)
   (exec-path-from-shell-copy-env "PS1")
   (exec-path-from-shell-initialize))
+
+;; -----------------------------------------------------------------------------
+;;  company                                                             package
+;; -----------------------------------------------------------------------------
+
+(when (package-installed-p 'company)
+  (add-hook 'after-init-hook 'global-company-mode))
+
+;; -----------------------------------------------------------------------------
+;;  elpy                                                                package
+;; -----------------------------------------------------------------------------
+
+(when (package-installed-p 'elpy)
+  (elpy-enable))
