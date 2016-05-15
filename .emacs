@@ -349,9 +349,15 @@ put before CHAR"
 ;; -----------------------------------------------------------------------------
 
 (when (package-installed-p 'elpy)
+
   ;; press C-c M-o (as in Slime) in a shell to clear the buffer
   (add-hook 'inferior-python-mode-hook
             (lambda ()
               (local-set-key "\C-c\M-o" #'erase-interactive-buffer)))
+
+  ;; set encoding of the Python shell to UTF-8
+  (setenv "LC_CTYPE" "UTF-8")
+  (setenv "LC_ALL" "en_US.UTF-8")
+  (setenv "LANG" "en_US.UTF-8")
 
   (elpy-enable))
