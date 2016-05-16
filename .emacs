@@ -360,4 +360,5 @@ put before CHAR"
   (setenv "LC_ALL" "en_US.UTF-8")
   (setenv "LANG" "en_US.UTF-8")
 
-  (elpy-enable))
+  (elpy-enable)
+  (elpy-use-ipython))
