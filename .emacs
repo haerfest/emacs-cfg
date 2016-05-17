@@ -128,15 +128,6 @@ put before CHAR"
    (quote ([24 56 return 35 120 50 48 65 67 return] 0 "%d")) arg))
 
 ;; -----------------------------------------------------------------------------
-;;  whitespace                                                         built-in
-;; -----------------------------------------------------------------------------
-
-(require 'whitespace)
-(setq whitespace-style '(face trailing lines-tail space-before-tab newline empty
-                              space-after-tab))
-(global-whitespace-mode)
-
-;; -----------------------------------------------------------------------------
 ;;  ido                                                                built-in
 ;; -----------------------------------------------------------------------------
 
@@ -189,12 +180,18 @@ put before CHAR"
                        company
                        exec-path-from-shell
                        multiple-cursors
+                       which-key
+                       yasnippet
+                       zenburn-theme
 
                        ;; for clojure development
                        better-defaults
                        cider
                        clojure-mode
+                       clojure-mode-extra-font-locking
+                       clojure-snippets
                        projectile
+                       rainbow-delimiters
 
                        ;; for python development
                        elpy
@@ -252,45 +249,6 @@ put before CHAR"
 (package-initialize)
 
 ;; -----------------------------------------------------------------------------
-;;  slime                                                               package
-;; -----------------------------------------------------------------------------
-
-(when (package-installed-p 'slime)
-  (setq slime-lisp-implementations
-        '((sbcl ("/opt/local/bin/sbcl") :coding-system utf-8-unix))))
-
-;; -----------------------------------------------------------------------------
-;;  auto-complete                                                       package
-;; -----------------------------------------------------------------------------
-
-(when (package-installed-p 'auto-complete)
-  (global-auto-complete-mode t)
-
-  (when (package-installed-p 'erlang)
-    (add-to-list 'ac-modes 'erlang-mode)))
-
-;; -----------------------------------------------------------------------------
-;;  erlang                                                              package
-;; -----------------------------------------------------------------------------
-
-(when (package-installed-p 'erlang)
-  ;; set the path to the Erlang installation
-  (setq erlang-root-dir (cond
-                         (on-mac     "/opt/local/lib/erlang")
-                         (on-windows "C:/Program Files/erl6.3")
-                         (on-linux   "")))
-
-  ;; make sure Emacs can find the Erlang executables
-  (setq exec-path
-        (cons (concat (file-name-as-directory erlang-root-dir) "bin")
-              exec-path))
-
-  ;; press C-c M-o (as in Slime) in a shell to clear the buffer
-  (add-hook 'erlang-shell-mode-hook
-            (lambda ()
-              (local-set-key "\C-c\M-o" #'erase-interactive-buffer))))
-
-;; -----------------------------------------------------------------------------
 ;;  multiple-cursors                                                    package
 ;; -----------------------------------------------------------------------------
 
@@ -299,29 +257,6 @@ put before CHAR"
   (global-set-key (kbd "C->")         'mc/mark-next-like-this)
   (global-set-key (kbd "C-<")         'mc/mark-previous-like-this)
   (global-set-key (kbd "C-c C-<")     'mc/mark-all-like-this))
-
-;; -----------------------------------------------------------------------------
-;;  markdown-mode                                                       package
-;; -----------------------------------------------------------------------------
-
-(when (package-installed-p 'markdown-mode)
-  (setq markdown-command "/usr/local/bin/markdown"))
-
-;; -----------------------------------------------------------------------------
-;;  haskell-mode                                                        package
-;; -----------------------------------------------------------------------------
-
-(when (package-installed-p 'haskell-mode)
-  (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation))
-
-;; -----------------------------------------------------------------------------
-;;  fsharp-mode                                                         package
-;; -----------------------------------------------------------------------------
-
-(when (package-installed-p 'fsharp-mode)
-  (setq inferior-fsharp-program "/usr/local/bin/fsharpi --readline-")
-  (setq fsharp-compiler "/usr/local/bin/fsharpc")
-  (setq exec-path (append exec-path '("/usr/local/bin"))))
 
 ;; -----------------------------------------------------------------------------
 ;;  exec-path-from-shell                                                package
@@ -355,6 +290,28 @@ put before CHAR"
   (setenv "LANG" "en_US.UTF-8")
 
   (elpy-enable)
-
   (when on-mac
     (elpy-use-ipython)))
+
+;; -----------------------------------------------------------------------------
+;;  rainbow-delimiters                                                  package
+;; -----------------------------------------------------------------------------
+
+(when (and (package-installed-p 'rainbow-delimiters)
+           (package-installed-p 'clojure-mode))
+  (add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
+  (add-hook 'cider-mode-hook 'rainbow-delimiters-mode))
+
+;; -----------------------------------------------------------------------------
+;;  yasnippet                                                           package
+;; -----------------------------------------------------------------------------
+
+(when (package-installed-p 'yasnippet)
+  (yas-global-mode 1))
+
+;; -----------------------------------------------------------------------------
+;;  which-key                                                           package
+;; -----------------------------------------------------------------------------
+
+(when (package-installed-p 'which-key)
+  (which-key-mode))
