@@ -101,12 +101,6 @@
 ;;  Windows
 ;; -----------------------------------------------------------------------------
 (when on-windows
-  ;; use this font
-  (set-face-attribute 'default nil
-                      :font   "Anonymous Pro"
-                      :weight 'extra-light
-                      :height  140)
-
   ;; open links with Windows' default browser
   (setq browse-url-browser-function 'browse-url-default-windows-browser))
 
@@ -333,7 +327,7 @@ put before CHAR"
 ;;  exec-path-from-shell                                                package
 ;; -----------------------------------------------------------------------------
 
-(when (package-installed-p 'exec-path-from-shell)
+(when (and on-mac (package-installed-p 'exec-path-from-shell))
   (exec-path-from-shell-copy-env "PS1")
   (exec-path-from-shell-initialize))
 
@@ -361,4 +355,6 @@ put before CHAR"
   (setenv "LANG" "en_US.UTF-8")
 
   (elpy-enable)
-  (elpy-use-ipython))
+
+  (when on-mac
+    (elpy-use-ipython)))
