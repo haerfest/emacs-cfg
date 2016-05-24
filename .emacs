@@ -172,22 +172,21 @@ put before CHAR"
 
 ;; credits to http://www.aaronbedra.com/emacs.d/
 (require 'package)
-(package-initialize)
 (add-to-list 'package-archives
-             '("melpa" . "https://stable.melpa.org/packages/"))
-(add-to-list 'package-archives
-             '("marmalade" . "http://marmalade-repo.org/packages/"))
+             '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 (add-to-list 'package-archives
              '("elpy" . "http://jorgenschaefer.github.io/packages/"))
+
+(package-initialize)
 
 ;; default packages to have installed
 (defvar who/packages '(
                        company
                        exec-path-from-shell
                        multiple-cursors
+                       solarized-theme
                        which-key
                        yasnippet
-                       zenburn-theme
 
                        ;; for clojure development
                        better-defaults
@@ -200,6 +199,9 @@ put before CHAR"
 
                        ;; for python development
                        elpy
+
+                       ;; for php development, yikes!
+                       php-mode
                        ))
 
 ;; define the filter function if not there
@@ -252,6 +254,13 @@ put before CHAR"
 ;; force loading of packages now, so we can use them from here on in .emacs
 (setq package-enable-at-startup nil)
 (package-initialize)
+
+;; -----------------------------------------------------------------------------
+;;  solarized                                                           package
+;; -----------------------------------------------------------------------------
+
+(when (package-installed-p 'solarized-theme)
+  (load-theme 'solarized-dark))
 
 ;; -----------------------------------------------------------------------------
 ;;  multiple-cursors                                                    package
