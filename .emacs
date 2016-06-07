@@ -202,6 +202,9 @@ put before CHAR"
 
                        ;; for php development, yikes!
                        php-mode
+
+                       ;; for common lisp development
+                       slime
                        ))
 
 ;; define the filter function if not there
@@ -306,6 +309,7 @@ put before CHAR"
 
 (when (and (package-installed-p 'rainbow-delimiters)
            (package-installed-p 'clojure-mode))
+  (add-hook 'lisp-mode-hook 'rainbow-delimiters-mode)
   (add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
   (add-hook 'cider-mode-hook 'rainbow-delimiters-mode))
 
@@ -322,3 +326,11 @@ put before CHAR"
 
 (when (package-installed-p 'which-key)
   (which-key-mode))
+
+;; -----------------------------------------------------------------------------
+;;  slime                                                               package
+;; -----------------------------------------------------------------------------
+
+(when (package-installed-p 'slime)
+  (setq inferior-lisp-program "/usr/local/bin/sbcl")
+  (slime-setup '(slime-fancy)))
