@@ -75,9 +75,9 @@
 (when on-mac
   ;; use this font
   (set-face-attribute 'default nil
-                      :family "Menlo"
+                      :family "Monaco"
                       :weight 'normal
-                      :height 140)
+                      :height 120)
 
   ;; use the Command key as the Meta key
   (setq mac-option-modifier  'super)
