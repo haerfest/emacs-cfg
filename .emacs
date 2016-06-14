@@ -205,6 +205,7 @@ put before CHAR"
 
                        ;; for common lisp development
                        slime
+                       slime-company
                        ))
 
 ;; define the filter function if not there
