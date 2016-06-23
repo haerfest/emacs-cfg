@@ -206,6 +206,9 @@ put before CHAR"
                        ;; for common lisp development
                        slime
                        slime-company
+
+                       ;; for f# development
+                       fsharp-mode
                        ))
 
 ;; define the filter function if not there
@@ -335,3 +338,9 @@ put before CHAR"
 (when (package-installed-p 'slime)
   (setq inferior-lisp-program "/usr/local/bin/sbcl")
   (slime-setup '(slime-fancy)))
+
+(when (package-installed-p 'fsharp-mode)
+  (require 'fsharp-mode)
+  (setq inferior-fsharp-program "/usr/local/bin/fsharpi --readline-")
+  (setq fsharp-compiler "/usr/local/bin/fsharpc")
+  (setq fsharp-ac-debug nil))
