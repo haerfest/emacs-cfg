@@ -183,6 +183,7 @@ put before CHAR"
 (defvar who/packages '(
                        company
                        exec-path-from-shell
+                       evil
                        multiple-cursors
                        solarized-theme
                        which-key
@@ -342,5 +343,12 @@ put before CHAR"
 (when (package-installed-p 'fsharp-mode)
   (require 'fsharp-mode)
   (setq inferior-fsharp-program "/usr/local/bin/fsharpi --readline-")
-  (setq fsharp-compiler "/usr/local/bin/fsharpc")
-  (setq fsharp-ac-debug nil))
+  (setq fsharp-compiler "/usr/local/bin/fsharpc"))
+
+;; -----------------------------------------------------------------------------
+;;  evil                                                                package
+;; -----------------------------------------------------------------------------
+
+(when (package-installed-p 'evil)
+  (require 'evil)
+  (evil-mode 1))
