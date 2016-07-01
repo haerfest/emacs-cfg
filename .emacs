@@ -76,8 +76,8 @@
   ;; use this font
   (set-face-attribute 'default nil
                       :family "Source Code Pro"
-                      :weight 'light
-                      :height 160)
+                      :weight 'normal
+                      :height 140)
 
   ;; use the Command key as the Meta key
   (setq mac-option-modifier  'super)
@@ -173,7 +173,7 @@ put before CHAR"
 ;; credits to http://www.aaronbedra.com/emacs.d/
 (require 'package)
 (add-to-list 'package-archives
-             '("melpa-stable" . "https://stable.melpa.org/packages/"))
+             '("melpa-stable" . "https://melpa.org/packages/"))
 (add-to-list 'package-archives
              '("elpy" . "http://jorgenschaefer.github.io/packages/"))
 
