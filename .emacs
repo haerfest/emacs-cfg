@@ -193,6 +193,7 @@ put before CHAR"
                        exec-path-from-shell
                        evil
                        ido-vertical-mode
+                       markdown-mode
                        multiple-cursors
                        solarized-theme
                        which-key
