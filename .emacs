@@ -141,6 +141,14 @@ put before CHAR"
 (setq ido-enable-flex-matching t)
 
 ;; -----------------------------------------------------------------------------
+;;  ido-vertical-mode                                                  built-in
+;; -----------------------------------------------------------------------------
+
+(when (package-installed-p 'ido-vertical-mode)
+  (ido-vertical-mode 1)
+  (setq ido-vertical-define-keys '(C-n-and-C-p-only)))
+
+;; -----------------------------------------------------------------------------
 ;;  c-mode                                                             built-in
 ;; -----------------------------------------------------------------------------
 
@@ -184,6 +192,7 @@ put before CHAR"
                        company
                        exec-path-from-shell
                        evil
+                       ido-vertical-mode
                        multiple-cursors
                        solarized-theme
                        which-key
