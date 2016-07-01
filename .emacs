@@ -141,14 +141,6 @@ put before CHAR"
 (setq ido-enable-flex-matching t)
 
 ;; -----------------------------------------------------------------------------
-;;  ido-vertical-mode                                                  built-in
-;; -----------------------------------------------------------------------------
-
-(when (package-installed-p 'ido-vertical-mode)
-  (ido-vertical-mode 1)
-  (setq ido-vertical-define-keys '(C-n-and-C-p-only)))
-
-;; -----------------------------------------------------------------------------
 ;;  c-mode                                                             built-in
 ;; -----------------------------------------------------------------------------
 
@@ -362,3 +354,11 @@ put before CHAR"
 (when (package-installed-p 'evil)
   (require 'evil)
   (evil-mode 1))
+
+;; -----------------------------------------------------------------------------
+;;  ido-vertical-mode                                                  built-in
+;; -----------------------------------------------------------------------------
+
+(when (package-installed-p 'ido-vertical-mode)
+  (ido-vertical-mode 1)
+  (setq ido-vertical-define-keys '(C-n-and-C-p-only)))
