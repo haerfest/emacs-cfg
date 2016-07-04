@@ -43,9 +43,6 @@
     (electric-indent-mode t)
   (global-set-key "\r" 'newline-and-indent))
 
-;; truncate long lines (i.e. don't wrap)
-(setq-default truncate-lines t)
-
 ;; if two dired windows are open, suggest copy to the other window
 (setq dired-dwim-target t)
 
