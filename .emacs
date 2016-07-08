@@ -202,6 +202,7 @@ put before CHAR"
 
                        ;; for php development, yikes!
                        php-mode
+                       geben
 
                        ;; for common lisp development
                        slime
@@ -365,7 +366,6 @@ put before CHAR"
            (set-face-background 'mode-line (car color))
            (set-face-foreground 'mode-line (cdr color)))))))
 
-
 ;; -----------------------------------------------------------------------------
 ;;  ido-vertical-mode                                                  built-in
 ;; -----------------------------------------------------------------------------
@@ -373,3 +373,12 @@ put before CHAR"
 (when (package-installed-p 'ido-vertical-mode)
   (ido-vertical-mode 1)
   (setq ido-vertical-define-keys '(C-n-and-C-p-only)))
+
+;; -----------------------------------------------------------------------------
+;;  geben-mode                                                         built-in
+;; -----------------------------------------------------------------------------
+
+(when (and (package-installed-p 'geben)
+           (package-installed-p 'evil))
+  (add-hook 'geben-mode-hook 'evil-emacs-state))
+
