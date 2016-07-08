@@ -371,7 +371,7 @@ put before CHAR"
            (set-face-foreground 'mode-line (cdr color)))))))
 
 ;; -----------------------------------------------------------------------------
-;;  ido-vertical-mode                                                  built-in
+;;  ido-vertical-mode                                                  package
 ;; -----------------------------------------------------------------------------
 
 (when (package-installed-p 'ido-vertical-mode)
@@ -379,7 +379,7 @@ put before CHAR"
   (setq ido-vertical-define-keys '(C-n-and-C-p-only)))
 
 ;; -----------------------------------------------------------------------------
-;;  geben-mode                                                         built-in
+;;  geben-mode                                                         package
 ;; -----------------------------------------------------------------------------
 
 (when (and (package-installed-p 'geben)
