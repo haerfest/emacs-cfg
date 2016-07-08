@@ -339,6 +339,10 @@ put before CHAR"
   (setq inferior-lisp-program "/usr/local/bin/sbcl")
   (slime-setup '(slime-fancy)))
 
+;; -----------------------------------------------------------------------------
+;;  fsharp-mode                                                         package
+;; -----------------------------------------------------------------------------
+
 (when (package-installed-p 'fsharp-mode)
   (require 'fsharp-mode)
   (setq inferior-fsharp-program "/usr/local/bin/fsharpi --readline-")
@@ -364,7 +368,6 @@ put before CHAR"
                             (t default-color))))
            (set-face-background 'mode-line (car color))
            (set-face-foreground 'mode-line (cdr color)))))))
-
 
 ;; -----------------------------------------------------------------------------
 ;;  ido-vertical-mode                                                  built-in
