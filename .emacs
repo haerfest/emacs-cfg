@@ -72,8 +72,7 @@
 (when on-mac
   ;; use this font
   (set-face-attribute 'default nil
-                      :family "Source Code Pro"
-                      :weight 'normal
+                      :family "Hack"
                       :height 140)
 
   ;; use the Command key as the Meta key
@@ -183,9 +182,12 @@ put before CHAR"
                        ido-vertical-mode
                        markdown-mode
                        multiple-cursors
-                       solarized-theme
                        which-key
                        yasnippet
+
+                       ;; themes
+                       noctilux-theme
+                       solarized-theme
 
                        ;; for clojure development
                        better-defaults
@@ -209,6 +211,9 @@ put before CHAR"
 
                        ;; for f# development
                        fsharp-mode
+
+                       ;; for c# development
+                       csharp-mode
                        ))
 
 ;; define the filter function if not there
@@ -357,10 +362,11 @@ put before CHAR"
   (setq ido-vertical-define-keys '(C-n-and-C-p-only)))
 
 ;; -----------------------------------------------------------------------------
-;;  geben-mode                                                         package
+;;  csharp-mode                                                        package
 ;; -----------------------------------------------------------------------------
 
-(when (and (package-installed-p 'geben)
-           (package-installed-p 'evil))
-  (add-hook 'geben-mode-hook 'evil-emacs-state))
-
+(when (package-installed-p 'csharp-mode)
+  (add-hook 'csharp-mode-hook
+            (lambda ()
+              (electric-pair-mode 1)
+              (c-set-offset 'inline-open 0))))
