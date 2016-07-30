@@ -9,9 +9,8 @@
 (setq ring-bell-function 'ignore)
 
 ;; don't want any fancy GUI widgets
-(when (> emacs-major-version 22)
-  (scroll-bar-mode -1)
-  (tool-bar-mode -1))
+(when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+(when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 
 ;; don't want backup files
 (setq make-backup-files nil)
@@ -72,7 +71,8 @@
 (when on-mac
   ;; use this font
   (set-face-attribute 'default nil
-                      :family "Hack"
+                      :family "Source Code Pro"
+                      :weight 'normal
                       :height 140)
 
   ;; use the Command key as the Meta key
@@ -308,9 +308,7 @@ put before CHAR"
   (setenv "LC_ALL" "en_US.UTF-8")
   (setenv "LANG" "en_US.UTF-8")
 
-  (elpy-enable)
-  (when on-mac
-    (elpy-use-ipython)))
+  (elpy-enable))
 
 ;; -----------------------------------------------------------------------------
 ;;  rainbow-delimiters                                                  package
