@@ -320,6 +320,10 @@ put before CHAR"
   (setenv "LC_ALL" "en_US.UTF-8")
   (setenv "LANG" "en_US.UTF-8")
 
+  (when on-mac
+    (setq python-shell-interpreter "python3")
+    (setq elpy-rpc-python-command "python3"))
+
   (elpy-enable))
 
 ;; -----------------------------------------------------------------------------
