@@ -232,11 +232,10 @@ put before CHAR"
             (not (package-installed-p pkg)))
           who/packages))
 
-;; make sure all packages are installed
-(defun who/install-missing-packages ()
+;; make sure certain packages are installed
+(defun who/install-packages (packages)
   "Installs missing packages."
-  (let* ((packages (who/missing-packages))
-         (missing  (length packages))
+  (let* ((missing  (length packages))
          (prompt   (format "%d missing packages: %s. Install?"
                            missing packages)))
     ;; if any packages are missing, ask the user whether to install
@@ -261,7 +260,20 @@ put before CHAR"
                       (?n nil))))                      ; => nil
           (package-install pkg))))))
 
-(who/install-missing-packages)
+;; returns whether the package servers are accessible
+;; http://emacs.stackexchange.com/questions/7653/
+;;    elisp-code-to-check-for-internet-connection
+(defun who/can-retrieve-packages ()
+  (cl-loop for url in (mapcar 'cdr package-archives)
+           do (condition-case e
+                  (kill-buffer (url-retrieve-synchronously url))
+                (error (cl-return)))
+           finally (cl-return t)))
+
+(let ((missing-packages (who/missing-packages)))
+  (when (and missing-packages
+             (who/can-retrieve-packages))
+    (who/install-packages missing-packages)))
 
 ;; force loading of packages now, so we can use them from here on in .emacs
 (setq package-enable-at-startup nil)
