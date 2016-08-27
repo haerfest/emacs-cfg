@@ -187,6 +187,7 @@ put before CHAR"
 
                        ;; themes
                        noctilux-theme
+                       planet-theme
                        solarized-theme
 
                        ;; for clojure development
@@ -214,6 +215,13 @@ put before CHAR"
 
                        ;; for c# development
                        csharp-mode
+
+                       ;; for racket development
+                       racket-mode
+
+                       ;; for rust development
+                       cargo
+                       rust-mode
                        ))
 
 ;; define the filter function if not there
