@@ -72,7 +72,7 @@
   ;; use this font
   (set-face-attribute 'default nil
                       :family "Source Code Pro"
-                      :weight 'normal
+                      :weight 'light
                       :height 140)
 
   ;; use the Command key as the Meta key
@@ -248,7 +248,7 @@ put before CHAR"
                            missing packages)))
     ;; if any packages are missing, ask the user whether to install
     (when (and packages
-               (y-or-n-p-with-timeout prompt 30 nil))
+               (y-or-n-p-with-timeout prompt 3 nil))
       ;; yes, go ahead
       (package-refresh-contents)
       (setq install-all nil
