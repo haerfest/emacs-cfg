@@ -138,7 +138,8 @@ Return whether a theme is loaded."
     (unless (null theme)
       (disable-theme theme)))
   (setf current-custom-theme-index
-        (funcall advance themes current-custom-theme-index))
+        (mod (funcall advance current-custom-theme-index)
+             (length themes)))
   (let ((theme (nth current-custom-theme-index themes)))
     (unless (null theme)
       (load-theme theme)
@@ -148,21 +149,12 @@ Return whether a theme is loaded."
 (global-set-key (kbd "<f5>")
                 (lambda ()
                   (interactive)
-                  (cycle-custom-themes (cons nil (custom-available-themes))
-                                       (lambda (themes index)
-                                         (if (= index (1- (length themes)))
-                                             0
-                                             (1+ index))))))
+                  (cycle-custom-themes (cons nil (custom-available-themes)) #'1+)))
 
 (global-set-key (kbd "S-<f5>")
                 (lambda ()
                   (interactive)
-                  (cycle-custom-themes (cons nil (custom-available-themes))
-                                       (lambda (themes index)
-                                         (if (zerop index)
-                                             (1- (length themes))
-                                             (1- index))))))
-
+                  (cycle-custom-themes (cons nil (custom-available-themes)) #'1-)))
 
 ;; -----------------------------------------------------------------------------
 ;;  ido                                                                built-in
