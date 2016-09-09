@@ -128,6 +128,30 @@ put before CHAR"
   (kmacro-exec-ring-item
    (quote ([24 56 return 35 120 50 48 65 67 return] 0 "%d")) arg))
 
+(defvar current-custom-theme-index 0 "Index of currently loaded theme.")
+
+(defun cycle-custom-themes (themes)
+  "Cycles through all THEMES, one at a time. NIL disables."
+  (let ((theme (nth current-custom-theme-index themes)))
+    ;; disable current theme
+    (unless (null theme)
+      (disable-theme theme)))
+  ;; cycle to next theme
+  (incf current-custom-theme-index)
+  (when (= current-custom-theme-index (length themes))
+    (setf current-custom-theme-index 0))
+  ;; load next theme
+  (let ((theme (nth current-custom-theme-index themes)))
+    (unless (null theme)
+      (load-theme theme)
+      ((message "message" format-args)essage "Activated theme %s" theme))
+    (not (null theme))))
+
+(global-set-key (kbd "<f5>")
+                (lambda ()
+                  (interactive)
+                  (cycle-custom-themes (cons nil (custom-available-themes)))))
+
 ;; -----------------------------------------------------------------------------
 ;;  ido                                                                built-in
 ;; -----------------------------------------------------------------------------
