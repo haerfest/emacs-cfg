@@ -132,29 +132,29 @@ put before CHAR"
 
 (defun cycle-custom-themes (themes advance)
   "Cycle through all THEMES, one at a time. ADVANCE takes THEMES and the
-the current index and returns the next index. Load no theme if theme is NIL.
-Return whether a theme is loaded."
-  (let ((theme (nth current-custom-theme-index themes)))
-    (unless (null theme)
-      (disable-theme theme)))
-  (setf current-custom-theme-index
-        (mod (funcall advance current-custom-theme-index)
-             (length themes)))
-  (let ((theme (nth current-custom-theme-index themes)))
-    (unless (null theme)
-      (load-theme theme)
-      (message "Activated theme %s" theme))
-    (not (null theme))))
+the current index and returns the next index. Return whether a theme is loaded."
+  (let ((themes (cons nil themes)))
+    (let ((theme (nth current-custom-theme-index themes)))
+      (unless (null theme)
+        (disable-theme theme)))
+    (setf current-custom-theme-index
+          (mod (funcall advance current-custom-theme-index)
+               (length themes)))
+    (let ((theme (nth current-custom-theme-index themes)))
+      (unless (null theme)
+        (load-theme theme)
+        (message "Activated theme %s" theme))
+      (not (null theme)))))
 
 (global-set-key (kbd "<f5>")
                 (lambda ()
                   (interactive)
-                  (cycle-custom-themes (cons nil (custom-available-themes)) #'1+)))
+                  (cycle-custom-themes (custom-available-themes) #'1+)))
 
 (global-set-key (kbd "S-<f5>")
                 (lambda ()
                   (interactive)
-                  (cycle-custom-themes (cons nil (custom-available-themes)) #'1-)))
+                  (cycle-custom-themes (custom-available-themes) #'1-)))
 
 ;; -----------------------------------------------------------------------------
 ;;  ido                                                                built-in
