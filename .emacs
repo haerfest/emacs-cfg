@@ -131,8 +131,8 @@ put before CHAR"
 (defvar current-custom-theme-index 0 "Index of currently loaded theme.")
 
 (defun cycle-custom-themes (themes advance)
-  "Cycle through all THEMES, one at a time. ADVANCE takes THEMES and the
-the current index and returns the next index. Return whether a theme is loaded."
+  "Cycle through all THEMES, one at a time. ADVANCE takes an index and returns
+the next. Return whether a theme is loaded."
   (let ((themes (cons nil themes)))
     (let ((theme (nth current-custom-theme-index themes)))
       (unless (null theme)
