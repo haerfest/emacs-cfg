@@ -130,27 +130,39 @@ put before CHAR"
 
 (defvar current-custom-theme-index 0 "Index of currently loaded theme.")
 
-(defun cycle-custom-themes (themes)
-  "Cycles through all THEMES, one at a time. NIL disables."
+(defun cycle-custom-themes (themes advance)
+  "Cycle through all THEMES, one at a time. ADVANCE takes THEMES and the
+the current index and returns the next index. Load no theme if theme is NIL.
+Return whether a theme is loaded."
   (let ((theme (nth current-custom-theme-index themes)))
-    ;; disable current theme
     (unless (null theme)
       (disable-theme theme)))
-  ;; cycle to next theme
-  (incf current-custom-theme-index)
-  (when (= current-custom-theme-index (length themes))
-    (setf current-custom-theme-index 0))
-  ;; load next theme
+  (setf current-custom-theme-index
+        (funcall advance themes current-custom-theme-index))
   (let ((theme (nth current-custom-theme-index themes)))
     (unless (null theme)
       (load-theme theme)
-      ((message "message" format-args)essage "Activated theme %s" theme))
+      (message "Activated theme %s" theme))
     (not (null theme))))
 
 (global-set-key (kbd "<f5>")
                 (lambda ()
                   (interactive)
-                  (cycle-custom-themes (cons nil (custom-available-themes)))))
+                  (cycle-custom-themes (cons nil (custom-available-themes))
+                                       (lambda (themes index)
+                                         (if (= index (1- (length themes)))
+                                             0
+                                             (1+ index))))))
+
+(global-set-key (kbd "S-<f5>")
+                (lambda ()
+                  (interactive)
+                  (cycle-custom-themes (cons nil (custom-available-themes))
+                                       (lambda (themes index)
+                                         (if (zerop index)
+                                             (1- (length themes))
+                                             (1- index))))))
+
 
 ;; -----------------------------------------------------------------------------
 ;;  ido                                                                built-in
