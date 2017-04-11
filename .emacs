@@ -57,13 +57,13 @@
       (concat "find . -type f '!' -wholename '*/.svn/*' -print0 | "
               "xargs -0 grep -nH -e "))
 
-;; treat all themes as safe
-(setq custom-safe-themes t)
-
 ;; figure out which OS we're running on
 (defvar on-mac     (eq system-type 'darwin)     "t if OS is Mac OS X")
 (defvar on-windows (eq system-type 'windows-nt) "t if OS is Windows")
 (defvar on-linux   (eq system-type 'gnu/linux)  "t if OS is Linux")
+
+;; treat all themes as safe
+(setq custom-safe-themes t)
 
 ;; -----------------------------------------------------------------------------
 ;;  Mac OS X
@@ -72,8 +72,8 @@
   ;; use this font
   (set-face-attribute 'default nil
                       :family "Source Code Pro"
-                      :weight 'light
-                      :height 140)
+                      :weight 'normal
+                      :height 180)
 
   ;; use the Command key as the Meta key
   (setq mac-option-modifier  'super)
@@ -127,34 +127,6 @@ put before CHAR"
   (interactive "p")
   (kmacro-exec-ring-item
    (quote ([24 56 return 35 120 50 48 65 67 return] 0 "%d")) arg))
-
-(defvar current-custom-theme-index 0 "Index of currently loaded theme.")
-
-(defun cycle-custom-themes (themes advance)
-  "Cycle through all THEMES, one at a time. ADVANCE takes an index and returns
-the next. Return whether a theme is loaded."
-  (let ((themes (cons nil themes)))
-    (let ((theme (nth current-custom-theme-index themes)))
-      (unless (null theme)
-        (disable-theme theme)))
-    (setf current-custom-theme-index
-          (mod (funcall advance current-custom-theme-index)
-               (length themes)))
-    (let ((theme (nth current-custom-theme-index themes)))
-      (unless (null theme)
-        (load-theme theme)
-        (message "Activated theme %s" theme))
-      (not (null theme)))))
-
-(global-set-key (kbd "<f5>")
-                (lambda ()
-                  (interactive)
-                  (cycle-custom-themes (custom-available-themes) #'1+)))
-
-(global-set-key (kbd "S-<f5>")
-                (lambda ()
-                  (interactive)
-                  (cycle-custom-themes (custom-available-themes) #'1-)))
 
 ;; -----------------------------------------------------------------------------
 ;;  ido                                                                built-in
@@ -217,6 +189,7 @@ the next. Return whether a theme is loaded."
                        noctilux-theme
                        planet-theme
                        solarized-theme
+                       zenburn-theme
 
                        ;; for clojure development
                        better-defaults
@@ -420,3 +393,11 @@ the next. Return whether a theme is loaded."
             (lambda ()
               (electric-pair-mode 1)
               (c-set-offset 'inline-open 0))))
+
+
+;; -----------------------------------------------------------------------------
+;;  theme                                                              package
+;; -----------------------------------------------------------------------------
+
+(when (package-installed-p 'zenburn-theme)
+  (load-theme 'zenburn))
