@@ -73,7 +73,7 @@
   (set-face-attribute 'default nil
                       :family "Source Code Pro"
                       :weight 'normal
-                      :height 180)
+                      :height 140)
 
   ;; use the Command key as the Meta key
   (setq mac-option-modifier  'super)
@@ -329,9 +329,12 @@ put before CHAR"
   (setenv "LC_ALL" "en_US.UTF-8")
   (setenv "LANG" "en_US.UTF-8")
 
+  ;; prevent an error message about python not supporting readline
+  (setq python-shell-completion-native-enable nil)
+  
   (when on-mac
-    (setq python-shell-interpreter "python3")
-    (setq elpy-rpc-python-command "python3"))
+    (setq python-shell-interpreter "python")
+    (setq elpy-rpc-python-command "python"))
 
   (elpy-enable))
 
@@ -401,3 +404,17 @@ put before CHAR"
 
 (when (package-installed-p 'zenburn-theme)
   (load-theme 'zenburn))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (zenburn-theme which-key solarized-theme slime-company rainbow-delimiters racket-mode projectile planet-theme php-mode noctilux-theme multiple-cursors markdown-mode ido-vertical-mode hexrgb geben fsharp-mode frame-fns faces+ exec-path-from-shell elpy csharp-mode clojure-snippets clojure-mode-extra-font-locking cider cargo better-defaults))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
