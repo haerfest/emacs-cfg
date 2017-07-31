@@ -73,7 +73,7 @@
   (set-face-attribute 'default nil
                       :family "Source Code Pro"
                       :weight 'normal
-                      :height 140)
+                      :height 130)
 
   ;; use the Command key as the Meta key
   (setq mac-option-modifier  'super)
@@ -289,6 +289,13 @@ put before CHAR"
 (package-initialize)
 
 ;; -----------------------------------------------------------------------------
+;;  theme                                                               package
+;; -----------------------------------------------------------------------------
+
+(when (package-installed-p 'planet-theme)
+  (load-theme 'planet))
+
+;; -----------------------------------------------------------------------------
 ;;  multiple-cursors                                                    package
 ;; -----------------------------------------------------------------------------
 
@@ -396,25 +403,3 @@ put before CHAR"
             (lambda ()
               (electric-pair-mode 1)
               (c-set-offset 'inline-open 0))))
-
-
-;; -----------------------------------------------------------------------------
-;;  theme                                                              package
-;; -----------------------------------------------------------------------------
-
-(when (package-installed-p 'zenburn-theme)
-  (load-theme 'zenburn))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   (quote
-    (zenburn-theme which-key solarized-theme slime-company rainbow-delimiters racket-mode projectile planet-theme php-mode noctilux-theme multiple-cursors markdown-mode ido-vertical-mode hexrgb geben fsharp-mode frame-fns faces+ exec-path-from-shell elpy csharp-mode clojure-snippets clojure-mode-extra-font-locking cider cargo better-defaults))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
