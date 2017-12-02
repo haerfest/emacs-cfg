@@ -162,18 +162,19 @@ put before CHAR"
 (when on-mac
   (setq ispell-program-name "/opt/local/bin/aspell"))
 
-;; -----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
 ;;  packages
-;; -----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
 
 ;; credits to http://www.aaronbedra.com/emacs.d/
-(require 'package)
-(add-to-list 'package-archives
-             '("melpa-stable" . "https://melpa.org/packages/"))
-(add-to-list 'package-archives
-             '("elpy" . "http://jorgenschaefer.github.io/packages/"))
+(when (>= emacs-major-version 24)
+  (require 'package)
+  (add-to-list 'package-archives
+	       '("melpa-stable" . "https://melpa.org/packages/"))
+  (add-to-list 'package-archives
+	       '("elpy" . "http://jorgenschaefer.github.io/packages/"))
 
-(package-initialize)
+  (package-initialize))
 
 ;; default packages to have installed
 (defvar who/packages '(
@@ -279,25 +280,23 @@ put before CHAR"
                 (error (cl-return)))
            finally (cl-return t)))
 
-(let ((missing-packages (who/missing-packages)))
-  (when (and missing-packages
-             (who/can-retrieve-packages))
-    (who/install-packages missing-packages)))
+(when (>= emacs-major-version 24)
+  (let ((missing-packages (who/missing-packages)))
+    (when (and missing-packages
+	       (who/can-retrieve-packages))
+      (who/install-packages missing-packages)))
 
-;; force loading of packages now, so we can use them from here on in .emacs
-(setq package-enable-at-startup nil)
-(package-initialize)
+  ;; force loading of packages now, so we can use them from here on in .emacs
+  (setq package-enable-at-startup nil)
+  (package-initialize))
 
-;; -----------------------------------------------------------------------------
-;;  theme                                                               package
-;; -----------------------------------------------------------------------------
+(unless (fboundp 'package-installed-p)
+  (defun package-installed-p (package)
+    nil))
 
-(when (package-installed-p 'planet-theme)
-  (load-theme 'planet))
-
-;; -----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
 ;;  multiple-cursors                                                    package
-;; -----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
 
 (when (package-installed-p 'multiple-cursors)
   (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
