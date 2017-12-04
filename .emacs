@@ -85,8 +85,7 @@
 (when (and on-linux (display-graphic-p))
   ;; use this font
   (set-face-attribute 'default nil
-                      :family "Anonymous Pro"
-                      :weight 'extra-light
+                      :family "DejaVu Sans Mono"
                       :height 120)
 
   ;; allow copy & paste between Emacs and X
