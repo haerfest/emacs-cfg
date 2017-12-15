@@ -127,6 +127,18 @@ put before CHAR"
   (kmacro-exec-ring-item
    (quote ([24 56 return 35 120 50 48 65 67 return] 0 "%d")) arg))
 
+(defun aweta-fix-id-attributes-region (start end)
+  "Numbers all XML id=... tags in a region, starting with 0."
+  (interactive "r")
+  (save-restriction
+    (narrow-to-region start end)
+    (goto-char (point-min))
+    (let ((id 0))
+      (while (search-forward-regexp " id=\"[0-9]+\"" nil t)
+        (replace-match (format " id=\"%d\"" id))
+        (setq id (1+ id)))
+      (message (format "Updated %d id's" id)))))
+  
 ;; ----------------------------------------------------------------------------
 ;;  ido                                                                built-in
 ;; ----------------------------------------------------------------------------
