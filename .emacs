@@ -73,7 +73,7 @@
   (set-face-attribute 'default nil
                       :family "Source Code Pro"
                       :weight 'normal
-                      :height 130)
+                      :height 160)
 
   ;; use the Command key as the Meta key
   (setq mac-option-modifier  'super)
@@ -348,10 +348,16 @@ put before CHAR"
 
   ;; prevent an error message about python not supporting readline
   (setq python-shell-completion-native-enable nil)
-  
+
   (when on-mac
-    (setq python-shell-interpreter "python")
-    (setq elpy-rpc-python-command "python"))
+    (if (executable-find "ipython")
+        (progn
+          (setq python-shell-interpreter "ipython")
+          (setq python-shell-interpreter-args "--simple-prompt")
+          (setq elpy-rpc-python-command "ipython"))
+      (progn
+        (setq python-shell-interpreter "python")
+        (setq elpy-rpc-python-command "python"))))
 
   (elpy-enable))
 
