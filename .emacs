@@ -174,6 +174,13 @@ put before CHAR"
   (setq ispell-program-name "/opt/local/bin/aspell"))
 
 ;; ----------------------------------------------------------------------------
+;;  whitespace mode                                                    built-in
+;; ----------------------------------------------------------------------------
+
+(require 'whitespace)
+(global-set-key (kbd "C-c C-w") 'whitespace-mode)
+
+;; ----------------------------------------------------------------------------
 ;;  packages
 ;; ----------------------------------------------------------------------------
 
@@ -235,6 +242,9 @@ put before CHAR"
                        ;; for rust development
                        cargo
                        rust-mode
+
+                       ;; for haskell development
+                       intero
                        ))
 
 ;; define the filter function if not there
@@ -304,6 +314,12 @@ put before CHAR"
 (unless (fboundp 'package-installed-p)
   (defun package-installed-p (package)
     nil))
+
+;; ----------------------------------------------------------------------------
+;;  theme
+;; ----------------------------------------------------------------------------
+
+(load-theme 'wheatgrass)
 
 ;; ----------------------------------------------------------------------------
 ;;  multiple-cursors                                                    package
@@ -419,3 +435,11 @@ put before CHAR"
             (lambda ()
               (electric-pair-mode 1)
               (c-set-offset 'inline-open 0))))
+
+;; ----------------------------------------------------------------------------
+;;  intero                                                             package
+;; ----------------------------------------------------------------------------
+
+(when (package-installed-p 'intero)
+  (add-hook 'haskell-mode-hook 'intero-mode))
+
