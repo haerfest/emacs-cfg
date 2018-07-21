@@ -71,7 +71,7 @@
 (when on-mac
   ;; use this font
   (set-face-attribute 'default nil
-                      :family "Source Code Pro"
+                      :family "Courier"
                       :weight 'normal
                       :height 160)
 
@@ -316,12 +316,6 @@ put before CHAR"
     nil))
 
 ;; ----------------------------------------------------------------------------
-;;  theme
-;; ----------------------------------------------------------------------------
-
-(load-theme 'planet)
-
-;; ----------------------------------------------------------------------------
 ;;  multiple-cursors                                                    package
 ;; ----------------------------------------------------------------------------
 
@@ -406,7 +400,7 @@ put before CHAR"
 ;; ----------------------------------------------------------------------------
 
 (when (package-installed-p 'slime)
-  (setq inferior-lisp-program "/usr/local/bin/sbcl")
+  (setq inferior-lisp-program "/usr/local/bin/ccl64")
   (slime-setup '(slime-fancy)))
 
 ;; ----------------------------------------------------------------------------
