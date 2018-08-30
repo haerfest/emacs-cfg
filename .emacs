@@ -112,7 +112,7 @@
   ;; use this font
   (set-face-attribute 'default nil
                       :family "Source Code Pro"
-                      :height 160)
+                      :height 120)
 
   ;; open links with Windows' default browser
   (setq browse-url-browser-function 'browse-url-default-windows-browser))
@@ -329,6 +329,13 @@ put before CHAR"
     nil))
 
 ;; ----------------------------------------------------------------------------
+;;  markdown-mode                                                       package
+;; ----------------------------------------------------------------------------
+
+(when (package-installed-p 'markdown-mode)
+  (setq markdown-fontify-code-blocks-natively t))
+
+;; ----------------------------------------------------------------------------
 ;;  multiple-cursors                                                    package
 ;; ----------------------------------------------------------------------------
 
@@ -449,3 +456,4 @@ put before CHAR"
 
 (when (package-installed-p 'intero)
   (add-hook 'haskell-mode-hook 'intero-mode))
+
