@@ -65,6 +65,19 @@
 ;; treat all themes as safe
 (setq custom-safe-themes t)
 
+;; when going full-screen, disable the menu bar
+(setq is-fullscreen nil)
+(defun my-toggle-frame-fullscreen ()
+  (interactive)
+  (toggle-frame-fullscreen)
+  (setq is-fullscreen (not is-fullscreen))
+  (menu-bar-mode (if is-fullscreen -1 +1)))
+(global-set-key [f11]'my-toggle-frame-fullscreen)
+
+;; show the time
+(setq display-time-24hr-format t)
+(display-time-mode 1)
+
 ;; ----------------------------------------------------------------------------
 ;;  Mac OS X
 ;; ----------------------------------------------------------------------------
@@ -98,8 +111,8 @@
 (when on-windows
   ;; use this font
   (set-face-attribute 'default nil
-                      :family "Consolas"
-                      :height 100)
+                      :family "Source Code Pro"
+                      :height 120)
 
   ;; open links with Windows' default browser
   (setq browse-url-browser-function 'browse-url-default-windows-browser))
@@ -314,6 +327,13 @@ put before CHAR"
 (unless (fboundp 'package-installed-p)
   (defun package-installed-p (package)
     nil))
+
+;; ----------------------------------------------------------------------------
+;;  markdown-mode                                                       package
+;; ----------------------------------------------------------------------------
+
+(when (package-installed-p 'markdown-mode)
+  (setq markdown-fontify-code-blocks-natively t))
 
 ;; ----------------------------------------------------------------------------
 ;;  multiple-cursors                                                    package
