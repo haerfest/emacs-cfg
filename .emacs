@@ -72,7 +72,11 @@
   (toggle-frame-fullscreen)
   (setq is-fullscreen (not is-fullscreen))
   (menu-bar-mode (if is-fullscreen -1 +1)))
-(global-set-key [f11]'my-toggle-frame-fullscreen))
+(global-set-key [f11]'my-toggle-frame-fullscreen)
+
+;; show the time
+(setq display-time-24hr-format t)
+(display-time-mode 1)
 
 ;; ----------------------------------------------------------------------------
 ;;  Mac OS X
@@ -108,7 +112,7 @@
   ;; use this font
   (set-face-attribute 'default nil
                       :family "Source Code Pro"
-                      :height 120)
+                      :height 160)
 
   ;; open links with Windows' default browser
   (setq browse-url-browser-function 'browse-url-default-windows-browser))
