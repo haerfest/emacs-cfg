@@ -339,7 +339,8 @@ put before CHAR"
 ;; ----------------------------------------------------------------------------
 
 (when (package-installed-p 'markdown-mode)
-  (setq markdown-fontify-code-blocks-natively t))
+  (setq markdown-fontify-code-blocks-natively t)
+  (custom-set-faces '(markdown-code-face ((t nil)))))
 
 ;; ----------------------------------------------------------------------------
 ;;  multiple-cursors                                                    package
@@ -378,7 +379,7 @@ put before CHAR"
               (local-set-key "\C-c\M-o" #'erase-interactive-buffer)))
 
   ;; activate a local environment when present
-  (add-hook 'inferior-python-mode-hook
+  (add-hook 'python-mode-hook
             (lambda ()
               (let ((dir (concat default-directory "env")))
                 (when (file-directory-p dir)
@@ -401,6 +402,11 @@ put before CHAR"
       (progn
         (setq python-shell-interpreter "python")
         (setq elpy-rpc-python-command "python"))))
+
+  (when on-windows
+    (setq python-shell-interpreter "ipython")
+    (setq python-shell-interpreter-args "--simple-prompt")
+    (setq elpy-rpc-python-command "python"))
 
   (elpy-enable))
 
@@ -469,4 +475,3 @@ put before CHAR"
 
 (when (package-installed-p 'intero)
   (add-hook 'haskell-mode-hook 'intero-mode))
-
