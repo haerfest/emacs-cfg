@@ -226,6 +226,9 @@ put before CHAR"
                        solarized-theme
                        zenburn-theme
 
+                       ;; git support
+                       magit
+
                        ;; for clojure development
                        better-defaults
                        cider
@@ -374,6 +377,13 @@ put before CHAR"
             (lambda ()
               (local-set-key "\C-c\M-o" #'erase-interactive-buffer)))
 
+  ;; activate a local environment when present
+  (add-hook 'inferior-python-mode-hook
+            (lambda ()
+              (let ((dir (concat default-directory "env")))
+                (when (file-directory-p dir)
+                  (pyvenv-activate dir)))))
+  
   ;; set encoding of the Python shell to UTF-8
   (setenv "LC_CTYPE" "UTF-8")
   (setenv "LC_ALL" "en_US.UTF-8")
