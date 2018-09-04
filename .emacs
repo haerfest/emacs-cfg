@@ -373,6 +373,22 @@ put before CHAR"
 
 (when (package-installed-p 'elpy)
 
+  (defun activate-python-venv (dir)
+    "Activates the first Python virtual environment found up a directory
+    hierarchy."
+    (catch 'done-searching
+      ;; Look for these venv directories, stop when one activated.
+      (dolist (sub-dir '("env3" "env2" "env" ".env"))
+        (let ((env-dir (concat dir "/" sub-dir)))
+          (when (file-directory-p env-dir)
+            (pyvenv-activate env-dir)
+            (throw 'done-searching nil))))
+
+      ;; No venv found at dir, look one directory up.
+      (let ((parent-dir (directory-file-name (file-name-directory dir))))
+        (when (not (equal parent-dir dir))
+          (activate-python-venv parent-dir)))))
+
   ;; press C-c M-o (as in Slime) in a shell to clear the buffer
   (add-hook 'inferior-python-mode-hook
             (lambda ()
@@ -381,9 +397,7 @@ put before CHAR"
   ;; activate a local environment when present
   (add-hook 'python-mode-hook
             (lambda ()
-              (let ((dir (concat default-directory "env")))
-                (when (file-directory-p dir)
-                  (pyvenv-activate dir)))))
+              (activate-python-venv (file-name-directory (buffer-file-name)))))
   
   ;; set encoding of the Python shell to UTF-8
   (setenv "LC_CTYPE" "UTF-8")
