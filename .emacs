@@ -408,14 +408,8 @@ put before CHAR"
   (setq python-shell-completion-native-enable nil)
 
   (when on-mac
-    (if (executable-find "ipython")
-        (progn
-          (setq python-shell-interpreter "ipython")
-          (setq python-shell-interpreter-args "--simple-prompt")
-          (setq elpy-rpc-python-command "ipython"))
-      (progn
-        (setq python-shell-interpreter "python")
-        (setq elpy-rpc-python-command "python"))))
+    (setq python-shell-interpreter "python3")
+    (setq elpy-rpc-python-command "python3"))
 
   (when on-windows
     (setq python-shell-interpreter "ipython")
