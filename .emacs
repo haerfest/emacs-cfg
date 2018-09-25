@@ -74,6 +74,9 @@
   (menu-bar-mode (if is-fullscreen -1 +1)))
 (global-set-key [f11]'my-toggle-frame-fullscreen)
 
+;; key bindings for hideshow
+(global-set-key (kbd "C-+") 'hs-toggle-hiding)
+
 ;; show the time
 (setq display-time-24hr-format t)
 (display-time-mode 1)
@@ -394,10 +397,12 @@ put before CHAR"
             (lambda ()
               (local-set-key "\C-c\M-o" #'erase-interactive-buffer)))
 
-  ;; activate a local environment when present
+  ;; activate a local environment when present, and activate hideshow
   (add-hook 'python-mode-hook
             (lambda ()
-              (activate-python-venv (file-name-directory (buffer-file-name)))))
+              (hs-minor-mode)
+              (when-let ((filename (buffer-file-name)))
+                (activate-python-venv (file-name-directory filename)))))
   
   ;; set encoding of the Python shell to UTF-8
   (setenv "LC_CTYPE" "UTF-8")
