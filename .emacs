@@ -452,7 +452,7 @@ put before CHAR"
 ;; ----------------------------------------------------------------------------
 
 (when (package-installed-p 'slime)
-  (setq inferior-lisp-program "/usr/local/bin/ccl64")
+  (setq inferior-lisp-program "/usr/local/bin/sbcl")
   (slime-setup '(slime-fancy slime-company)))
 
 ;; ----------------------------------------------------------------------------
