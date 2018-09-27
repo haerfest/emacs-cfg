@@ -215,6 +215,7 @@ put before CHAR"
 
 ;; default packages to have installed
 (defvar who/packages '(
+                       better-defaults
                        company
                        exec-path-from-shell
                        ido-vertical-mode
@@ -224,6 +225,7 @@ put before CHAR"
                        yasnippet
 
                        ;; themes
+                       material-theme
                        noctilux-theme
                        planet-theme
                        solarized-theme
@@ -232,41 +234,14 @@ put before CHAR"
                        ;; git support
                        magit
 
-                       ;; for clojure development
-                       better-defaults
-                       cider
-                       clojure-mode
-                       clojure-mode-extra-font-locking
-                       clojure-snippets
-                       projectile
-                       rainbow-delimiters
-
                        ;; for python development
                        elpy
-
-                       ;; for php development, yikes!
-                       php-mode
-                       geben
+                       flycheck
+                       py-autopep8
 
                        ;; for common lisp development
                        slime
                        slime-company
-
-                       ;; for f# development
-                       fsharp-mode
-
-                       ;; for c# development
-                       csharp-mode
-
-                       ;; for racket development
-                       racket-mode
-
-                       ;; for rust development
-                       cargo
-                       rust-mode
-
-                       ;; for haskell development
-                       intero
                        ))
 
 ;; define the filter function if not there
@@ -398,12 +373,12 @@ put before CHAR"
               (local-set-key "\C-c\M-o" #'erase-interactive-buffer)))
 
   ;; activate a local environment when present, and activate hideshow
-  (add-hook 'python-mode-hook
+  (add-hook 'elpy-mode-hook
             (lambda ()
               (hs-minor-mode)
               (when-let ((filename (buffer-file-name)))
                 (activate-python-venv (file-name-directory filename)))))
-  
+
   ;; set encoding of the Python shell to UTF-8
   (setenv "LC_CTYPE" "UTF-8")
   (setenv "LC_ALL" "en_US.UTF-8")
@@ -421,7 +396,16 @@ put before CHAR"
     (setq python-shell-interpreter-args "--simple-prompt")
     (setq elpy-rpc-python-command "python"))
 
-  (elpy-enable))
+  (elpy-enable)
+
+    ;; replace flymake by flycheck
+  (when (package-installed-p 'flycheck)
+    (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+    (add-hook 'elpy-mode-hook 'flycheck-mode))
+
+  ;; activate py-autopep8 when saving
+  (when (package-installed-p 'py-autopep8)
+    (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)))
 
 ;; ----------------------------------------------------------------------------
 ;;  rainbow-delimiters                                                  package
