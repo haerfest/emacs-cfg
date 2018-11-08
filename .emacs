@@ -118,7 +118,7 @@
   ;; use this font
   (set-face-attribute 'default nil
                       :family "Source Code Pro"
-                      :height 120)
+                      :height 160)
 
   ;; open links with Windows' default browser
   (setq browse-url-browser-function 'browse-url-default-windows-browser))
@@ -359,12 +359,14 @@ put before CHAR"
       (dolist (sub-dir '("env3" "env2" "env" ".env"))
         (let ((env-dir (concat dir "/" sub-dir)))
           (when (file-directory-p env-dir)
+            (pyvenv-deactivate)
             (pyvenv-activate env-dir)
             (throw 'done-searching nil))))
 
       ;; No venv found at dir, look one directory up.
       (let ((parent-dir (directory-file-name (file-name-directory dir))))
         (when (not (equal parent-dir dir))
+          (pyvenv-deactivate)
           (activate-python-venv parent-dir)))))
 
   ;; press C-c M-o (as in Slime) in a shell to clear the buffer
@@ -392,8 +394,7 @@ put before CHAR"
     (setq elpy-rpc-python-command "python3"))
 
   (when on-windows
-    (setq python-shell-interpreter "ipython")
-    (setq python-shell-interpreter-args "--simple-prompt")
+    (setq python-shell-interpreter "python")
     (setq elpy-rpc-python-command "python"))
 
   (elpy-enable)
