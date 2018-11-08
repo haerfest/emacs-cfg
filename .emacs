@@ -52,6 +52,9 @@
 (global-set-key [(control z)] 'undo)
 (global-set-key [(super control z)] 'suspend-frame)
 
+;; press F5 to revert the current buffer
+(global-set-key [f5] 'revert-buffer)
+
 ;; skip .svn directories when doing a grep-find
 (setq grep-find-command
       (concat "find . -type f '!' -wholename '*/.svn/*' -print0 | "
