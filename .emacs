@@ -55,6 +55,9 @@
 ;; press F5 to revert the current buffer
 (global-set-key [f5] 'revert-buffer)
 
+;; press F6 to toggle folding
+(global-set-key [f6] 'hs-toggle-hiding)
+
 ;; skip .svn directories when doing a grep-find
 (setq grep-find-command
       (concat "find . -type f '!' -wholename '*/.svn/*' -print0 | "
@@ -76,9 +79,6 @@
   (setq is-fullscreen (not is-fullscreen))
   (menu-bar-mode (if is-fullscreen -1 +1)))
 (global-set-key [f11]'my-toggle-frame-fullscreen)
-
-;; key bindings for hideshow
-(global-set-key (kbd "C-+") 'hs-toggle-hiding)
 
 ;; show the time
 (setq display-time-24hr-format t)
