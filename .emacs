@@ -55,9 +55,6 @@
 ;; press F5 to revert the current buffer
 (global-set-key [f5] 'revert-buffer)
 
-;; press F6 to toggle folding
-(global-set-key [f6] 'hs-toggle-hiding)
-
 ;; skip .svn directories when doing a grep-find
 (setq grep-find-command
       (concat "find . -type f '!' -wholename '*/.svn/*' -print0 | "
@@ -86,6 +83,9 @@
 
 ;; highlight the current line
 (global-hl-line-mode 1)
+
+;; truncate lines (i.e. don't wrap)
+(set-default 'truncate-lines t)
 
 ;; ----------------------------------------------------------------------------
 ;;  Mac OS X
@@ -121,7 +121,7 @@
   ;; use this font
   (set-face-attribute 'default nil
                       :family "Source Code Pro"
-                      :height 160)
+                      :height 120)
 
   ;; open links with Windows' default browser
   (setq browse-url-browser-function 'browse-url-default-windows-browser))
@@ -160,7 +160,59 @@ put before CHAR"
         (replace-match (format " id=\"%d\"" id))
         (setq id (1+ id)))
       (message (format "Updated %d id's" id)))))
-  
+
+;; ----------------------------------------------------------------------------
+;;  hideshow                                                          built-in
+;; ----------------------------------------------------------------------------
+
+;; press F6 to toggle folding
+(global-set-key [f6] 'hs-toggle-hiding)
+
+;; fix hideshow XML folding
+(add-to-list 'hs-special-modes-alist
+             (list 'nxml-mode
+                   "<!--\\|<[^/>]*[^/]>"
+                   "-->\\|</[^/>]*[^/]>"
+                   "<!--"
+                   'nxml-forward-element
+                   nil))
+
+;; fix hideshow HTML folding
+(dolist (mode '(sgml-mode
+                html-mode
+                html-erb-mode))
+  (add-to-list 'hs-special-modes-alist
+               (list mode
+                     "<!--\\|<[^/>]*[^/]>"
+                     "-->\\|</[^/>]*[^/]>"
+                     "<!--"
+                     'sgml-skip-tag-forward
+                     nil)))
+
+;; activate hideshow when editing certain files
+(dolist (mode '(nxml-mode
+                sgml-mode
+                html-mode
+                html-erg-mode
+                c-mode-common-hook))
+  (add-hook mode 'hs-minor-mode))
+
+;; ----------------------------------------------------------------------------
+;;  semantic                                                          built-in
+;; ----------------------------------------------------------------------------
+
+(require 'cc-mode)
+(require 'semantic)
+
+(global-semanticdb-minor-mode 1)
+(global-semantic-idle-scheduler-mode 1)
+
+(when on-windows
+  (semantic-add-system-include "D:/work/awu")
+  (semantic-add-system-include "D:/work/thirdparty/include"))
+
+(semantic-mode 1)
+
 ;; ----------------------------------------------------------------------------
 ;;  ido                                                                built-in
 ;; ----------------------------------------------------------------------------
@@ -237,14 +289,17 @@ put before CHAR"
                        ;; git support
                        magit
 
-                       ;; for python development
+                       ;; python development
                        elpy
                        flycheck
                        py-autopep8
 
-                       ;; for common lisp development
+                       ;; common lisp development
                        slime
                        slime-company
+
+                       ;; C/C++ development
+                       ggtags
                        ))
 
 ;; define the filter function if not there
@@ -314,6 +369,30 @@ put before CHAR"
 (unless (fboundp 'package-installed-p)
   (defun package-installed-p (package)
     nil))
+
+;; ----------------------------------------------------------------------------
+;;  ggtags                                                              package
+;; ----------------------------------------------------------------------------
+
+(when (package-installed-p 'ggtags)
+  (require 'ggtags)
+  
+  (add-hook 'c-mode-common-hook
+          (lambda ()
+            (when (derived-mode-p 'c-mode 'c++-mode 'java-mode 'asm-mode)
+              (ggtags-mode 1))))
+
+  (when on-windows
+    (setq ggtags-executable-directory "C:/Program Files (x86)/GNU/GLOBAL/bin"))
+
+  (define-key ggtags-mode-map (kbd "C-c g s") 'ggtags-find-other-symbol)
+  (define-key ggtags-mode-map (kbd "C-c g h") 'ggtags-view-tag-history)
+  (define-key ggtags-mode-map (kbd "C-c g r") 'ggtags-find-reference)
+  (define-key ggtags-mode-map (kbd "C-c g f") 'ggtags-find-file)
+  (define-key ggtags-mode-map (kbd "C-c g c") 'ggtags-create-tags)
+  (define-key ggtags-mode-map (kbd "C-c g u") 'ggtags-update-tags)
+  
+  (define-key ggtags-mode-map (kbd "M-,") 'pop-tag-mark))
 
 ;; ----------------------------------------------------------------------------
 ;;  markdown-mode                                                       package
@@ -476,3 +555,4 @@ put before CHAR"
 
 (when (package-installed-p 'intero)
   (add-hook 'haskell-mode-hook 'intero-mode))
+
