@@ -556,3 +556,15 @@ put before CHAR"
 (when (package-installed-p 'intero)
   (add-hook 'haskell-mode-hook 'intero-mode))
 
+;; ----------------------------------------------------------------------------
+;;  multi-web-mode                                                     package
+;; ----------------------------------------------------------------------------
+
+(when (package-installed-p 'multi-web-mode)
+  (require 'multi-web-mode)
+  (setq mweb-default-major-mode 'html-mode)
+  (setq mweb-tags '((php-mode "<\\?php\\|<\\? \\|<\\?=" "\\?>")
+                    (js-mode "<script>\\|<script +\\(type=\"text/javascript\"\\|language=\"javascript\"\\)[^>]*>" "</script>")
+                    (css-mode "<style +type=\"text/css\"[^>]*>" "</style>")))
+  (setq mweb-filename-extensions '("php" "htm" "html" "ctp" "phtml" "php4" "php5"))
+  (multi-web-global-mode 1))
