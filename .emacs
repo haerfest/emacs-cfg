@@ -300,6 +300,9 @@ put before CHAR"
 
                        ;; C/C++ development
                        ggtags
+
+                       ;; web development
+                       multi-web-mode
                        ))
 
 ;; define the filter function if not there
