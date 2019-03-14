@@ -318,56 +318,58 @@ put before CHAR"
           (setq filtered (cons item filtered))))
       (reverse filtered))))
 
-;; returns which packages are missing
-(defun who/missing-packages ()
-  "Returns a list of missing packages."
-  (filter (lambda (pkg)
-            (not (package-installed-p pkg)))
-          who/packages))
-
-;; make sure certain packages are installed
-(defun who/install-packages (packages)
-  "Installs missing packages."
-  (let* ((missing  (length packages))
-         (prompt   (format "%d missing packages: %s. Install?"
-                           missing packages)))
-    ;; if any packages are missing, ask the user whether to install
-    (when (and packages
-               (y-or-n-p-with-timeout prompt 3 nil))
-      ;; yes, go ahead
-      (package-refresh-contents)
-      (setq install-all nil
-            install-none nil)
-      ;; loop over each package and install if desired
-      (while (and packages (not install-none))
-        (setq pkg (car packages)
-              packages (cdr packages))
-        ;; install when 'install-all is set, or the user confirms
-        (when (or install-all
-                  (let ((prompt (format "Install package %s? (y, n, N, or a) "
-                                        pkg)))
-                    (pcase (read-char-choice prompt '(?y ?n ?N ?a))
-                      (?y t)                           ; => t
-                      (?a (setq install-all t))        ; => t
-                      (?N (not (setq install-none t))) ; => nil
-                      (?n nil))))                      ; => nil
-          (package-install pkg))))))
-
-;; returns whether the package servers are accessible
-;; http://emacs.stackexchange.com/questions/7653/
-;;    elisp-code-to-check-for-internet-connection
-(defun who/can-retrieve-packages ()
-  (cl-loop for url in (mapcar 'cdr package-archives)
-           do (condition-case e
-                  (kill-buffer (url-retrieve-synchronously url))
-                (error (cl-return)))
-           finally (cl-return t)))
-
 (when (>= emacs-major-version 24)
-  (let ((missing-packages (who/missing-packages)))
-    (when (and missing-packages
-	       (who/can-retrieve-packages))
-      (who/install-packages missing-packages)))
+
+  ;; returns which packages are missing
+  (defun who/missing-packages ()
+    "Returns a list of missing packages."
+    (filter (lambda (pkg)
+              (not (package-installed-p pkg)))
+            who/packages))
+
+  ;; make sure certain packages are installed
+  (defun who/install-packages (packages)
+    "Installs missing packages."
+    (let* ((missing  (length packages))
+           (prompt   (format "%d missing packages: %s. Install?"
+                             missing packages)))
+      ;; if any packages are missing, ask the user whether to install
+      (when (and packages
+                 (y-or-n-p-with-timeout prompt 3 nil))
+        ;; yes, go ahead
+        (package-refresh-contents)
+        (setq install-all nil
+              install-none nil)
+        ;; loop over each package and install if desired
+        (while (and packages (not install-none))
+          (setq pkg (car packages)
+                packages (cdr packages))
+          ;; install when 'install-all is set, or the user confirms
+          (when (or install-all
+                    (let ((prompt (format "Install package %s? (y, n, N, or a) "
+                                          pkg)))
+                      (pcase (read-char-choice prompt '(?y ?n ?N ?a))
+                        (?y t)                           ; => t
+                        (?a (setq install-all t))        ; => t
+                        (?N (not (setq install-none t))) ; => nil
+                        (?n nil))))                      ; => nil
+            (package-install pkg))))))
+
+  ;; returns whether the package servers are accessible
+  ;; http://emacs.stackexchange.com/questions/7653/
+  ;;    elisp-code-to-check-for-internet-connection
+  (defun who/can-retrieve-packages ()
+    (cl-loop for url in (mapcar 'cdr package-archives)
+             do (condition-case e
+                    (kill-buffer (url-retrieve-synchronously url))
+                  (error (cl-return)))
+             finally (cl-return t)))
+
+  (defun who/update ()
+    (let ((missing-packages (who/missing-packages)))
+      (when (and missing-packages
+                 (who/can-retrieve-packages))
+        (who/install-packages missing-packages))))
 
   ;; force loading of packages now, so we can use them from here on in .emacs
   (setq package-enable-at-startup nil)
