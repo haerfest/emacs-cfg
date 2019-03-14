@@ -91,6 +91,10 @@
 ;;  Mac OS X
 ;; ----------------------------------------------------------------------------
 (when on-mac
+  ;; activate dark mode
+  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+  (add-to-list 'default-frame-alist '(ns-appearance . dark))
+  
   ;; use this font
   (set-face-attribute 'default nil
                       :family "Courier"
@@ -566,8 +570,12 @@ put before CHAR"
 (when (package-installed-p 'multi-web-mode)
   (require 'multi-web-mode)
   (setq mweb-default-major-mode 'html-mode)
-  (setq mweb-tags '((php-mode "<\\?php\\|<\\? \\|<\\?=" "\\?>")
-                    (js-mode "<script>\\|<script +\\(type=\"text/javascript\"\\|language=\"javascript\"\\)[^>]*>" "</script>")
-                    (css-mode "<style +type=\"text/css\"[^>]*>" "</style>")))
+  (setq mweb-tags
+        '((php-mode "<\\?php\\|<\\? \\|<\\?="
+                    "\\?>")
+          (js-mode "<script>\\|<script +\\(type=\"text/javascript\"\\|language=\"javascript\"\\)[^>]*>"
+                   "</script>")
+          (css-mode "<style>\\|<style +type=\"text/css\"[^>]*>"
+                    "</style>")))
   (setq mweb-filename-extensions '("php" "htm" "html" "ctp" "phtml" "php4" "php5"))
   (multi-web-global-mode 1))
