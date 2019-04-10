@@ -55,6 +55,9 @@
 ;; press F5 to revert the current buffer
 (global-set-key [f5] 'revert-buffer)
 
+;; press F2 ro rename the current buffer
+(global-set-key [f2] 'rename-buffer)
+
 ;; skip .svn directories when doing a grep-find
 (setq grep-find-command
       (concat "find . -type f '!' -wholename '*/.svn/*' -print0 | "
@@ -164,6 +167,13 @@ put before CHAR"
         (replace-match (format " id=\"%d\"" id))
         (setq id (1+ id)))
       (message (format "Updated %d id's" id)))))
+
+;; ----------------------------------------------------------------------------
+;;  uniquify                                                          built-in
+;; ----------------------------------------------------------------------------
+
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'post-forward)
 
 ;; ----------------------------------------------------------------------------
 ;;  hideshow                                                          built-in
@@ -581,3 +591,11 @@ put before CHAR"
                     "</style>")))
   (setq mweb-filename-extensions '("php" "htm" "html" "ctp" "phtml" "php4" "php5"))
   (multi-web-global-mode 1))
+
+;; ----------------------------------------------------------------------------
+;;  neotree                                                            package
+;; ----------------------------------------------------------------------------
+
+(when (package-installed-p 'neotree)
+  (require 'neotree)
+  (global-set-key [f8] 'neotree-toggle))
