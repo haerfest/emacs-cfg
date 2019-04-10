@@ -462,12 +462,13 @@ put before CHAR"
           (when (file-directory-p env-dir)
             (pyvenv-deactivate)
             (pyvenv-activate env-dir)
+            (setq python-shell-interpreter "python")
+            (setq elpy-rpc-python-command "python")
             (throw 'done-searching nil))))
 
       ;; No venv found at dir, look one directory up.
       (let ((parent-dir (directory-file-name (file-name-directory dir))))
         (when (not (equal parent-dir dir))
-          (pyvenv-deactivate)
           (activate-python-venv parent-dir)))))
 
   ;; press C-c M-o (as in Slime) in a shell to clear the buffer
@@ -495,12 +496,12 @@ put before CHAR"
     (setq elpy-rpc-python-command "python3"))
 
   (when on-windows
-    (setq python-shell-interpreter "python")
-    (setq elpy-rpc-python-command "python"))
+    (setq python-shell-interpreter "py")
+    (setq elpy-rpc-python-command "py"))
 
   (elpy-enable)
 
-    ;; replace flymake by flycheck
+  ;; replace flymake by flycheck
   (when (package-installed-p 'flycheck)
     (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
     (add-hook 'elpy-mode-hook 'flycheck-mode))
