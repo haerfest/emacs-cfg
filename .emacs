@@ -452,36 +452,13 @@ put before CHAR"
 
 (when (package-installed-p 'elpy)
 
-  (defun activate-python-venv (dir)
-    "Activates the first Python virtual environment found up a directory
-    hierarchy."
-    (catch 'done-searching
-      ;; Look for these venv directories, stop when one activated.
-      (dolist (sub-dir '("env3" "env2" "env" ".env"))
-        (let ((env-dir (concat dir "/" sub-dir)))
-          (when (file-directory-p env-dir)
-            (pyvenv-deactivate)
-            (pyvenv-activate env-dir)
-            (setq python-shell-interpreter "python")
-            (setq elpy-rpc-python-command "python")
-            (throw 'done-searching nil))))
-
-      ;; No venv found at dir, look one directory up.
-      (let ((parent-dir (directory-file-name (file-name-directory dir))))
-        (when (not (equal parent-dir dir))
-          (activate-python-venv parent-dir)))))
-
   ;; press C-c M-o (as in Slime) in a shell to clear the buffer
   (add-hook 'inferior-python-mode-hook
             (lambda ()
               (local-set-key "\C-c\M-o" #'erase-interactive-buffer)))
 
-  ;; activate a local environment when present, and activate hideshow
-  (add-hook 'elpy-mode-hook
-            (lambda ()
-              (hs-minor-mode)
-              (when-let ((filename (buffer-file-name)))
-                (activate-python-venv (file-name-directory filename)))))
+  ;; activate hideshow
+  (add-hook 'elpy-mode-hook (lambda () (hs-minor-mode)))
 
   ;; set encoding of the Python shell to UTF-8
   (setenv "LC_CTYPE" "UTF-8")
@@ -600,3 +577,17 @@ put before CHAR"
 (when (package-installed-p 'neotree)
   (require 'neotree)
   (global-set-key [f8] 'neotree-toggle))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (protobuf-mode zweilight-theme zerodark-theme zeno-theme zenburn-theme zen-and-art-theme yoshi-theme xresources-theme white-theme white-sand-theme which-key warm-night-theme waher-theme underwater-theme ujelly-theme ubuntu-theme twilight-theme tramp-theme toxi-theme tommyh-theme termbright-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme suscolors-theme sunny-day-theme sunburn-theme sublime-themes subatomic256-theme subatomic-theme srcery-theme spacemacs-theme spacegray-theme sourcerer-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme snazzy-theme smyx-theme slime-theme slime-company silkworm-theme seti-theme seoul256-theme select-themes rimero-theme reykjavik-theme reverse-theme rebecca-theme rand-theme rainbow-delimiters railscasts-theme racket-mode py-autopep8 purple-haze-theme purp-theme punpun-theme projectile professional-theme prassee-theme poet-theme planet-theme plan9-theme plain-theme php-mode per-buffer-theme peacock-theme pastelmac-theme paper-theme panda-theme paganini-theme overcast-theme org-beautify-theme one-themes oldlace-theme oceanic-theme occidental-theme obsidian-theme nyx-theme nova-theme northcode-theme nordless-theme nord-theme nofrils-acme-theme noctilux-theme nimbus-theme night-owl-theme neotree naquadah-theme mustard-theme mustang-theme multiple-cursors multi-web-mode monotropic-theme monokai-theme monokai-alt-theme monochrome-theme molokai-theme moe-theme minimal-theme metalheart-theme mellow-theme melancholy-theme mbo70s-theme material-theme mandm-theme majapahit-theme magit madhat2r-theme lush-theme load-theme-buffer-local liso-theme light-soap-theme leuven-theme lenlen-theme lavender-theme labburn-theme lab-themes kosmos-theme kooten-theme klere-theme kaolin-themes jbeans-theme jazz-theme ir-black-theme iodine-theme inverse-acme-theme intero intellij-theme inkpot-theme ido-vertical-mode idea-darkula-theme heroku-theme hemisu-theme hemera-theme helm-themes hc-zenburn-theme hamburg-theme habamax-theme gruvbox-theme greymatters-theme green-screen-theme grayscale-theme grandshell-theme gotham-theme goose-theme github-theme geben gandalf-theme fsharp-mode forest-blue-theme foggy-night-theme flucui-themes flatui-theme flatui-dark-theme flatland-theme firecode-theme fill-column-indicator farmhouse-theme faff-theme eziam-theme exotica-theme exec-path-from-shell espresso-theme elpy eink-theme eclipse-theme dracula-theme doom-themes doneburn-theme django-theme darktooth-theme darkokai-theme darkmine-theme darkburn-theme dark-mint-theme dark-krystal-theme darcula-theme danneskjold-theme dakrone-theme cyberpunk-theme csharp-mode creamsody-theme constant-theme commentary-theme colonoscopy-theme clues-theme clojure-snippets clojure-mode-extra-font-locking cider chyla-theme caroline-theme cargo busybee-theme bubbleberry-theme brutalist-theme boron-theme borland-blue-theme bliss-theme blackboard-theme better-defaults basic-theme badwolf-theme badger-theme avk-emacs-themes autumn-light-theme atom-one-dark-theme atom-dark-theme arjen-grey-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes airline-themes ahungry-theme afternoon-theme abyss-theme))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(markdown-code-face ((t nil))))
