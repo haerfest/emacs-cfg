@@ -85,7 +85,7 @@
 (display-time-mode 1)
 
 ;; highlight the current line
-(global-hl-line-mode 1)
+;; (global-hl-line-mode 1)
 
 ;; truncate lines (i.e. don't wrap)
 (set-default 'truncate-lines t)
@@ -215,17 +215,18 @@ put before CHAR"
 ;;  semantic                                                          built-in
 ;; ----------------------------------------------------------------------------
 
-(require 'cc-mode)
-(require 'semantic)
+(when (>= emacs-major-version 24)
+  (require 'cc-mode)
+  (require 'semantic)
 
-(global-semanticdb-minor-mode 1)
-(global-semantic-idle-scheduler-mode 1)
+  (global-semanticdb-minor-mode 1)
+  (global-semantic-idle-scheduler-mode 1)
 
-(when on-windows
-  (semantic-add-system-include "D:/work/awu")
-  (semantic-add-system-include "D:/work/thirdparty/include"))
+  (when on-windows
+    (semantic-add-system-include "D:/work/awu")
+    (semantic-add-system-include "D:/work/thirdparty/include"))
 
-(semantic-mode 1)
+  (semantic-mode 1))
 
 ;; ----------------------------------------------------------------------------
 ;;  ido                                                                built-in
