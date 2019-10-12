@@ -100,7 +100,7 @@
   
   ;; use this font
   (set-face-attribute 'default nil
-                      :family "Courier"
+                      :family "Cascadia Code"
                       :weight 'normal
                       :height 160)
 
@@ -127,7 +127,7 @@
 (when on-windows
   ;; use this font
   (set-face-attribute 'default nil
-                      :family "Source Code Pro"
+                      :family "Cascadia Code"
                       :height 120)
 
   ;; open links with Windows' default browser
@@ -303,6 +303,9 @@ put before CHAR"
 
                        ;; git support
                        magit
+
+                       ;; filesystem navigation
+                       neotree
 
                        ;; python development
                        elpy
