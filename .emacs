@@ -90,6 +90,9 @@
 ;; truncate lines (i.e. don't wrap)
 (set-default 'truncate-lines t)
 
+;; add an HTML closing tag when typing /
+(setq sgml-quick-keys 'close)
+
 ;; ----------------------------------------------------------------------------
 ;;  Mac OS X
 ;; ----------------------------------------------------------------------------
@@ -570,3 +573,7 @@ put before CHAR"
 (when (package-installed-p 'neotree)
   (require 'neotree)
   (global-set-key [f8] 'neotree-toggle))
+
+;; ----------------------------------------------------------------------------
+;;  Additional garbage added by Emacs goes here.
+;; ----------------------------------------------------------------------------
