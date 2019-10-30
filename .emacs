@@ -93,6 +93,10 @@
 ;; add an HTML closing tag when typing /
 (setq sgml-quick-keys 'close)
 
+;; don't ask me what tag I want to insert when typing <
+(with-eval-after-load 'sgml-mode
+  (eval-after-load (define-key html-mode-map "<" nil)))
+
 ;; ----------------------------------------------------------------------------
 ;;  Mac OS X
 ;; ----------------------------------------------------------------------------
