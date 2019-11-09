@@ -95,7 +95,7 @@
 ;; ----------------------------------------------------------------------------
 (when on-mac
   ;; activate dark mode
-  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+  ;; (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
   (add-to-list 'default-frame-alist '(ns-appearance . dark))
   
   ;; use this font
