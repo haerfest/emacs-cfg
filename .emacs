@@ -90,6 +90,11 @@
 ;; truncate lines (i.e. don't wrap)
 (set-default 'truncate-lines t)
 
+;; store customizations in a separate file
+(setq custom-file "~/.emacs-custom.el")
+(when (file-exists-p custom-file)
+  (load custom-file))
+
 ;; ----------------------------------------------------------------------------
 ;;  Mac OS X
 ;; ----------------------------------------------------------------------------
@@ -446,7 +451,23 @@ put before CHAR"
 ;; ----------------------------------------------------------------------------
 
 (when (package-installed-p 'company)
-  (add-hook 'after-init-hook 'global-company-mode))
+  (add-hook 'after-init-hook
+            (lambda ()
+              (global-company-mode)
+              (define-key company-active-map
+                (kbd "\C-n") 'company-select-next)
+              (define-key company-active-map
+                (kbd "\C-p") 'company-select-previous)
+              (define-key company-active-map
+                (kbd "\C-d") 'company-show-doc-buffer)
+              (define-key company-active-map
+                (kbd "\C-v") 'company-show-location)
+              (define-key company-active-map
+                (kbd "<tab>") 'company-complete)
+              (define-key company-active-map
+                (kbd "\C-g") '(lambda ()
+                                (interactive)
+                                (company-abort))))))
 
 ;; ----------------------------------------------------------------------------
 ;;  elpy                                                                package
@@ -570,7 +591,3 @@ put before CHAR"
 (when (package-installed-p 'neotree)
   (require 'neotree)
   (global-set-key [f8] 'neotree-toggle))
-
-;; ----------------------------------------------------------------------------
-;;  Additional garbage added by Emacs goes here.
-;; ----------------------------------------------------------------------------
