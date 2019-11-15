@@ -100,14 +100,13 @@
 ;; ----------------------------------------------------------------------------
 (when on-mac
   ;; activate dark mode
-  ;; (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
   (add-to-list 'default-frame-alist '(ns-appearance . dark))
   
   ;; use this font
   (set-face-attribute 'default nil
-                      :family "Cascadia Code"
-                      :weight 'normal
-                      :height 160)
+                      :family "SF Mono"
+                      :weight 'light
+                      :height 150)
 
   ;; use the Command key as the Meta key
   (setq mac-option-modifier  'super)
