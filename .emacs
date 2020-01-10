@@ -274,6 +274,13 @@ put before CHAR"
 (global-set-key (kbd "C-c C-w") 'whitespace-mode)
 
 ;; ----------------------------------------------------------------------------
+;;  python                                                            built-in
+;; ----------------------------------------------------------------------------
+
+(when on-windows
+  (setq python-shell-interpreter "py.exe"))
+
+;; ----------------------------------------------------------------------------
 ;;  packages
 ;; ----------------------------------------------------------------------------
 
@@ -282,8 +289,6 @@ put before CHAR"
   (require 'package)
   (add-to-list 'package-archives
 	       '("melpa-stable" . "https://melpa.org/packages/"))
-  (add-to-list 'package-archives
-	       '("elpy" . "http://jorgenschaefer.github.io/packages/"))
 
   (package-initialize))
 
@@ -296,23 +301,16 @@ put before CHAR"
                        markdown-mode
                        multiple-cursors
                        which-key
-                       yasnippet
 
                        ;; themes
-                       material-theme
-                       noctilux-theme
                        planet-theme
                        solarized-theme
-                       zenburn-theme
 
                        ;; git support
                        magit
 
                        ;; filesystem navigation
                        neotree
-
-                       ;; python development
-                       elpy
 
                        ;; common lisp development
                        slime
@@ -469,38 +467,6 @@ put before CHAR"
                                 (company-abort))))))
 
 ;; ----------------------------------------------------------------------------
-;;  elpy                                                                package
-;; ----------------------------------------------------------------------------
-
-(when (package-installed-p 'elpy)
-
-  ;; press C-c M-o (as in Slime) in a shell to clear the buffer
-  (add-hook 'inferior-python-mode-hook
-            (lambda ()
-              (local-set-key "\C-c\M-o" #'erase-interactive-buffer)))
-
-  ;; activate hideshow
-  (add-hook 'elpy-mode-hook (lambda () (hs-minor-mode)))
-
-  ;; set encoding of the Python shell to UTF-8
-  (setenv "LC_CTYPE" "UTF-8")
-  (setenv "LC_ALL" "en_US.UTF-8")
-  (setenv "LANG" "en_US.UTF-8")
-
-  ;; prevent an error message about python not supporting readline
-  (setq python-shell-completion-native-enable nil)
-
-  (when on-mac
-    (setq python-shell-interpreter "python3")
-    (setq elpy-rpc-python-command "python3"))
-
-  (when on-windows
-    (setq python-shell-interpreter "py")
-    (setq elpy-rpc-python-command "py"))
-
-  (elpy-enable))
-
-;; ----------------------------------------------------------------------------
 ;;  rainbow-delimiters                                                  package
 ;; ----------------------------------------------------------------------------
 
@@ -590,3 +556,11 @@ put before CHAR"
 (when (package-installed-p 'neotree)
   (require 'neotree)
   (global-set-key [f8] 'neotree-toggle))
+
+;; ----------------------------------------------------------------------------
+;;  ws-butler                                                          package
+;; ----------------------------------------------------------------------------
+
+(when (package-installed-p 'ws-butler)
+  (require 'ws-butler)
+  (add-hook 'prog-mode-hook #'ws-butler-mode))
