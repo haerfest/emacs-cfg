@@ -90,6 +90,10 @@
 ;; truncate lines (i.e. don't wrap)
 (set-default 'truncate-lines t)
 
+;; prevent non-ascii characters from slowing emacs down
+;; https://emacs.stackexchange.com/questions/33510/unicode-txt-slowness
+(setq inhibit-compacting-font-caches t)
+
 ;; store customizations in a separate file
 (setq custom-file "~/.emacs-custom.el")
 (when (file-exists-p custom-file)
