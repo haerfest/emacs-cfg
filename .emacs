@@ -284,6 +284,9 @@ put before CHAR"
 (when on-windows
   (setq python-shell-interpreter "py.exe"))
 
+(when on-linux
+  (setq python-shell-interpreter "python3"))
+
 ;; ----------------------------------------------------------------------------
 ;;  packages
 ;; ----------------------------------------------------------------------------
