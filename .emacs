@@ -135,7 +135,7 @@
 (when on-windows
   ;; use this font
   (set-face-attribute 'default nil
-                      :family "Cascadia Code"
+                      :family "Anonymous Pro"
                       :height 120)
 
   ;; open links with Windows' default browser
