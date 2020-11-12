@@ -2,6 +2,10 @@
 ;;  general behaviour
 ;; ----------------------------------------------------------------------------
 
+;; make everything dark as soon as possible
+(when (>= emacs-major-version 26)
+  (load-theme 'wheatgrass))
+
 ;; don't want to see the startup screen
 (setq inhibit-startup-screen t)
 
@@ -85,7 +89,7 @@
 (display-time-mode 1)
 
 ;; highlight the current line
-;; (global-hl-line-mode 1)
+(global-hl-line-mode 1)
 
 ;; truncate lines (i.e. don't wrap)
 (set-default 'truncate-lines t)
@@ -104,7 +108,7 @@
 ;; ----------------------------------------------------------------------------
 (when on-mac
   ;; activate dark mode
-  (add-to-list 'default-frame-alist '(ns-appearance . dark))
+  ;; (add-to-list 'default-frame-alist '(ns-appearance . dark))
   
   ;; use this font
   (set-face-attribute 'default nil
@@ -297,7 +301,8 @@ put before CHAR"
   (add-to-list 'package-archives
 	       '("melpa-stable" . "https://melpa.org/packages/"))
 
-  (package-initialize))
+  (when (< emacs-major-version 27)
+    (package-initialize)))
 
 ;; default packages to have installed
 (defvar who/packages '(
