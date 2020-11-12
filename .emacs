@@ -89,7 +89,7 @@
 (display-time-mode 1)
 
 ;; highlight the current line
-(global-hl-line-mode 1)
+;; (global-hl-line-mode 1)
 
 ;; truncate lines (i.e. don't wrap)
 (set-default 'truncate-lines t)
@@ -114,7 +114,7 @@
   (set-face-attribute 'default nil
                       :family "SF Mono"
                       :weight 'light
-                      :height 150)
+                      :height 160)
 
   ;; use the Command key as the Meta key
   (setq mac-option-modifier  'super)
