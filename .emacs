@@ -108,11 +108,11 @@
 ;; ----------------------------------------------------------------------------
 (when on-mac
   ;; activate dark mode
-  ;; (add-to-list 'default-frame-alist '(ns-appearance . dark))
+  (add-to-list 'default-frame-alist '(ns-appearance . dark))
   
   ;; use this font
   (set-face-attribute 'default nil
-                      :family "SF Mono"
+                      :family "Monaco"
                       :weight 'light
                       :height 160)
 
