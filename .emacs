@@ -140,7 +140,7 @@
   ;; use this font
   (set-face-attribute 'default nil
                       :family "Consolas"
-                      :height 120)
+                      :height 200)
 
   ;; open links with Windows' default browser
   (setq browse-url-browser-function 'browse-url-default-windows-browser))
@@ -320,19 +320,6 @@ put before CHAR"
 
                        ;; git support
                        magit
-
-                       ;; filesystem navigation
-                       neotree
-
-                       ;; common lisp development
-                       slime
-                       slime-company
-
-                       ;; C/C++ development
-                       ggtags
-
-                       ;; web development
-                       multi-web-mode
                        ))
 
 ;; define the filter function if not there
