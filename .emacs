@@ -2,9 +2,15 @@
 ;;  general behaviour
 ;; ----------------------------------------------------------------------------
 
+;; figure out which OS we're running on
+(defvar on-mac     (eq system-type 'darwin)     "t if OS is Mac OS X")
+(defvar on-windows (eq system-type 'windows-nt) "t if OS is Windows")
+(defvar on-linux   (eq system-type 'gnu/linux)  "t if OS is Linux")
+
 ;; make everything dark as soon as possible
 (when (>= emacs-major-version 26)
-  (load-theme 'wheatgrass))
+  (when on-mac
+    (load-theme 'wombat)))
 
 ;; don't want to see the startup screen
 (setq inhibit-startup-screen t)
@@ -66,11 +72,6 @@
 (setq grep-find-command
       (concat "find . -type f '!' -wholename '*/.svn/*' -print0 | "
               "xargs -0 grep -nH -e "))
-
-;; figure out which OS we're running on
-(defvar on-mac     (eq system-type 'darwin)     "t if OS is Mac OS X")
-(defvar on-windows (eq system-type 'windows-nt) "t if OS is Windows")
-(defvar on-linux   (eq system-type 'gnu/linux)  "t if OS is Linux")
 
 ;; treat all themes as safe
 (setq custom-safe-themes t)
