@@ -68,6 +68,21 @@
 ;; press F2 ro rename the current buffer
 (global-set-key [f2] 'rename-buffer)
 
+;; disable other themes before loading new one
+(defadvice load-theme (before theme-dont-propagate activate)
+  (mapcar #'disable-theme custom-enabled-themes))
+
+;; press F12 to switch between a light and dark theme
+(defun who/toggle-theme ()
+  (interactive)
+  (let ((themes '(spacemacs-light solarized-dark)))
+    (load-theme
+     (if (eq (car custom-enabled-themes) (car themes))
+         (cadr themes) (car themes))
+     t)))
+
+(global-set-key [f12] 'who/toggle-theme)
+
 ;; skip .svn directories when doing a grep-find
 (setq grep-find-command
       (concat "find . -type f '!' -wholename '*/.svn/*' -print0 | "
@@ -318,6 +333,7 @@ put before CHAR"
                        ;; themes
                        planet-theme
                        solarized-theme
+                       spacemacs-theme
 
                        ;; git support
                        magit
