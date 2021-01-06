@@ -156,7 +156,7 @@
   ;; use this font
   (set-face-attribute 'default nil
                       :family "Consolas"
-                      :height 200)
+                      :height 140)
 
   ;; open links with Windows' default browser
   (setq browse-url-browser-function 'browse-url-default-windows-browser))
