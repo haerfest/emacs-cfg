@@ -70,7 +70,7 @@
 
 ;; disable other themes before loading new one
 (defadvice load-theme (before theme-dont-propagate activate)
-  (mapcar #'disable-theme custom-enabled-themes))
+  (mapc #'disable-theme custom-enabled-themes))
 
 ;; press F12 to switch between a light and dark theme
 (defun who/toggle-theme ()
