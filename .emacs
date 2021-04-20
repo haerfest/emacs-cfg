@@ -75,7 +75,7 @@
 ;; press F12 to switch between a light and dark theme
 (defun who/toggle-theme ()
   (interactive)
-  (let ((themes '(spacemacs-light solarized-dark)))
+  (let ((themes '(solarized-light solarized-dark)))
     (load-theme
      (if (eq (car custom-enabled-themes) (car themes))
          (cadr themes) (car themes))
@@ -315,7 +315,7 @@ put before CHAR"
 (when (>= emacs-major-version 24)
   (require 'package)
   (add-to-list 'package-archives
-	       '("melpa-stable" . "https://melpa.org/packages/"))
+	       '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 
   (when (< emacs-major-version 27)
     (package-initialize)))
@@ -331,9 +331,7 @@ put before CHAR"
                        which-key
 
                        ;; themes
-                       planet-theme
                        solarized-theme
-                       spacemacs-theme
 
                        ;; git support
                        magit
