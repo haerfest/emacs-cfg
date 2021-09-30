@@ -308,6 +308,16 @@ put before CHAR"
   (setq python-shell-interpreter "python3"))
 
 ;; ----------------------------------------------------------------------------
+;;  comint                                                            built-in
+;; ----------------------------------------------------------------------------
+
+;; don't echo back what is typed in the shell
+(defun my-comint-init ()
+  (setq comint-process-echoes t))
+
+(add-hook 'comint-mode-hook 'my-comint-init)
+
+;; ----------------------------------------------------------------------------
 ;;  packages
 ;; ----------------------------------------------------------------------------
 
