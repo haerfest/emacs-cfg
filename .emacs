@@ -323,9 +323,14 @@ put before CHAR"
 
 ;; Want real tabs of size eight in assembly sources.
 (defun my-asm-mode-init ()
-  (setq indent-tabs-mode t)
+  ;; Tab should not indent, but insert a real tab.
+  (setq tab-always-indent nil)
+
+  ;; Need a nice large tab stop size.
   (setq tab-width 8)
-  (setq tab-always-indent t))
+
+  ;; Indent with tabs, not spaces.
+  (setq indent-tabs-mode t))
 
 (add-hook 'asm-mode-hook 'my-asm-mode-init)
 
