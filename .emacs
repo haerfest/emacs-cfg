@@ -318,6 +318,18 @@ put before CHAR"
 (add-hook 'comint-mode-hook 'my-comint-init)
 
 ;; ----------------------------------------------------------------------------
+;;  asm-mode                                                          built-in
+;; ----------------------------------------------------------------------------
+
+;; Want real tabs of size eight in assembly sources.
+(defun my-asm-mode-init ()
+  (setq indent-tabs-mode t)
+  (setq tab-width 8)
+  (setq tab-always-indent t))
+
+(add-hook 'asm-mode-hook 'my-asm-mode-init)
+
+;; ----------------------------------------------------------------------------
 ;;  packages
 ;; ----------------------------------------------------------------------------
 
