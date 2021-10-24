@@ -130,7 +130,7 @@
   (set-face-attribute 'default nil
                       :family "Monaco"
                       :weight 'light
-                      :height 160)
+                      :height 120)
 
   ;; use the Command key as the Meta key
   (setq mac-option-modifier  'super)
