@@ -96,9 +96,14 @@
 
 (global-set-key [f11] 'who/toggle-frame-fullscreen)
 
-;; show the time
+;; show the time, but not the system load
 (setq display-time-24hr-format t)
-(display-time-mode 1)
+(setq display-time-default-load-average nil)
+(display-time-mode)
+
+;; show the battery state
+(setq battery-mode-line-format " %b%p%")
+(display-battery-mode)
 
 ;; highlight the current line
 (global-hl-line-mode 1)
