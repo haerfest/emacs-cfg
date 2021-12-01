@@ -83,29 +83,25 @@
 
 (global-set-key [f12] 'who/toggle-theme)
 
-;; skip .svn directories when doing a grep-find
-(setq grep-find-command
-      (concat "find . -type f '!' -wholename '*/.svn/*' -print0 | "
-              "xargs -0 grep -nH -e "))
-
 ;; treat all themes as safe
 (setq custom-safe-themes t)
 
 ;; when going full-screen, disable the menu bar
 (setq is-fullscreen nil)
-(defun my-toggle-frame-fullscreen ()
+(defun who/toggle-frame-fullscreen ()
   (interactive)
   (toggle-frame-fullscreen)
   (setq is-fullscreen (not is-fullscreen))
   (menu-bar-mode (if is-fullscreen -1 +1)))
-(global-set-key [f11]'my-toggle-frame-fullscreen)
+
+(global-set-key [f11] 'who/toggle-frame-fullscreen)
 
 ;; show the time
 (setq display-time-24hr-format t)
 (display-time-mode 1)
 
 ;; highlight the current line
-;; (global-hl-line-mode 1)
+(global-hl-line-mode 1)
 
 ;; truncate lines (i.e. don't wrap)
 (set-default 'truncate-lines t)
@@ -128,9 +124,9 @@
   
   ;; use this font
   (set-face-attribute 'default nil
-                      :family "Monaco"
-                      :weight 'light
-                      :height 120)
+                      :family "Bedstead"
+                      :weight 'regular
+                      :height 160)
 
   ;; use the Command key as the Meta key
   (setq mac-option-modifier  'super)
@@ -184,18 +180,6 @@ put before CHAR"
   (kmacro-exec-ring-item
    (quote ([24 56 return 35 120 50 48 65 67 return] 0 "%d")) arg))
 
-(defun aweta-fix-id-attributes-region (start end)
-  "Numbers all XML id=... tags in a region, starting with 0."
-  (interactive "r")
-  (save-restriction
-    (narrow-to-region start end)
-    (goto-char (point-min))
-    (let ((id 0))
-      (while (search-forward-regexp " id=\"[0-9]+\"" nil t)
-        (replace-match (format " id=\"%d\"" id))
-        (setq id (1+ id)))
-      (message (format "Updated %d id's" id)))))
-
 ;; ----------------------------------------------------------------------------
 ;;  uniquify                                                          built-in
 ;; ----------------------------------------------------------------------------
@@ -238,23 +222,6 @@ put before CHAR"
                 html-erg-mode
                 c-mode-common-hook))
   (add-hook mode 'hs-minor-mode))
-
-;; ----------------------------------------------------------------------------
-;;  semantic                                                          built-in
-;; ----------------------------------------------------------------------------
-
-(when (>= emacs-major-version 24)
-  (require 'cc-mode)
-  (require 'semantic)
-
-  (global-semanticdb-minor-mode 1)
-  (global-semantic-idle-scheduler-mode 1)
-
-  (when on-windows
-    (semantic-add-system-include "D:/work/awu")
-    (semantic-add-system-include "D:/work/thirdparty/include"))
-
-  (semantic-mode 1))
 
 ;; ----------------------------------------------------------------------------
 ;;  ido                                                                built-in
@@ -322,7 +289,7 @@ put before CHAR"
 ;; ----------------------------------------------------------------------------
 
 ;; Want real tabs of size eight in assembly sources.
-(defun my-asm-mode-init ()
+(defun who/asm-mode-init ()
   ;; Tab should not indent, but insert a real tab.
   (setq tab-always-indent nil)
 
@@ -332,7 +299,7 @@ put before CHAR"
   ;; Indent with tabs, not spaces.
   (setq indent-tabs-mode t))
 
-(add-hook 'asm-mode-hook 'my-asm-mode-init)
+(add-hook 'asm-mode-hook 'who/asm-mode-init)
 
 ;; ----------------------------------------------------------------------------
 ;;  packages
