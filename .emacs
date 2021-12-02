@@ -449,8 +449,8 @@ put before CHAR"
 ;; ----------------------------------------------------------------------------
 
 (when (package-installed-p 'multiple-cursors)
-  (global-set-key (kbd "ESC <down>")  'mc/mark-next-like-this)
-  (global-set-key (kbd "ESC <up>")    'mc/mark-previous-like-this)
+  (global-set-key (kbd "M-<down>")    'mc/mark-next-like-this)
+  (global-set-key (kbd "M-<up>")      'mc/mark-previous-like-this)
   (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
   (global-set-key (kbd "C-c C-<")     'mc/mark-all-like-this))
 
