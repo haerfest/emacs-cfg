@@ -328,7 +328,6 @@ put before CHAR"
 ;; default packages to have installed
 (defvar who/packages '(
                        better-defaults
-                       company
                        exec-path-from-shell
                        ido-vertical-mode
                        markdown-mode
@@ -336,6 +335,7 @@ put before CHAR"
                        which-key
 
                        ;; themes
+                       grandshell-theme
                        solarized-theme
 
                        ;; git support
