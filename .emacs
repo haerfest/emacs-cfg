@@ -135,7 +135,15 @@
 
   ;; use the Command key as the Meta key
   (setq mac-option-modifier  'super)
-  (setq mac-command-modifier 'meta))
+  (setq mac-command-modifier 'meta)
+
+  ;; apparently a race condition exists between certain Emacs versions and
+  ;; the GNU TLS library, if you see error messages such as:
+  ;; > error in process sentinel: Error retrieving:
+  ;; > https://stable.melpa.org/packages/archive-contents (error
+  ;; > connection-failed "connect" :host "stable.melpa.org" :service 443)
+  ;; the following line disables TLS 1.3:
+  (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
 
 ;; ----------------------------------------------------------------------------
 ;;  Linux
