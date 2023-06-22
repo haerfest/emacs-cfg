@@ -3,14 +3,9 @@
 ;; ----------------------------------------------------------------------------
 
 ;; figure out which OS we're running on
-(defvar on-mac     (eq system-type 'darwin)     "t if OS is Mac OS X")
+(defvar on-mac     (eq system-type 'darwin)     "t if OS is macOS")
 (defvar on-windows (eq system-type 'windows-nt) "t if OS is Windows")
 (defvar on-linux   (eq system-type 'gnu/linux)  "t if OS is Linux")
-
-;; make everything dark as soon as possible
-(when (>= emacs-major-version 26)
-  (when on-mac
-    (load-theme 'wombat)))
 
 ;; don't want to see the startup screen
 (setq inhibit-startup-screen t)
@@ -20,7 +15,11 @@
 
 ;; don't want any fancy GUI widgets
 (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
-(when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+(when (fboundp 'tool-bar-mode)   (tool-bar-mode   -1))
+
+;; don't want a menu bar except on Mac, since it's always there
+(unless on-mac
+  (when (fboundp 'menu-bar-mode) (menu-bar-mode   -1)))
 
 ;; don't want backup files
 (setq make-backup-files nil)
@@ -72,6 +71,9 @@
 (defadvice load-theme (before theme-dont-propagate activate)
   (mapc #'disable-theme custom-enabled-themes))
 
+;; press F11 to toggle full screen
+(global-set-key [f11] 'toggle-frame-fullscreen)
+
 ;; press F12 to switch between a light and dark theme
 (defun who/toggle-theme ()
   (interactive)
@@ -86,27 +88,14 @@
 ;; treat all themes as safe
 (setq custom-safe-themes t)
 
-;; when going full-screen, disable the menu bar
-(setq is-fullscreen nil)
-(defun who/toggle-frame-fullscreen ()
-  (interactive)
-  (toggle-frame-fullscreen)
-  (setq is-fullscreen (not is-fullscreen))
-  (menu-bar-mode (if is-fullscreen -1 +1)))
-
-(global-set-key [f11] 'who/toggle-frame-fullscreen)
-
 ;; show the time, but not the system load
 (setq display-time-24hr-format t)
 (setq display-time-default-load-average nil)
 (display-time-mode)
 
 ;; show the battery state
-(setq battery-mode-line-format " %b%p%")
+(setq battery-mode-line-format "%b%p%")
 (display-battery-mode)
-
-;; highlight the current line
-(global-hl-line-mode 1)
 
 ;; truncate lines (i.e. don't wrap)
 (set-default 'truncate-lines t)
@@ -121,7 +110,7 @@
   (load custom-file))
 
 ;; ----------------------------------------------------------------------------
-;;  Mac OS X
+;;  macOS
 ;; ----------------------------------------------------------------------------
 (when on-mac
   ;; activate dark mode
@@ -129,9 +118,9 @@
   
   ;; use this font
   (set-face-attribute 'default nil
-                      :family "Bedstead"
+                      :family "iosevka"
                       :weight 'regular
-                      :height 160)
+                      :height 140)
 
   ;; use the Command key as the Meta key
   (setq mac-option-modifier  'super)
@@ -164,8 +153,8 @@
 (when on-windows
   ;; use this font
   (set-face-attribute 'default nil
-                      :family "Cascadia Mono"
-                      :height 100)
+                      :family "iosevka"
+                      :height 140)
 
   ;; open links with Windows' default browser
   (setq browse-url-browser-function 'browse-url-default-windows-browser))
