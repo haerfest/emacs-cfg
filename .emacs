@@ -504,6 +504,8 @@ put before CHAR"
 ;; ----------------------------------------------------------------------------
 
 (when (package-installed-p 'which-key)
+  ;; C-h C-h should page
+  (define-key help-map (kbd "C-h") 'which-key-C-h-dispatch)
   (which-key-mode))
 
 ;; ----------------------------------------------------------------------------
