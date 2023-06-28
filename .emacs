@@ -94,7 +94,7 @@
 (display-time-mode)
 
 ;; show the battery state
-(setq battery-mode-line-format "%b%p%")
+(setq battery-mode-line-format " %b%p%")
 (display-battery-mode)
 
 ;; truncate lines (i.e. don't wrap)
