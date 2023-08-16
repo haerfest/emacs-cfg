@@ -10,6 +10,9 @@
 ;; don't want to see the startup screen
 (setq inhibit-startup-screen t)
 
+;; ask confirmation before quitting
+(setq confirm-kill-emacs 'yes-or-no-p)
+
 ;; don't want any bell sounds
 (setq ring-bell-function 'ignore)
 
