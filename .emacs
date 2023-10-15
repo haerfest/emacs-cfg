@@ -129,6 +129,9 @@
   (setq mac-option-modifier  'super)
   (setq mac-command-modifier 'meta)
 
+  ;; Command-H should hide Emacs
+  (global-set-key (kbd "M-h") 'ns-do-hide-emacs)
+
   ;; apparently a race condition exists between certain Emacs versions and
   ;; the GNU TLS library, if you see error messages such as:
   ;; > error in process sentinel: Error retrieving:
