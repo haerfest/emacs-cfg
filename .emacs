@@ -77,17 +77,6 @@
 ;; press F11 to toggle full screen
 (global-set-key [f11] 'toggle-frame-fullscreen)
 
-;; press F12 to switch between a light and dark theme
-(defun who/toggle-theme ()
-  (interactive)
-  (let ((themes '(solarized-light solarized-dark)))
-    (load-theme
-     (if (eq (car custom-enabled-themes) (car themes))
-         (cadr themes) (car themes))
-     t)))
-
-(global-set-key [f12] 'who/toggle-theme)
-
 ;; treat all themes as safe
 (setq custom-safe-themes t)
 
@@ -174,13 +163,6 @@
   (interactive)
   (let ((comint-buffer-maximum-size 0))
     (comint-truncate-buffer)))
-
-(defadvice zap-to-char (after my-zap-to-char-advice (arg char) activate)
-  "Kill up to the ARG'th occurence of CHAR, and leave CHAR. If
-you are deleteing forward, the CHAR is replaced and the point is
-put before CHAR"
-  (insert char)
-  (if (< 0 arg) (forward-char -1)))
 
 (defun euro (&optional arg)
   "Inserts a euro symbol."
@@ -330,7 +312,6 @@ put before CHAR"
 
 ;; default packages to have installed
 (defvar who/packages '(
-                       better-defaults
                        exec-path-from-shell
                        ido-vertical-mode
                        markdown-mode
