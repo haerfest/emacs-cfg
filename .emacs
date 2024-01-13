@@ -316,6 +316,7 @@
                        ido-vertical-mode
                        markdown-mode
                        multiple-cursors
+                       quelpa
                        which-key
 
                        ;; themes
@@ -569,3 +570,12 @@
 (when (package-installed-p 'ws-butler)
   (require 'ws-butler)
   (add-hook 'prog-mode-hook #'ws-butler-mode))
+
+;; ----------------------------------------------------------------------------
+;;  whitespace4r                                                       source
+;; ----------------------------------------------------------------------------
+
+(when (package-installed-p 'quelpa)
+  (quelpa '(whitespace4r :fetcher github
+                         :repo "twlz0ne/whitespace4r.el"
+                         :files ("whitespace4r.el"))))
