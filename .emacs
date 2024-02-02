@@ -456,19 +456,19 @@
             (lambda ()
               (global-company-mode)
               (define-key company-active-map
-                (kbd "\C-n") 'company-select-next)
+                          (kbd "\C-n") 'company-select-next)
               (define-key company-active-map
-                (kbd "\C-p") 'company-select-previous)
+                          (kbd "\C-p") 'company-select-previous)
               (define-key company-active-map
-                (kbd "\C-d") 'company-show-doc-buffer)
+                          (kbd "\C-d") 'company-show-doc-buffer)
               (define-key company-active-map
-                (kbd "\C-v") 'company-show-location)
+                          (kbd "\C-v") 'company-show-location)
               (define-key company-active-map
-                (kbd "<tab>") 'company-complete)
+                          (kbd "<tab>") 'company-complete)
               (define-key company-active-map
-                (kbd "\C-g") '(lambda ()
-                                (interactive)
-                                (company-abort))))))
+                          (kbd "\C-g") #'(lambda ()
+                                           (interactive)
+                                           (company-abort))))))
 
 ;; ----------------------------------------------------------------------------
 ;;  rainbow-delimiters                                                  package
