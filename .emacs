@@ -7,6 +7,9 @@
 (defvar on-windows (eq system-type 'windows-nt) "t if OS is Windows")
 (defvar on-linux   (eq system-type 'gnu/linux)  "t if OS is Linux")
 
+;; don't want to see each and every warning
+(setq warning-minimum-level :error)
+
 ;; don't want to see the startup screen
 (setq inhibit-startup-screen t)
 
