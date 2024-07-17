@@ -113,9 +113,9 @@
   
   ;; use this font
   (set-face-attribute 'default nil
-                      :family "iosevka"
+                      :family "ComicShannsMono Nerd Font Mono"
                       :weight 'regular
-                      :height 140)
+                      :height 120)
 
   ;; use the Command key as the Meta key
   (setq mac-option-modifier  'super)
@@ -622,3 +622,14 @@
   (quelpa '(whitespace4r :fetcher github
                          :repo "twlz0ne/whitespace4r.el"
                          :files ("whitespace4r.el"))))
+
+;; ----------------------------------------------------------------------------
+;;  OCaml                        https://ocaml.github.io/merlin/editor/emacs/
+;; ----------------------------------------------------------------------------
+
+(let ((opam-share (ignore-errors (car (process-lines "opam" "var" "share")))))
+  (when (and opam-share (file-directory-p opam-share))
+    (add-to-list 'load-path (expand-file-name "emacs/site-lisp" opam-share))
+    (autoload 'merlin-mode "merlin" nil t nil)
+    (add-hook 'tuareg-mode-hook 'merlin-mode t)
+    (add-hook 'caml-mode-hook 'merlin-mode t)))
