@@ -548,8 +548,8 @@
 ;; ----------------------------------------------------------------------------
 
 (when (package-installed-p 'slime)
-  (setq inferior-lisp-program "/usr/local/bin/sbcl")
-  (slime-setup '(slime-fancy slime-company)))
+  (setq inferior-lisp-program "/opt/local/bin/sbcl")
+  (slime-setup '(slime-fancy)))
 
 ;; ----------------------------------------------------------------------------
 ;;  fsharp-mode                                                         package
