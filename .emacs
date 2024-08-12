@@ -268,10 +268,16 @@
 ;;  c-mode                                                             built-in
 ;; ----------------------------------------------------------------------------
 
-(setq-default c-default-style "linux"
-              c-basic-offset 2)
 (add-hook 'c-mode-common-hook
           (lambda ()
+            ;; Primarily use the linux style.
+            (c-set-style "linux")
+
+            ;; But I want to insert a small number of spaces instead of a tab.
+            (setq indent-tabs-mode nil)
+            (setq c-basic-offset tab-width)
+
+            ;; Indent switch-case statements.
             (c-set-offset 'case-label '+)))
 
 ;; ----------------------------------------------------------------------------
@@ -321,18 +327,16 @@
 ;;  asm-mode                                                          built-in
 ;; ----------------------------------------------------------------------------
 
-;; Want real tabs of size eight in assembly sources.
-(defun who/asm-mode-init ()
-  ;; Tab should not indent, but insert a real tab.
-  (setq tab-always-indent nil)
+(add-hook 'asm-mode-hook
+          (lambda ()
+            ;; Tab should not indent, but insert a real tab.
+            (setq tab-always-indent nil)
 
-  ;; Need a nice large tab stop size.
-  (setq tab-width 8)
+            ;; Need a nice large tab stop size.
+            (setq tab-width 8)
 
-  ;; Indent with tabs, not spaces.
-  (setq indent-tabs-mode t))
-
-(add-hook 'asm-mode-hook 'who/asm-mode-init)
+            ;; Indent with tabs, not spaces.
+            (setq indent-tabs-mode t)))
 
 ;; ----------------------------------------------------------------------------
 ;;  scheme-mode                                                       built-in
