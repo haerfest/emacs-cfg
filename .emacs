@@ -113,9 +113,9 @@
   
   ;; use this font
   (set-face-attribute 'default nil
-                      :family "ComicShannsMono Nerd Font Mono"
+                      :family "Departure Mono"
                       :weight 'regular
-                      :height 120)
+                      :height 160)
 
   ;; use the Command key as the Meta key
   (setq mac-option-modifier  'super)
