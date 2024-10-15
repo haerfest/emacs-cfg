@@ -151,8 +151,9 @@
 (when on-windows
   ;; use this font
   (set-face-attribute 'default nil
-                      :family "Departure Mono"
-                      :height 80)
+                      :family "Consolas"
+                      :weight 'regular
+                      :height 130)
 
   ;; open links with Windows' default browser
   (setq browse-url-browser-function 'browse-url-default-windows-browser))
