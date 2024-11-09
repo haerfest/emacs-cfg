@@ -1,31 +1,16 @@
-;; ----------------------------------------------------------------------------
-;;  general behaviour
-;; ----------------------------------------------------------------------------
-
-;; figure out which OS we're running on
-(defvar on-mac     (eq system-type 'darwin)     "t if OS is macOS")
-(defvar on-windows (eq system-type 'windows-nt) "t if OS is Windows")
-(defvar on-linux   (eq system-type 'gnu/linux)  "t if OS is Linux")
-
-;; don't want to see each and every warning
-(setq warning-minimum-level :error)
-
 ;; don't want to see the startup screen
 (setq inhibit-startup-screen t)
 
+;; accept y/n for yes/no
+(defalias 'yes-or-no-p 'y-or-n-p)
+
 ;; ask confirmation before quitting
-(setq confirm-kill-emacs 'yes-or-no-p)
+(setq confirm-kill-emacs 'y-or-n-p)
 
-;; don't want any bell sounds
-(setq ring-bell-function 'ignore)
-
-;; don't want any fancy GUI widgets
+;; don't want these widgets
+(when (fboundp 'menu-bar-mode)   (menu-bar-mode -1))
 (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
-(when (fboundp 'tool-bar-mode)   (tool-bar-mode   -1))
-
-;; don't want a menu bar except on Mac, since it's always there
-(unless on-mac
-  (when (fboundp 'menu-bar-mode) (menu-bar-mode   -1)))
+(when (fboundp 'tool-bar-mode)   (tool-bar-mode -1))
 
 ;; don't want backup files
 (setq make-backup-files nil)
@@ -33,17 +18,11 @@
 ;; don't want auto-save files
 (auto-save-mode -1)
 
-;; save all files with Unix line endings
-(setq-default buffer-file-coding-system 'utf-8-unix)
-
-;; window movement
-(global-set-key (kbd "C-x <left>")  'windmove-left)
-(global-set-key (kbd "C-x <right>") 'windmove-right)
-(global-set-key (kbd "C-x <up>")    'windmove-up)
-(global-set-key (kbd "C-x <down>")  'windmove-down)
-
 ;; show the column number
 (column-number-mode t)
+
+;; truncate lines (don't wrap)
+(set-default 'truncate-lines t)
 
 ;; show matching parenthesis
 (show-paren-mode t)
@@ -52,589 +31,99 @@
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 2)
 
-;; enable on-the-fly indentation
-(if (>= emacs-major-version 24)
-    (electric-indent-mode t)
-  (global-set-key "\r" 'newline-and-indent))
-
-;; if two dired windows are open, suggest copy to the other window
-(setq dired-dwim-target t)
-
-;; accept y/n for yes/no
-(defalias 'yes-or-no-p 'y-or-n-p)
-
-;; undo when pressing ^z, suspend with the super key
-(global-set-key [(control z)] 'undo)
-(global-set-key [(super control z)] 'suspend-frame)
-
-;; press F5 to revert the current buffer
-(global-set-key [f5] 'revert-buffer)
-
-;; press F2 ro rename the current buffer
-(global-set-key [f2] 'rename-buffer)
+;; treat all themes as safe
+(setq custom-safe-themes t)
 
 ;; disable other themes before loading new one
 (defadvice load-theme (before theme-dont-propagate activate)
   (mapc #'disable-theme custom-enabled-themes))
-
-;; press F11 to toggle full screen
-(global-set-key [f11] 'toggle-frame-fullscreen)
-
-;; treat all themes as safe
-(setq custom-safe-themes t)
-
-;; show the time, but not the system load
-(setq display-time-24hr-format t)
-(setq display-time-default-load-average nil)
-(display-time-mode)
-
-;; show the battery state
-(setq battery-mode-line-format " %b%p%")
-(display-battery-mode)
-
-;; truncate lines (i.e. don't wrap)
-(set-default 'truncate-lines t)
-
-;; prevent non-ascii characters from slowing emacs down
-;; https://emacs.stackexchange.com/questions/33510/unicode-txt-slowness
-(setq inhibit-compacting-font-caches t)
 
 ;; store customizations in a separate file
 (setq custom-file "~/.emacs-custom.el")
 (when (file-exists-p custom-file)
   (load custom-file))
 
-;; ----------------------------------------------------------------------------
-;;  macOS
-;; ----------------------------------------------------------------------------
-(when on-mac
-  ;; activate dark mode
-  (add-to-list 'default-frame-alist '(ns-appearance . dark))
-  
-  ;; use this font
-  (set-face-attribute 'default nil
-                      :family "Departure Mono"
-                      :weight 'regular
-                      :height 160)
+;; prevent non-ascii characters from slowing emacs down
+(setq inhibit-compacting-font-caches t)
 
-  ;; use the Command key as the Meta key
+;; undo when pressing ^z, suspend with the super key
+(global-set-key (kbd "C-z")   'undo)
+(global-set-key (kbd "C-s-z") 'suspend-frame)
+
+;; window movement
+(global-set-key (kbd "C-x <left>")  'windmove-left)
+(global-set-key (kbd "C-x <right>") 'windmove-right)
+(global-set-key (kbd "C-x <up>")    'windmove-up)
+(global-set-key (kbd "C-x <down>")  'windmove-down)
+
+;; Mac-specifics
+(when (eq system-type 'darwin)
+
+  ;; use the Mac's option/command keys for super/meta
   (setq mac-option-modifier  'super)
   (setq mac-command-modifier 'meta)
 
-  ;; Command-H should hide Emacs
-  (global-set-key (kbd "M-h") 'ns-do-hide-emacs)
+  ;; command-h should hide Emacs
+  (global-set-key (kbd "M-h") 'ns-do-hide-emacs))
 
-  ;; apparently a race condition exists between certain Emacs versions and
-  ;; the GNU TLS library, if you see error messages such as:
-  ;; > error in process sentinel: Error retrieving:
-  ;; > https://stable.melpa.org/packages/archive-contents (error
-  ;; > connection-failed "connect" :host "stable.melpa.org" :service 443)
-  ;; the following line disables TLS 1.3:
-  (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
-
-;; ----------------------------------------------------------------------------
-;;  Linux
-;; ----------------------------------------------------------------------------
-(when (and on-linux (display-graphic-p))
-  ;; use this font
-  (set-face-attribute 'default nil
-                      :family "DejaVu Sans Mono"
-                      :height 120)
+;; Linux-specifics
+(when (eq system-type 'gnu/linux)
 
   ;; allow copy & paste between Emacs and X
   (setq x-select-enable-clipboard t)
   (setq interprogram-paste-function 'x-cut-buffer-or-selection-value))
 
-;; ----------------------------------------------------------------------------
-;;  Windows
-;; ----------------------------------------------------------------------------
-(when on-windows
-  ;; use this font
-  (set-face-attribute 'default nil
-                      :family "Consolas"
-                      :weight 'regular
-                      :height 130)
+;; Windows-specifics
+(when (eq system-type 'windows-nt)
 
-  ;; open links with Windows' default browser
+  ;; open links in the default browser
   (setq browse-url-browser-function 'browse-url-default-windows-browser))
 
-;; ----------------------------------------------------------------------------
-;;  handy functions
-;; ----------------------------------------------------------------------------
+;; the packages to install via package-install-selected-pages
+(setq package-selected-packages
+      '(ido-vertical-mode
+	magit
+	markdown-mode
+	multiple-cursors
+	which-key))
 
-(defun erase-interactive-buffer ()
-  "Erases an interactive buffer (shell, REPL) but leaves the prompt alone."
-  (interactive)
-  (let ((comint-buffer-maximum-size 0))
-    (comint-truncate-buffer)))
-
-(defun euro (&optional arg)
-  "Inserts a euro symbol."
-  (interactive "p")
-  (kmacro-exec-ring-item
-   (quote ([24 56 return 35 120 50 48 65 67 return] 0 "%d")) arg))
-
-;; https://www.mail-archive.com/gnu-emacs-sources@gnu.org/msg00034.html
-(defun randomize-region (beg end)
-  (interactive "r")
-  (if (> beg end)
-      (let (mid) (setq mid end end beg beg mid)))
-  (save-excursion
-    ;; put beg at the start of a line and end and the end of one --
-    ;; the largest possible region which fits this criteria
-    (goto-char beg)
-    (or (bolp) (forward-line 1))
-    (setq beg (point))
-    (goto-char end)
-    ;; the test for bolp is for those times when end is on an empty
-    ;; line; it is probably not the case that the line should be
-    ;; included in the reversal; it isn't difficult to add it
-    ;; afterward.
-    (or (and (eolp) (not (bolp)))
-        (progn (forward-line -1) (end-of-line)))
-    (setq end (point-marker))
-    (let ((strs (shuffle-list 
-                 (split-string (buffer-substring-no-properties beg end)
-                               "\n"))))
-      (delete-region beg end)
-      (dolist (str strs)
-        (insert (concat str "\n"))))))
-
-(defun shuffle-list (list)
-  "Randomly permute the elements of LIST. All permutations equally likely."
-  (let ((i 0)
-        j
-        temp
-        (len (length list)))
-    (while (< i len)
-      (setq j (+ i (random (- len i))))
-      (setq temp (nth i list))
-      (setcar (nthcdr i list) (nth j list))
-      (setcar (nthcdr j list) temp)
-      (setq i (1+ i))))
-  list)
-
-;; ----------------------------------------------------------------------------
-;;  uniquify                                                          built-in
-;; ----------------------------------------------------------------------------
-
-(require 'uniquify)
-(setq uniquify-buffer-name-style 'post-forward)
-
-;; ----------------------------------------------------------------------------
-;;  hideshow                                                          built-in
-;; ----------------------------------------------------------------------------
-
-;; press F6 to toggle folding
-(global-set-key [f6] 'hs-toggle-hiding)
-
-;; fix hideshow XML folding
-(add-to-list 'hs-special-modes-alist
-             (list 'nxml-mode
-                   "<!--\\|<[^/>]*[^/]>"
-                   "-->\\|</[^/>]*[^/]>"
-                   "<!--"
-                   'nxml-forward-element
-                   nil))
-
-;; fix hideshow HTML folding
-(dolist (mode '(sgml-mode
-                html-mode
-                html-erb-mode))
-  (add-to-list 'hs-special-modes-alist
-               (list mode
-                     "<!--\\|<[^/>]*[^/]>"
-                     "-->\\|</[^/>]*[^/]>"
-                     "<!--"
-                     'sgml-skip-tag-forward
-                     nil)))
-
-;; activate hideshow when editing certain files
-(dolist (mode '(nxml-mode
-                sgml-mode
-                html-mode
-                html-erg-mode
-                c-mode-common-hook))
-  (add-hook mode 'hs-minor-mode))
-
-;; ----------------------------------------------------------------------------
-;;  ido                                                                built-in
-;; ----------------------------------------------------------------------------
-
+;; ido
 (require 'ido)
 (ido-mode t)
 (setq ido-enable-flex-matching t)
 
-;; ----------------------------------------------------------------------------
-;;  c-mode                                                             built-in
-;; ----------------------------------------------------------------------------
+;; ido-vertical-mode
+(when (package-installed-p 'ido-vertical-mode)
+  (ido-vertical-mode 1)
+  (setq ido-vertical-define-keys '(C-n-and-C-p-only)))
 
+;; c-mode
 (add-hook 'c-mode-common-hook
           (lambda ()
-            ;; Primarily use the linux style.
+            ;; primarily use the linux style
             (c-set-style "linux")
 
-            ;; But I want to insert a small number of spaces instead of a tab.
+            ;; but insert a small number of spaces instead of a tab
             (setq indent-tabs-mode nil)
             (setq c-basic-offset tab-width)
 
-            ;; Indent switch-case statements.
+            ;; indent switch-case statements
             (c-set-offset 'case-label '+)))
 
-;; ----------------------------------------------------------------------------
-;;  shell mode                                                         built in
-;; ----------------------------------------------------------------------------
-
-;; press C-c M-o (as in Slime) in a shell to clear the buffer
-(add-hook 'shell-mode-hook
-          (lambda ()
-            (local-set-key "\C-c\M-o" #'erase-interactive-buffer)))
-
-;; ----------------------------------------------------------------------------
-;;  ispell                                                             built-in
-;; ----------------------------------------------------------------------------
-
-(when on-mac
-  (setq ispell-program-name "/opt/local/bin/aspell"))
-
-;; ----------------------------------------------------------------------------
-;;  whitespace mode                                                    built-in
-;; ----------------------------------------------------------------------------
-
-(require 'whitespace)
-(global-set-key (kbd "C-c C-w") 'whitespace-mode)
-
-;; ----------------------------------------------------------------------------
-;;  python                                                            built-in
-;; ----------------------------------------------------------------------------
-
-(when on-windows
-  (setq python-shell-interpreter "py.exe"))
-
-(when on-linux
-  (setq python-shell-interpreter "python3"))
-
-;; ----------------------------------------------------------------------------
-;;  comint                                                            built-in
-;; ----------------------------------------------------------------------------
-
-;; don't echo back what is typed in the shell
-(defun my-comint-init ()
-  (setq comint-process-echoes t))
-
-(add-hook 'comint-mode-hook 'my-comint-init)
-
-;; ----------------------------------------------------------------------------
-;;  asm-mode                                                          built-in
-;; ----------------------------------------------------------------------------
-
-(add-hook 'asm-mode-hook
-          (lambda ()
-            ;; Tab should not indent, but insert a real tab.
-            (setq tab-always-indent nil)
-
-            ;; Need a nice large tab stop size.
-            (setq tab-width 8)
-
-            ;; Indent with tabs, not spaces.
-            (setq indent-tabs-mode t)))
-
-;; ----------------------------------------------------------------------------
-;;  scheme-mode                                                       built-in
-;; ----------------------------------------------------------------------------
-
-(add-to-list 'auto-mode-alist '("\\.rkt\\'" . scheme-mode))
-
-;; ----------------------------------------------------------------------------
-;;  packages
-;; ----------------------------------------------------------------------------
-
-;; credits to http://www.aaronbedra.com/emacs.d/
-(when (>= emacs-major-version 24)
-  (require 'package)
-  (add-to-list 'package-archives
-	       '("melpa" . "https://melpa.org/packages/") t)
-
-  (when (< emacs-major-version 27)
-    (package-initialize)))
-
-;; default packages to have installed
-(defvar who/packages '(
-                       exec-path-from-shell
-                       ido-vertical-mode
-                       markdown-mode
-                       multiple-cursors
-                       quelpa
-                       which-key
-
-                       ;; themes
-                       grandshell-theme
-                       solarized-theme
-
-                       ;; git support
-                       magit
-                       ))
-
-;; define the filter function if not there
-(unless (fboundp 'filter)
-  (defun filter (pred-p items)
-    (let (filtered)
-      (dolist (item items)
-        (when (funcall pred-p item)
-          (setq filtered (cons item filtered))))
-      (reverse filtered))))
-
-(when (>= emacs-major-version 24)
-
-  ;; returns which packages are missing
-  (defun who/missing-packages ()
-    "Returns a list of missing packages."
-    (filter (lambda (pkg)
-              (not (package-installed-p pkg)))
-            who/packages))
-
-  ;; make sure certain packages are installed
-  (defun who/install-packages (packages)
-    "Installs missing packages."
-    (let* ((missing  (length packages))
-           (prompt   (format "%d missing packages: %s. Install?"
-                             missing packages)))
-      ;; if any packages are missing, ask the user whether to install
-      (when (and packages
-                 (y-or-n-p-with-timeout prompt 3 nil))
-        ;; yes, go ahead
-        (package-refresh-contents)
-        (setq install-all nil
-              install-none nil)
-        ;; loop over each package and install if desired
-        (while (and packages (not install-none))
-          (setq pkg (car packages)
-                packages (cdr packages))
-          ;; install when 'install-all is set, or the user confirms
-          (when (or install-all
-                    (let ((prompt (format "Install package %s? (y, n, N, or a) "
-                                          pkg)))
-                      (pcase (read-char-choice prompt '(?y ?n ?N ?a))
-                        (?y t)                           ; => t
-                        (?a (setq install-all t))        ; => t
-                        (?N (not (setq install-none t))) ; => nil
-                        (?n nil))))                      ; => nil
-            (package-install pkg))))))
-
-  ;; returns whether the package servers are accessible
-  ;; http://emacs.stackexchange.com/questions/7653/
-  ;;    elisp-code-to-check-for-internet-connection
-  (defun who/can-retrieve-packages ()
-    (cl-loop for url in (mapcar 'cdr package-archives)
-             do (condition-case e
-                    (kill-buffer (url-retrieve-synchronously url))
-                  (error (cl-return)))
-             finally (cl-return t)))
-
-  (defun who/update ()
-    (let ((missing-packages (who/missing-packages)))
-      (when (and missing-packages
-                 (who/can-retrieve-packages))
-        (who/install-packages missing-packages))))
-
-  ;; force loading of packages now, so we can use them from here on in .emacs
-  (setq package-enable-at-startup nil)
-  (package-initialize))
-
-(unless (fboundp 'package-installed-p)
-  (defun package-installed-p (package)
-    nil))
-
-;; ----------------------------------------------------------------------------
-;;  ggtags                                                              package
-;; ----------------------------------------------------------------------------
-
-(when (package-installed-p 'ggtags)
-  (require 'ggtags)
-  
-  (add-hook 'c-mode-common-hook
-          (lambda ()
-            (when (derived-mode-p 'c-mode 'c++-mode 'java-mode 'asm-mode)
-              (ggtags-mode 1))))
-
-  (when on-windows
-    (setq ggtags-executable-directory "C:/Program Files (x86)/GNU/GLOBAL/bin"))
-
-  (define-key ggtags-mode-map (kbd "C-c g s") 'ggtags-find-other-symbol)
-  (define-key ggtags-mode-map (kbd "C-c g h") 'ggtags-view-tag-history)
-  (define-key ggtags-mode-map (kbd "C-c g r") 'ggtags-find-reference)
-  (define-key ggtags-mode-map (kbd "C-c g f") 'ggtags-find-file)
-  (define-key ggtags-mode-map (kbd "C-c g c") 'ggtags-create-tags)
-  (define-key ggtags-mode-map (kbd "C-c g u") 'ggtags-update-tags)
-  
-  (define-key ggtags-mode-map (kbd "M-,") 'pop-tag-mark))
-
-;; ----------------------------------------------------------------------------
-;;  markdown-mode                                                       package
-;; ----------------------------------------------------------------------------
-
+;; markdown-mode
 (when (package-installed-p 'markdown-mode)
   (setq markdown-fontify-code-blocks-natively t)
   (custom-set-faces '(markdown-code-face ((t nil)))))
 
-;; ----------------------------------------------------------------------------
-;;  multiple-cursors                                                    package
-;; ----------------------------------------------------------------------------
-
+;; multiple-cursors
 (when (package-installed-p 'multiple-cursors)
   (global-set-key (kbd "M-<down>")    'mc/mark-next-like-this)
   (global-set-key (kbd "M-<up>")      'mc/mark-previous-like-this)
   (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
   (global-set-key (kbd "C-c C-<")     'mc/mark-all-like-this))
 
-;; ----------------------------------------------------------------------------
-;;  exec-path-from-shell                                                package
-;; ----------------------------------------------------------------------------
-
-(when (and on-mac (package-installed-p 'exec-path-from-shell))
-  (exec-path-from-shell-copy-env "PS1")
-  (exec-path-from-shell-initialize))
-
-;; ----------------------------------------------------------------------------
-;;  company                                                             package
-;; ----------------------------------------------------------------------------
-
-(when (package-installed-p 'company)
-  (add-hook 'after-init-hook
-            (lambda ()
-              (global-company-mode)
-              (define-key company-active-map
-                          (kbd "\C-n") 'company-select-next)
-              (define-key company-active-map
-                          (kbd "\C-p") 'company-select-previous)
-              (define-key company-active-map
-                          (kbd "\C-d") 'company-show-doc-buffer)
-              (define-key company-active-map
-                          (kbd "\C-v") 'company-show-location)
-              (define-key company-active-map
-                          (kbd "<tab>") 'company-complete)
-              (define-key company-active-map
-                          (kbd "\C-g") #'(lambda ()
-                                           (interactive)
-                                           (company-abort))))))
-
-;; ----------------------------------------------------------------------------
-;;  rainbow-delimiters                                                  package
-;; ----------------------------------------------------------------------------
-
-(when (and (package-installed-p 'rainbow-delimiters)
-           (package-installed-p 'clojure-mode))
-  (add-hook 'lisp-mode-hook 'rainbow-delimiters-mode)
-  (add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
-  (add-hook 'cider-mode-hook 'rainbow-delimiters-mode))
-
-;; ----------------------------------------------------------------------------
-;;  yasnippet                                                           package
-;; ----------------------------------------------------------------------------
-
-(when (package-installed-p 'yasnippet)
-  (yas-global-mode 1))
-
-;; ----------------------------------------------------------------------------
-;;  which-key                                                           package
-;; ----------------------------------------------------------------------------
-
+;; which-key
 (when (package-installed-p 'which-key)
   ;; C-h C-h should page
   (define-key help-map (kbd "C-h") 'which-key-C-h-dispatch)
   (which-key-mode))
-
-;; ----------------------------------------------------------------------------
-;;  slime                                                               package
-;; ----------------------------------------------------------------------------
-
-(when (package-installed-p 'slime)
-  (setq inferior-lisp-program "/opt/local/bin/sbcl")
-  (slime-setup '(slime-fancy)))
-
-;; ----------------------------------------------------------------------------
-;;  fsharp-mode                                                         package
-;; ----------------------------------------------------------------------------
-
-(when (package-installed-p 'fsharp-mode)
-  (require 'fsharp-mode)
-  (setq inferior-fsharp-program "/usr/local/bin/fsharpi --readline-")
-  (setq fsharp-compiler "/usr/local/bin/fsharpc"))
-
-;; ----------------------------------------------------------------------------
-;;  ido-vertical-mode                                                  package
-;; ----------------------------------------------------------------------------
-
-(when (package-installed-p 'ido-vertical-mode)
-  (ido-vertical-mode 1)
-  (setq ido-vertical-define-keys '(C-n-and-C-p-only)))
-
-;; ----------------------------------------------------------------------------
-;;  csharp-mode                                                        package
-;; ----------------------------------------------------------------------------
-
-(when (package-installed-p 'csharp-mode)
-  (add-hook 'csharp-mode-hook
-            (lambda ()
-              (electric-pair-mode 1)
-              (c-set-offset 'inline-open 0))))
-
-;; ----------------------------------------------------------------------------
-;;  intero                                                             package
-;; ----------------------------------------------------------------------------
-
-(when (package-installed-p 'intero)
-  (add-hook 'haskell-mode-hook 'intero-mode))
-
-;; ----------------------------------------------------------------------------
-;;  multi-web-mode                                                     package
-;; ----------------------------------------------------------------------------
-
-(when (package-installed-p 'multi-web-mode)
-  (require 'multi-web-mode)
-  (setq mweb-default-major-mode 'html-mode)
-  (setq mweb-tags
-        '((php-mode "<\\?php\\|<\\? \\|<\\?="
-                    "\\?>")
-          (js-mode "<script>\\|<script +\\(type=\"text/javascript\"\\|language=\"javascript\"\\)[^>]*>"
-                   "</script>")
-          (css-mode "<style>\\|<style +type=\"text/css\"[^>]*>"
-                    "</style>")))
-  (setq mweb-filename-extensions '("php" "htm" "html" "ctp" "phtml" "php4" "php5"))
-  (multi-web-global-mode 1))
-
-;; ----------------------------------------------------------------------------
-;;  neotree                                                            package
-;; ----------------------------------------------------------------------------
-
-(when (package-installed-p 'neotree)
-  (require 'neotree)
-  (global-set-key [f8] 'neotree-toggle))
-
-;; ----------------------------------------------------------------------------
-;;  ws-butler                                                          package
-;; ----------------------------------------------------------------------------
-
-(when (package-installed-p 'ws-butler)
-  (require 'ws-butler)
-  (add-hook 'prog-mode-hook #'ws-butler-mode))
-
-;; ----------------------------------------------------------------------------
-;;  whitespace4r                                                       source
-;; ----------------------------------------------------------------------------
-
-(when (package-installed-p 'quelpa)
-  (quelpa '(whitespace4r :fetcher github
-                         :repo "twlz0ne/whitespace4r.el"
-                         :files ("whitespace4r.el"))))
-
-;; ----------------------------------------------------------------------------
-;;  OCaml                        https://ocaml.github.io/merlin/editor/emacs/
-;; ----------------------------------------------------------------------------
-
-(let ((opam-share (ignore-errors (car (process-lines "opam" "var" "share")))))
-  (when (and opam-share (file-directory-p opam-share))
-    (add-to-list 'load-path (expand-file-name "emacs/site-lisp" opam-share))
-    (autoload 'merlin-mode "merlin" nil t nil)
-    (add-hook 'tuareg-mode-hook 'merlin-mode t)
-    (add-hook 'caml-mode-hook 'merlin-mode t)))
