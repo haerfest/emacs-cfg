@@ -30,6 +30,9 @@
 ;; show matching parenthesis
 (show-paren-mode t)
 
+;; highlight the current line
+(global-hl-line-mode)
+
 ;; use two spaces for tabs
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 2)
@@ -48,6 +51,9 @@
 
 ;; prevent non-ascii characters from slowing emacs down
 (setq inhibit-compacting-font-caches t)
+
+;; the external Common Lisp implementation to use
+(setq inferior-lisp-program "sbcl")
 
 ;; undo when pressing ^z, suspend with the super key
 (global-set-key (kbd "C-z")   'undo)
