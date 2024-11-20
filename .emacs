@@ -55,6 +55,10 @@
 ;; the external Common Lisp implementation to use
 (setq inferior-lisp-program "sbcl")
 
+;; swallow shells echoing of entered commands
+(add-hook 'comint-mode-hook (lambda ()
+                              (setq comint-proces-echoes t)))
+
 ;; undo when pressing ^z, suspend with the super key
 (global-set-key (kbd "C-z")   'undo)
 (global-set-key (kbd "C-s-z") 'suspend-frame)
