@@ -63,6 +63,9 @@
 (global-set-key (kbd "C-z")   'undo)
 (global-set-key (kbd "C-s-z") 'suspend-frame)
 
+;; M-z should zap-up-to-char instead of zap-to-char
+(global-set-key (kbd "M-z") 'zap-up-to-char)
+
 ;; window movement
 (global-set-key (kbd "C-x <left>")  'windmove-left)
 (global-set-key (kbd "C-x <right>") 'windmove-right)
