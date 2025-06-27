@@ -95,13 +95,17 @@
   ;; open links in the default browser
   (setq browse-url-browser-function 'browse-url-default-windows-browser))
 
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(package-initialize)
+
 ;; the packages to install via package-install-selected-pages
 (setq package-selected-packages
       '(ido-vertical-mode
-	magit
-	markdown-mode
-	multiple-cursors
-	which-key))
+	      magit
+	      markdown-mode
+	      multiple-cursors
+	      which-key))
 
 ;; ido
 (require 'ido)
