@@ -72,6 +72,21 @@
 (global-set-key (kbd "C-x <up>")    'windmove-up)
 (global-set-key (kbd "C-x <down>")  'windmove-down)
 
+;; packages
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(package-initialize)
+
+;; the packages to install via package-install-selected-pages
+(setq package-selected-packages
+      '(ido-vertical-mode
+	      magit
+	      markdown-mode
+        modus-themes
+	      multiple-cursors
+	      which-key
+        xclip))
+
 ;; Mac-specifics
 (when (eq system-type 'darwin)
 
@@ -85,27 +100,17 @@
 ;; Linux-specifics
 (when (eq system-type 'gnu/linux)
 
-  ;; allow copy & paste between Emacs and X
-  (setq x-select-enable-clipboard t)
-  (setq interprogram-paste-function 'x-cut-buffer-or-selection-value))
+  (when (package-installed-p 'xclip)
+    (setq xclip-program "wl-copy"
+          xclip-select-enable-clipboard t
+          xclip-mode t
+          xclip-method 'wl-copy)))
 
 ;; Windows-specifics
 (when (eq system-type 'windows-nt)
 
   ;; open links in the default browser
   (setq browse-url-browser-function 'browse-url-default-windows-browser))
-
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-(package-initialize)
-
-;; the packages to install via package-install-selected-pages
-(setq package-selected-packages
-      '(ido-vertical-mode
-	      magit
-	      markdown-mode
-	      multiple-cursors
-	      which-key))
 
 ;; ido
 (require 'ido)
@@ -130,6 +135,16 @@
             ;; indent switch-case statements
             (c-set-offset 'case-label '+)))
 
+;; asm-mode
+(add-hook 'asm-mode-hook
+          (lambda ()
+            (setq tab-width 8)
+            (indent-tabs-mode)))
+
+;; theme
+(when (package-installed-p 'modus-themes)
+  (load-theme 'modus-operandi))
+
 ;; markdown-mode
 (when (package-installed-p 'markdown-mode)
   (setq markdown-fontify-code-blocks-natively t)
@@ -147,3 +162,8 @@
   ;; C-h C-h should page
   (define-key help-map (kbd "C-h") 'which-key-C-h-dispatch)
   (which-key-mode))
+
+;; ocaml
+(when (package-installed-p 'tuareg)
+  (add-to-list 'load-path "~/.opam/default/share/emacs/site-lisp/")
+  (require 'ocp-indent))
