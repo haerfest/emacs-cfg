@@ -145,6 +145,13 @@
 (when (package-installed-p 'modus-themes)
   (load-theme 'modus-operandi))
 
+;; font
+(defun font-available-p (font-name)
+  (member font-name (font-family-list)))
+
+(cond
+ ((font-available-p "Acorn Mode 0") (set-frame-font "Acorn Mode 0-12" nil t)))
+
 ;; markdown-mode
 (when (package-installed-p 'markdown-mode)
   (setq markdown-fontify-code-blocks-natively t)
