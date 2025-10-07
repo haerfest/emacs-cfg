@@ -146,11 +146,12 @@
   (load-theme 'modus-operandi))
 
 ;; font
-(defun font-available-p (font-name)
-  (member font-name (font-family-list)))
-
-(cond
- ((font-available-p "Acorn Mode 0") (set-frame-font "Acorn Mode 0-12" nil t)))
+(let ((font-names '("Acorn Mode 0")))
+  (let ((font-name (cl-find-if (lambda (font-name)
+                                 (member font-name (font-family-list)))
+                               font-names)))
+    (when font-name
+      (set-frame-font (format "%s-12" font-name) nil t))))
 
 ;; markdown-mode
 (when (package-installed-p 'markdown-mode)
