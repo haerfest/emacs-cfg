@@ -30,9 +30,6 @@
 ;; show matching parenthesis
 (show-paren-mode t)
 
-;; highlight the current line
-(global-hl-line-mode)
-
 ;; use two spaces for tabs
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 2)
@@ -173,5 +170,6 @@
 
 ;; ocaml
 (when (package-installed-p 'tuareg)
-  (add-to-list 'load-path "~/.opam/default/share/emacs/site-lisp/")
+  (add-to-list 'load-path "~/.opam/default/share/emacs/site-lisp/"))
+(when (package-installed-p 'ocp-indent)
   (require 'ocp-indent))
