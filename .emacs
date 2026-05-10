@@ -12,8 +12,6 @@
   (scroll-bar-mode -1))
 (when (fboundp 'tool-bar-mode)
   (tool-bar-mode -1))
-(when (and (fboundp 'menu-bar-mode) (not (eq system-type 'darwin)))
-  (menu-bar-mode -1))
 
 ;; don't want backup files
 (setq make-backup-files nil)
@@ -101,7 +99,11 @@
     (setq xclip-program "wl-copy"
           xclip-select-enable-clipboard t
           xclip-mode t
-          xclip-method 'wl-copy)))
+          xclip-method 'wl-copy))
+
+  ;; double buffering is known to cause display artifacts on X-based
+  ;; systems
+  (modify-all-frames-parameters '((inhibit-double-buffering . t))))
 
 ;; Windows-specifics
 (when (eq system-type 'windows-nt)
