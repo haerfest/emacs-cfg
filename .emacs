@@ -101,9 +101,11 @@
           xclip-mode t
           xclip-method 'wl-copy))
 
-  ;; double buffering is known to cause display artifacts on X-based
-  ;; systems
-  (modify-all-frames-parameters '((inhibit-double-buffering . t))))
+  ;; force a redrawing of the frame 50 msecs after scrolling stops to mitigate
+  ;; the display getting corrupted at times
+  (add-hook 'window-scroll-functions
+            (lambda (win _start)
+              (run-with-timer 0.05 nil #'redraw-frame (window-frame win)))))
 
 ;; Windows-specifics
 (when (eq system-type 'windows-nt)
