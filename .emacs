@@ -28,6 +28,9 @@
 ;; show matching parenthesis
 (show-paren-mode t)
 
+;; highlight the current line
+(global-hl-line-mode)
+
 ;; use two spaces for tabs
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 2)
